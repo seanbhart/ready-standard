@@ -1,0 +1,29 @@
+schema: "readyroom/product-tree-root/v1"
+product: "{{PRODUCT_ID}}"
+source_root: "ready"
+default_stage: "{{DEFAULT_STAGE_ID}}"
+governance_directory: "ready/governance"
+ready_standard:
+  repository: "https://github.com/seanbhart/ready-standard"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/main/docs"
+  skill_package_source: "https://github.com/seanbhart/ready-standard/tree/main/skills"
+  templates_source: "https://github.com/seanbhart/ready-standard/tree/main/templates"
+stages:
+  - id: "{{DEFAULT_STAGE_ID}}"
+    title: "{{DEFAULT_STAGE_TITLE}}"
+    path: "ready/{{DEFAULT_STAGE_ID}}"
+    manifest: "ready/{{DEFAULT_STAGE_ID}}/manifest.yaml"
+    kind: "normal"
+    status: "active"
+    order: 10
+    default_candidate: true
+    coding_claims_enabled: false
+  - id: "end-state"
+    title: "End State"
+    path: "ready/end-state"
+    manifest: "ready/end-state/manifest.yaml"
+    kind: "horizon"
+    status: "horizon"
+    order: 9999
+    default_candidate: false
+    coding_claims_enabled: false

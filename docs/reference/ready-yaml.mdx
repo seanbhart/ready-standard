@@ -1,0 +1,143 @@
+---
+title: ".ready.yml Reference"
+description: "Required and recommended YAML fields for Ready primitive records."
+---
+
+# `.ready.yml` Reference
+
+`.ready.yml` is the primitive source format. It is YAML with a Ready-specific
+extension so tools can distinguish source records from navigation Markdown,
+generated docs, manifests, and generic artifacts.
+
+## Primitive record
+
+```yaml
+schema: readyroom/primitive/v1
+kind: primitive
+id: I-001
+type: intent
+title: Human-readable title
+milestone: m1
+status: active
+summary: Concise product-truth statement
+fields:
+  value: Why the product promise matters.
+  input_data: What the intent reads.
+  output_data: What the intent produces.
+refs:
+  - from: I-001
+    role: serves
+    to: P-001
+artifacts: []
+owner_notes: []
+```
+
+Required fields:
+
+- `schema`: `readyroom/primitive/v1`
+- `kind`: `primitive`
+- `id`: stable primitive id, such as `P-001`, `I-001`, `ST-001`, or `SV-001`
+- `type`: `premise`, `intent`, `standard`, or `service`
+- `title`: human-readable label
+- `milestone`: owning stage id; the v1 field name remains `milestone` even
+  though the root manifest standardizes the grouping as `stages`
+- `status`: product status, such as `active`, `draft`, or `blocked`
+- `summary`: concise reader summary
+- `fields`: type-specific structured content
+- `refs`: directed semantic edges
+
+## Root stage registry
+
+The root `ready/manifest.yaml` controls stage grouping and default selection.
+Use `stages`, not directory sort order, to describe stage meaning:
+
+```yaml
+schema: readyroom/product-tree-root/v1
+product: example
+source_root: ready
+default_stage: m2
+stages:
+  - id: m1
+    title: M1
+    path: ready/m1
+    manifest: ready/m1/manifest.yaml
+    kind: normal
+    status: complete
+    order: 10
+    default_candidate: true
+    coding_claims_enabled: false
+  - id: m2
+    title: M2
+    path: ready/m2
+    manifest: ready/m2/manifest.yaml
+    kind: normal
+    status: active
+    order: 20
+    default_candidate: true
+    coding_claims_enabled: false
+  - id: end-state
+    title: End State
+    path: ready/end-state
+    manifest: ready/end-state/manifest.yaml
+    kind: horizon
+    status: horizon
+    order: 9999
+    default_candidate: false
+    coding_claims_enabled: false
+```
+
+If `default_stage` is absent, tools choose the latest normal default candidate
+by `order`, then the latest normal stage, and only then non-normal stages.
+
+## Ref roles
+
+Approved primitive ref roles:
+
+- `serves`
+- `contains_premise`
+- `requires`
+- `governed_by`
+- `questions`
+
+Store one directed edge. Views can derive inverse labels.
+
+Canonical primitive-tree edges:
+
+- `intent --serves--> premise`: the intent addresses a root product premise.
+- `intent --contains_premise--> premise`: the intent owns a subordinate premise
+  that should appear under that intent instead of as a root premise.
+- `intent --requires--> service`: the intent depends on a service.
+- `intent --governed_by--> standard`: the intent must obey a standard.
+
+Do not store inverse edges such as `premise --serves--> intent`,
+`service --serves--> intent`, or `standard --serves--> intent` for primary
+tree placement. Reader views derive inverse labels automatically.
+
+Compact refs infer `from` as the current primitive id:
+
+```yaml
+refs:
+  - role: requires
+    id: SV-001
+```
+
+Use compact refs only for outgoing edges from the current primitive. If a record
+stores an edge whose source is another primitive, include explicit `from` and
+`to` so the canonical direction remains unambiguous.
+
+## Artifact metadata
+
+Artifacts use typed manifests or index rows rather than primitive fields. At
+minimum, an artifact entry should identify the id, type, path, privacy state, and
+owning primitive or proof role.
+
+```yaml
+id: SA-001
+artifact_type: sample_data
+path: ready/m1/artifacts/samples/SA-001.json
+privacy: sanitized_fixture
+used_by:
+  - I-001
+roles:
+  - input_sample
+```

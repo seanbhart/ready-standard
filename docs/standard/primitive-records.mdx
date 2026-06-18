@@ -1,0 +1,95 @@
+---
+title: "Primitive Records"
+description: "How to write premises, intents, standards, services, and question cards."
+---
+
+# Primitive Records
+
+Primitive records are `.ready.yml` files. Humans normally read compiled views in
+the Ready Room app or docs; the raw file is optimized for parsing, validation,
+diffing, and merge review.
+
+## Common rules
+
+Every primitive record should include:
+
+```yaml
+schema: readyroom/primitive/v1
+kind: primitive
+id: I-001
+type: intent
+title: Browse and edit the primitive-backed product spine
+milestone: m1
+status: active
+summary: The concise product-truth statement.
+fields:
+  value: Why this matters to the user or operator.
+  failure_behavior: What happens when the intent cannot be fulfilled.
+refs:
+  - from: I-001
+    role: serves
+    to: P-001
+artifacts: []
+owner_notes: []
+```
+
+Put every value an app, compiler, validator, search index, or agent must read in
+YAML. Reader-friendly Markdown, PM summaries, developer briefs, designer views,
+and customer-facing docs are compiled from these records.
+
+## File rules
+
+- Use one primitive per file.
+- Use the `.ready.yml` extension for primitive source records.
+- Keep ids stable; paths and titles can change.
+- Keep files fragmented and reviewable.
+- Store relationships in `refs`, not prose.
+- Store canonical primitive-tree relationships in source direction:
+  `intent --serves--> premise`, `intent --contains_premise--> premise`,
+  `intent --requires--> service`, and `intent --governed_by--> standard`.
+- Do not store inverse tree edges such as `premise --serves--> intent`,
+  `service --serves--> intent`, or `standard --serves--> intent`; compiled views
+  derive those inverse labels.
+- Compact refs infer `from` as the current primitive id, so use compact refs
+  only for outgoing edges from the current primitive.
+- Store bulky samples, mockups, screenshots, snippets, and generated outputs as
+  artifacts referenced by id or path.
+- Do not store local chat logs, raw provider transcripts, source diffs, secrets,
+  or unreviewed scratch content in primitive records.
+- Do not store coding lifecycle state on primitives. Seed and delta flags gate
+  coding claims.
+
+## Premises
+
+Premises explain why the product should exist. They need evidence confidence and
+provenance in `fields`. A premise inferred only from docs should be marked as
+inferred or low confidence until the product lead confirms it.
+
+## Intents
+
+Intents are product promises. Each committed intent should have an actor, action,
+expected end state, value, scope, non-scope, failure behavior, input/output data,
+required services, required standards, and an Operating Envelope when behavior
+can vary materially after release.
+
+Completion Proof does not live on persistent intent bodies. It belongs on ready
+seed or delta flags.
+
+## Standards
+
+Standards state rules for implementation, measurement, judgment, behavior, or
+maintenance. Global standards apply through workspace standard refs; primitive
+specific standards apply through directed `governed_by` refs.
+
+## Services
+
+Services capture dependencies required to build, prove, run, or monitor the
+product. A service should name readiness by environment, access expectations,
+proof policy, failure modes, simulation rules, observability, privacy, owner,
+and readiness gaps.
+
+## Question cards
+
+Question cards hold product-shaping ambiguity. When answered, apply the resulting
+primitive edits or flags and remove the active question card. History belongs in
+Git, events, assessments, or implementation refs.

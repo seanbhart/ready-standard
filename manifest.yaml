@@ -1,0 +1,28 @@
+schema: "readyroom/standard-resources/v1"
+standard_root: "."
+repository: "https://github.com/seanbhart/ready-standard"
+resources:
+  - id: "RS-001"
+    path: "skills/manifest.yaml"
+    role: "ready_skill_package_manifest"
+  - id: "RS-002"
+    path: "skills/ready-skill.md"
+    role: "ready_skill_entrypoint"
+  - id: "RS-003"
+    path: "templates/README.md"
+    role: "template_index"
+skill_modules:
+  - "skills/modules/evidence-resource-review.md"
+  - "skills/modules/access-readiness.md"
+  - "skills/modules/design-artifact-readiness.md"
+  - "skills/modules/coding-handoff-readiness.md"
+  - "skills/modules/perspective-review.md"
+template_directories:
+  governance: "templates/governance"
+  manifests: "templates/manifests"
+  primitives: "templates/primitives"
+rules:
+  - "Project-specific governance lives in ready/governance."
+  - "Project-agnostic Ready resources and templates live in the Ready standard package."
+  - "Artifacts support product truth and do not store governance or standard resources."
+  - "Templates must use placeholders for project-specific authority, owners, services, and milestones."

@@ -1,0 +1,56 @@
+---
+title: "Ready"
+description: "A Git-backed product tree standard for storing product truth as typed YAML records."
+---
+
+# Ready
+
+The Ready Product Tree stores product truth as a filetree. Primitives, flags,
+sample refs, artifacts, and generated-view inputs live in ordinary files so
+teams can branch, review, merge, fork, and compare product decisions with the
+same tools they use for code.
+
+The standard separates durable product truth from workflow state:
+
+- Primitive `.ready.yml` files describe why the product exists, what it
+  promises, how it must behave, and what it depends on.
+- Flag files describe attention and work-readiness state.
+- Generated views compile from the tree for different audiences.
+- Local chats, scratchpads, search indexes, raw logs, and transcripts stay in
+  local cache unless intentionally promoted into product records.
+
+## Why this exists
+
+Product direction often drifts because requirements, decisions, tickets, mockups,
+chat, and implementation proof live in separate systems. A filetree product model
+keeps the durable part small, reviewable, and portable while still letting apps
+render richer PM, developer, designer, and customer views.
+
+## Minimum conforming tree
+
+```text
+ready/
+  manifest.yaml
+  governance/
+  m1/
+    manifest.yaml
+    premises/
+    intents/
+    standards/
+    services/
+    flags/
+      seed/
+      delta/
+      discovery/
+    artifacts/
+      samples/
+      resources/
+```
+
+The directory names can vary by product, but the standard requires one durable
+record per primitive, stable ids in the record, directed refs, and explicit
+claim gates before coding work can start.
+
+Reusable Ready skills, templates, and documentation live in this package. A
+project may vendor those resources, but a conforming product tree should not
+need to commit a copy of the standard in order to be parsed.

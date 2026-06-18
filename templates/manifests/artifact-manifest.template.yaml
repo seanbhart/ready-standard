@@ -1,0 +1,29 @@
+schema: "readyroom/artifact-tree/v1"
+artifact_root: "ready/{{MILESTONE_ID}}/artifacts"
+artifact_index: "ready/{{MILESTONE_ID}}/artifacts.md"
+artifact_types:
+  sample_data:
+    id_prefix: "SA"
+    directory: "samples/"
+    validation: "json_parse"
+    privacy: "sanitized_fixture_or_explicit_user_stub"
+  resource:
+    id_prefix: "RE"
+    directory: "resources/"
+    validation: "markdown_json_yaml_or_external_ref"
+    privacy: "safe_ref_or_public_resource"
+  snippet:
+    id_prefix: "SN"
+    directory: "snippets/"
+    validation: "markdown_or_text"
+  design:
+    id_prefix: "DA"
+    directory: "designs/"
+    validation: "external_or_binary_ref"
+  manifest:
+    id_prefix: "MA"
+    directory: "manifests/"
+    validation: "json_or_yaml_parse"
+rules:
+  - "Artifacts support primitives, flags, proof, or generated views; they are not product primitives."
+  - "Governing docs and standard resources do not live under artifacts."

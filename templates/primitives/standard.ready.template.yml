@@ -1,0 +1,17 @@
+schema: readyroom/primitive/v1
+kind: primitive
+id: ST-001
+type: standard
+title: "{{STANDARD_TITLE}}"
+milestone: "{{MILESTONE_ID}}"
+status: draft
+summary: "{{STANDARD_SUMMARY}}"
+fields:
+  rule: "{{VALIDATABLE_RULE}}"
+  rationale: "{{WHY_THIS_RULE_EXISTS}}"
+  scope: "{{WHERE_IT_APPLIES}}"
+  measurement_review: "{{HOW_TO_CHECK_IT}}"
+  exceptions: "{{ALLOWED_EXCEPTIONS_OR_NONE}}"
+refs: []
+artifacts: []
+owner_notes: []

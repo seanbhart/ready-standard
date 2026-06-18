@@ -1,0 +1,54 @@
+---
+title: "Governance And Standard Resources"
+description: "Where project governance, reusable Ready resources, templates, and artifacts belong."
+---
+
+# Governance And Standard Resources
+
+Governance documents and Ready standard resources are first-class product-tree
+records. They are not artifacts.
+
+Use `ready/governance/` for project-specific files that constrain how product
+work is allowed to happen for that project:
+
+- Agent behavior guidelines.
+- Product-orchestrator charters.
+- Product process docs.
+- Workspace authority and access policies.
+
+Use the Ready standard package for project-agnostic resources:
+
+- Ready Skill packages.
+- Product task-skill modules.
+- Governance templates.
+- Manifest templates.
+- Primitive templates.
+
+Use `ready/**/artifacts/` for supporting material attached to primitives, flags,
+proof, generated views, or handoff:
+
+- Sample data.
+- Code snippets.
+- Design assets.
+- Portal manifests.
+- Screenshots.
+- Handoff notes.
+
+## Rule
+
+If a file tells an agent what authority it has, what project-specific process it
+must follow, or what project-specific standard wins during conflict, it belongs
+in governance.
+
+If a file defines reusable Ready procedure or a starter template for other
+projects, it belongs in the standard package, not in a project artifact tree.
+
+If a file helps explain, test, prove, or illustrate a primitive, it belongs in
+artifacts.
+
+## Runtime use
+
+Agent context manifests should record the governance documents and standard
+package resources loaded for each run, including versions, source refs, and
+hashes. This keeps agent behavior auditable without treating private chats,
+local scratchpads, or generated work packages as governance.
