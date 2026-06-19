@@ -36,7 +36,7 @@ primitive_classes:
       services: "services/"
   decision_workflow:
     directories:
-      questions: "questions/"
+      questions: "flags/discovery/"
       seed_flags: "flags/seed/"
       delta_flags: "flags/delta/"
       discovery_flags: "flags/discovery/"
@@ -54,6 +54,8 @@ flag_directories:
   seed: "flags/seed/"
   delta: "flags/delta/"
   discovery: "flags/discovery/"
+question_directories:
+  open: "flags/discovery/"
 artifact_directories:
   index: "artifacts.md"
   manifest: "artifacts/manifest.yaml"

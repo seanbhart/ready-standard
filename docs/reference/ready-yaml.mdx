@@ -161,17 +161,28 @@ metadata for search, graph traversal, validation, and compiled views.
 
 ## Artifact metadata
 
-Artifact records can use typed manifests, artifact `.ready.yml` files, or index
-rows. At minimum, an artifact primitive should identify the id, type, path,
-privacy state, and owning primitive or proof role.
+Artifact records use artifact `.ready.yml` files. Typed manifests and Markdown
+index rows can summarize or group artifacts, but they are generated/navigation
+material, not the primitive source record. At minimum, an artifact primitive
+should identify the id, type, attached file path or safe ref, privacy state, and
+owning primitive or proof role.
 
 ```yaml
+schema: readyroom/artifact/v1
+kind: artifact
 id: SA-001
-artifact_type: sample_data
-path: ready/m1/artifacts/samples/SA-001.json
+type: sample_data
+primitive_class: evidence_artifact
+compiler_role: evidence
+title: Synthetic fixture
+milestone: m1
+status: active
 privacy: sanitized_fixture
-used_by:
+linked_primitives:
   - I-001
-roles:
-  - input_sample
+files:
+  - path: ready/m1/artifacts/samples/payloads/SA-001.json
+    purpose: Synthetic input fixture.
+usage_policy: []
+owner_notes: []
 ```

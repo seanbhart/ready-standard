@@ -39,26 +39,32 @@ ready/
     flags.md
     flags/
       seed/
-        f-001-example.md
+        f-001-example.ready.yml
       delta/
       discovery/
     artifacts.md
     artifacts/
       manifest.yaml
       samples/
-        MANIFEST.json
-        SA-001.json
+        sa-001-example.ready.yml
+        payloads/
+          SA-001.json
       resources/
+        re-001-example.ready.yml
       snippets/
+        sn-001-example.ready.yml
       designs/
+        da-001-example.ready.yml
       manifests/
+        ma-001-example.ready.yml
 ```
 
 Top-level plural Markdown files are navigation indexes. Product-logic primitive
 source records live inside the directories as `.ready.yml` files. Other
 primitive classes can live in their own family directories, such as `flags/`,
-`questions/`, `artifacts/`, or `governance/`, with schemas that match their
-machine contract.
+`artifacts/`, or `governance/`, with schemas that match their machine contract.
+Discovery questions are decision/workflow flag records and live under
+`flags/discovery/`.
 
 `ready/manifest.yaml` should include `default_stage` and a `stages` list with
 `id`, `title`, `path`, `manifest`, `kind`, `status`, `order`,
