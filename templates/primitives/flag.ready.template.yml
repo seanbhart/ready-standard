@@ -11,9 +11,9 @@ claimable: false
 blocked_by: []
 completion_proof:
   - "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
-summary: "{{WHY_THIS_NEEDS_ATTENTION}}"
 fields:
   objective: "{{WHAT_NEEDS_TO_BE_RESOLVED_OR_PROVEN}}"
+  why_it_matters: "{{WHY_THIS_NEEDS_ATTENTION}}"
   blocker_policy: "{{WHEN_CODING_AGENTS_MAY_OR_MAY_NOT_CLAIM_THIS_WORK}}"
 refs: []
 artifacts: []

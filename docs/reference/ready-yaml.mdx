@@ -25,8 +25,8 @@ type: intent
 title: Human-readable title
 milestone: m1
 status: active
-summary: Concise product-truth statement
 fields:
+  statement: The primary product-truth statement.
   value: Why the product promise matters.
   input_data: What the intent reads.
   output_data: What the intent produces.
@@ -48,7 +48,6 @@ Required fields:
 - `milestone`: owning stage id; the v1 field name remains `milestone` even
   though the root manifest standardizes the grouping as `stages`
 - `status`: product status, such as `active`, `draft`, or `blocked`
-- `summary`: concise reader summary
 - `fields`: type-specific structured content
 - `refs`: directed semantic edges
 
@@ -58,6 +57,13 @@ Recommended fields:
 - `compiler_role`: one of `source_truth`, `constraint`, `dependency`,
   `evidence`, `workflow_state`, `generated_view_input`, or another documented
   project role
+
+`owner_notes` is an optional product-owner annotation area. It exists for
+human notes that should travel with the record but are not product truth,
+requirements, evidence, Completion Proof, or agent instructions. Agents and
+compilers must not satisfy, enforce, or cite `owner_notes` as source authority;
+promote anything authoritative into typed `fields`, `refs`, `artifacts`, or
+flags.
 
 Older v1 records can infer `primitive_class: product_logic` from
 `schema: readyroom/primitive/v1` and the four product-logic types.
@@ -167,7 +173,6 @@ blocked_by: []
 completion_proof:
   - User can complete onboarding in a clean local run.
   - The documented verification command passes and the evidence artifact is linked.
-summary: Why this implementation work is ready.
 fields:
   objective: What should be resolved or proven.
 refs: []
@@ -181,7 +186,11 @@ proof content, not a one-word status such as `ready` or `done`.
 ## Specialized Primitive Schemas
 
 Decision/workflow and evidence/artifact primitives can use specialized schemas
-instead of `readyroom/primitive/v1`.
+instead of `readyroom/primitive/v1`. A Ready-defined `.ready.yml` record using
+one of these schemas is a primitive. A raw JSON, HTML, image, CSV, or other
+payload file under `artifacts/` is not itself a primitive unless it has a
+Ready-defined schema/pattern; it is an attachment or safe ref owned by an
+artifact primitive.
 
 Examples:
 
@@ -194,7 +203,9 @@ Examples:
 
 Specialized primitive schemas still need stable ids, titles or labels,
 provenance when relevant, privacy handling when relevant, and enough structured
-metadata for search, graph traversal, validation, and compiled views.
+metadata for search, graph traversal, validation, and compiled views. They do
+not use a root `summary`; short explanatory text belongs in type-specific
+`fields` only when it is real product data.
 
 ## Artifact metadata
 

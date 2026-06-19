@@ -9,7 +9,6 @@ milestone: "{{MILESTONE_ID}}"
 status: active
 privacy: "{{safe_ref_or_public_resource|sanitized_fixture|private_ref}}"
 retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
-summary: "{{WHAT_THIS_ARTIFACT_PROVES_OR_EXPLAINS}}"
 linked_primitives: []
 files:
   - path: "{{READY_RELATIVE_OR_EXTERNAL_SAFE_REF}}"

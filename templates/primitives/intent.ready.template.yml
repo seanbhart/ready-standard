@@ -7,7 +7,6 @@ compiler_role: source_truth
 title: "{{INTENT_TITLE}}"
 milestone: "{{MILESTONE_ID}}"
 status: draft
-summary: "{{INTENT_SUMMARY}}"
 fields:
   statement: "{{AS_ACTOR_I_CAN_OUTCOME_SO_VALUE}}"
   value: "{{WHY_THIS_MATTERS}}"

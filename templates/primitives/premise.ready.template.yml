@@ -7,7 +7,6 @@ compiler_role: source_truth
 title: "{{PREMISE_TITLE}}"
 milestone: "{{MILESTONE_ID}}"
 status: draft
-summary: "{{PREMISE_SUMMARY}}"
 fields:
   premise_type: "{{constraint|need|risk|opportunity}}"
   statement: "{{WHAT_IS_TRUE_OR_BELIEVED}}"

@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.5
+version: 0.3.6
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -116,8 +116,8 @@ type: intent
 title: Human-readable title
 milestone: m1
 status: draft
-summary: Concise product-truth statement
-fields: {}
+fields:
+  statement: Concise product-truth statement
 refs: []
 artifacts: []
 owner_notes: []
@@ -460,9 +460,17 @@ Required product-logic primitive fields:
 - `milestone` (the owning stage id; the v1 primitive field name is still
   `milestone`)
 - `status`
-- `summary`
 - `fields`
 - `refs`
+
+Do not add root `summary` to primitives. If summary text is truly source data,
+it belongs under `fields.summary`; otherwise use the type's primary field.
+
+Use `owner_notes` only for human product-owner annotations that should travel
+with the record without becoming product truth. They are not requirements,
+evidence, Completion Proof, or agent instructions. Ignore them for satisfaction
+and enforcement; promote anything authoritative into typed `fields`, `refs`,
+`artifacts`, or flags.
 
 Relationship rules:
 

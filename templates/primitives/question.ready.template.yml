@@ -11,7 +11,6 @@ claimable: false
 blocked_by: []
 completion_proof:
   - "{{ANSWER_IS_APPLIED_TO_THE_RELEVANT_PRIMITIVE_OR_FLAG_RECORDS}}"
-summary: "{{WHAT_IS_UNRESOLVED_AND_WHY_IT_MATTERS}}"
 fields:
   question: "{{QUESTION_TO_ANSWER}}"
   question_type: discovery

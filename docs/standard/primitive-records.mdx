@@ -46,8 +46,8 @@ type: intent
 title: Browse and edit the primitive-backed product spine
 milestone: m1
 status: active
-summary: The concise product-truth statement.
 fields:
+  statement: The product promise.
   value: Why this matters to the user or operator.
   failure_behavior: What happens when the intent cannot be fulfilled.
 refs:
@@ -61,6 +61,16 @@ owner_notes: []
 Put every value an app, compiler, validator, search index, or agent must read in
 structured fields. Reader-friendly Markdown, PM summaries, developer briefs,
 designer views, and customer-facing docs are compiled from these records.
+Do not add a root `summary` field to primitives. If a short summary is genuinely
+part of a type's source data, store it under `fields.summary`; otherwise prefer
+the type's primary field such as `statement`, `rule`, `purpose`, `objective`, or
+`question`.
+
+Use `owner_notes` only for human product-owner annotations that should travel
+with the record without becoming product truth. They are not requirements,
+evidence, Completion Proof, or agent instructions. Agents and compilers must
+ignore them for satisfaction and enforcement; promote anything authoritative
+into typed `fields`, `refs`, `artifacts`, or flags.
 
 ## File rules
 
@@ -145,5 +155,7 @@ Proof, and workspace policy. Flag records keep `type`, `claimable`, and
 Artifact records are evidence/artifact primitives. They describe resources,
 samples, snippets, designs, manifests, screenshots, generated views, or handoff
 material with stable ids, provenance, privacy state, and usage roles. The
-record is primitive source. The attached file may be JSON, Markdown, HTML,
-image, binary, external URL, or safe secret-location reference.
+`.ready.yml` record is primitive source. The attached file may be JSON,
+Markdown, HTML, image, binary, external URL, or safe secret-location reference;
+that attached payload is not a primitive unless it also has a Ready-defined
+schema/pattern.

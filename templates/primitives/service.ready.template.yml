@@ -7,7 +7,6 @@ compiler_role: dependency
 title: "{{SERVICE_TITLE}}"
 milestone: "{{MILESTONE_ID}}"
 status: draft
-summary: "{{SERVICE_SUMMARY}}"
 fields:
   purpose: "{{WHY_THIS_SERVICE_IS_NEEDED}}"
   readiness: "{{ready|simulated|missing|blocked|not_needed_yet}}"

@@ -7,7 +7,6 @@ compiler_role: constraint
 title: "{{STANDARD_TITLE}}"
 milestone: "{{MILESTONE_ID}}"
 status: draft
-summary: "{{STANDARD_SUMMARY}}"
 fields:
   rule: "{{VALIDATABLE_RULE}}"
   rationale: "{{WHY_THIS_RULE_EXISTS}}"
