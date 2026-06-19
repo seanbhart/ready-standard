@@ -25,7 +25,8 @@ Load only what the task needs:
 
 - this charter;
 - relevant `product-process.md` sections;
-- relevant primitives, services, flags, artifacts, and samples;
+- relevant product-logic primitives, decision/workflow primitives,
+  evidence/artifact primitives, and governance primitives;
 - relevant Ready standard package resources;
 - relevant project authority policy.
 

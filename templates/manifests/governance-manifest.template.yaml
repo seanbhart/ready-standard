@@ -14,6 +14,6 @@ documents:
     path: "ready/governance/workspace-authority-and-access.md"
     role: "workspace_authority_policy_seed"
 rules:
-  - "Project-specific governance documents are first-class product-tree records."
+  - "Project-specific governance documents are governance primitives: first-class product-tree records that constrain authority, process, and agent behavior."
   - "Reusable Ready standard resources live in the Ready standard package rather than ready/governance."
   - "Governance documents are not artifacts."

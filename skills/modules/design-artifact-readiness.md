@@ -12,8 +12,8 @@ must implement faithfully.
 
 ## Responsibilities
 
-- Identify every intent, standard, service, and flag that depends on a visual or
-  interaction decision.
+- Identify every product-logic primitive and decision/workflow primitive that
+  depends on a visual or interaction decision.
 - Gather existing designs, screenshots, mockups, prototypes, brand assets,
   design-system references, copy, and flow diagrams.
 - Create low-fidelity mockups, HTML prototypes, component specs, or generated
@@ -27,7 +27,8 @@ must implement faithfully.
 
 ## Artifact Guidance
 
-Store design-support material under milestone artifacts:
+Store design-support material as evidence/artifact primitives under milestone
+artifacts:
 
 - `designs/` for mockups, screenshots, visual references, diagrams, and design
   handoff notes;
@@ -42,8 +43,8 @@ prototype, generated concept, stale, or superseded. If a design conflicts with
 primitive truth, create a question card or primitive edit proposal instead of
 silently blending them.
 
-Do not bury design decisions in chat. Link the artifact to the affected
-primitive, service, or flag.
+Do not bury design decisions in chat. Link the artifact primitive to the
+affected product-logic primitive, service, or flag.
 
 ## Design Completeness Checklist
 

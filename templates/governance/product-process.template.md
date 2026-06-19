@@ -8,9 +8,10 @@ handed to coding agents for this project.
 ## Source Of Truth
 
 - Durable product truth lives in `ready/`.
-- Primitive source records are `.ready.yml`.
-- Generated views compile from primitives, flags, services, standards, and
-  artifacts.
+- Ready primitives are typed, addressable records. Product-logic primitives use
+  `.ready.yml`; flags and artifact records may use specialized Ready schemas.
+- Generated views compile from product-logic, decision/workflow,
+  evidence/artifact, and governance primitives.
 - Chat and local cache are evidence until promoted into the tree.
 
 ## Discovery
@@ -23,7 +24,8 @@ question cards or discovery flags.
 
 Every build-critical intent or service should have sample data, expected
 outputs, public resources, user-only asks, or explicit blockers. Store safe
-resources under the milestone artifact tree and sensitive material as refs.
+resources as evidence/artifact primitives under the milestone artifact tree and
+sensitive material as refs.
 
 ## Access And Services
 
@@ -35,6 +37,8 @@ failure modes. Never commit raw secrets.
 
 UI or interaction work should have enough mockups, flows, states, copy, assets,
 component snippets, or design refs for coding agents to implement faithfully.
+Record the design metadata as evidence/artifact primitives; large binaries or
+external sources can remain attached payloads or safe refs.
 
 ## Coding Handoff
 

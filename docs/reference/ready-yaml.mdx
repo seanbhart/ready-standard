@@ -1,15 +1,21 @@
 ---
 title: ".ready.yml Reference"
-description: "Required and recommended YAML fields for Ready primitive records."
+description: "Required and recommended YAML fields for Ready product-logic records."
 ---
 
 # `.ready.yml` Reference
 
-`.ready.yml` is the primitive source format. It is YAML with a Ready-specific
-extension so tools can distinguish source records from navigation Markdown,
-generated docs, manifests, and generic artifacts.
+`.ready.yml` is the product-logic primitive source format. It is YAML with a
+Ready-specific extension so tools can distinguish source records from navigation
+Markdown, generated docs, manifests, and generic payload files.
 
-## Primitive record
+Ready has a broader primitive model than this one schema. Flags, questions,
+artifact records, and governance records are also Ready primitives when they are
+typed, addressable, reusable records. They may use specialized schemas such as
+`readyroom/flag/v1` or `readyroom/artifact/v1` when those schemas carry a more
+precise machine contract.
+
+## Product-Logic Primitive Record
 
 ```yaml
 schema: readyroom/primitive/v1
@@ -45,6 +51,16 @@ Required fields:
 - `summary`: concise reader summary
 - `fields`: type-specific structured content
 - `refs`: directed semantic edges
+
+Recommended fields:
+
+- `primitive_class`: `product_logic`
+- `compiler_role`: one of `source_truth`, `constraint`, `dependency`,
+  `evidence`, `workflow_state`, `generated_view_input`, or another documented
+  project role
+
+Older v1 records can infer `primitive_class: product_logic` from
+`schema: readyroom/primitive/v1` and the four product-logic types.
 
 ## Root stage registry
 
@@ -125,11 +141,29 @@ Use compact refs only for outgoing edges from the current primitive. If a record
 stores an edge whose source is another primitive, include explicit `from` and
 `to` so the canonical direction remains unambiguous.
 
+## Specialized Primitive Schemas
+
+Decision/workflow and evidence/artifact primitives can use specialized schemas
+instead of `readyroom/primitive/v1`.
+
+Examples:
+
+- `readyroom/flag/v1`: decision/workflow primitive for attention, blockers,
+  drift, proof gaps, seed work, or delta work.
+- `readyroom/artifact/v1`: evidence/artifact primitive for a resource, sample,
+  snippet, design, manifest, generated view, or handoff record.
+- `readyroom/governance/v1`: governance primitive for authority, process, skill,
+  or template records when a project uses structured governance records.
+
+Specialized primitive schemas still need stable ids, titles or labels,
+provenance when relevant, privacy handling when relevant, and enough structured
+metadata for search, graph traversal, validation, and compiled views.
+
 ## Artifact metadata
 
-Artifacts use typed manifests or index rows rather than primitive fields. At
-minimum, an artifact entry should identify the id, type, path, privacy state, and
-owning primitive or proof role.
+Artifact records can use typed manifests, artifact `.ready.yml` files, or index
+rows. At minimum, an artifact primitive should identify the id, type, path,
+privacy state, and owning primitive or proof role.
 
 ```yaml
 id: SA-001

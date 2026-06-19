@@ -41,13 +41,13 @@ Local cache stores useful private or transient material:
 - Raw local process logs.
 - Temporary evidence bundles.
 
-Local cache is not committed. When a conversation produces durable product truth,
-the app or product agent promotes that truth into a primitive, flag, evidence
-summary, or artifact ref.
+Local cache is not committed. When a conversation produces durable product
+truth, the app or product agent promotes that truth into the right primitive
+class: product-logic primitive, decision/workflow flag or question, evidence
+summary, artifact record, or safe artifact ref.
 
 ## Sensitive and bulky material
 
 The committed tree should store refs instead of secrets, source excerpts, diffs,
 raw logs, or large binary payloads. Small sanitized samples are allowed when they
 are intentionally product fixtures.
-

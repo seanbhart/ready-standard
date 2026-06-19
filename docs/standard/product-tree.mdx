@@ -77,18 +77,39 @@ Default selection is deterministic:
 `end-state` is not special because of its name. It is excluded from the normal
 default path because it is `kind: horizon` and `default_candidate: false`.
 
-## Primitive types
+## Primitive classes
 
-The core primitive types are:
+A Ready primitive is a typed, addressable, reusable unit of product knowledge,
+decision state, workflow state, evidence, or governance context. "Primitive"
+does not mean every record has the same compiler authority. Tools should read a
+record's class, type, path, and role before deciding whether it is product truth,
+workflow state, evidence, generated context, or governance.
+
+Core classes:
+
+- `product_logic`: source product truth. Common types are `premise`, `intent`,
+  `standard`, and `service`.
+- `decision_workflow`: questions, flags, blockers, drift, proof gaps, and other
+  records that direct attention or readiness.
+- `evidence_artifact`: resources, sample data, snippets, designs, manifests,
+  screenshots, and handoff notes. The primitive is the artifact metadata record;
+  a bulky, binary, private, or generated payload file is an attachment or safe
+  ref, not necessarily a primitive record itself.
+- `governance`: project authority, process, agent guidelines, skills, and
+  templates that constrain how the tree may be changed.
+
+The first product-logic primitive types are:
 
 - `premise`: why the product, milestone, or feature should exist.
 - `intent`: what the product promises to do.
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
-- `question_card`: unresolved product-shaping ambiguity.
 
-The product may add more record kinds later, but these types are enough to
-compile useful product, design, and implementation views.
+Question cards are decision/workflow primitives. Flags are decision/workflow
+primitives. Artifact records are evidence/artifact primitives. Governance docs
+are governance primitives. Product compilers should use explicit class and role
+metadata rather than assuming a directory name gives every primitive the same
+authority.
 
 ## Governance and artifacts
 
@@ -98,8 +119,10 @@ standard package. Together they constrain how product truth is created,
 changed, approved, and handed to agents.
 
 Artifacts live under milestone artifact directories such as
-`ready/m1/artifacts/`. They support primitives and proof with samples, snippets,
-design assets, manifests, screenshots, and handoff notes.
+`ready/m1/artifacts/`. Artifact records are evidence/artifact primitives that
+support product logic and proof with samples, snippets, design assets,
+manifests, screenshots, and handoff notes. Attached payload files can use their
+native formats when they are clearly referenced by an artifact record.
 
 ## Generated views
 

@@ -25,5 +25,6 @@ artifact_types:
     directory: "manifests/"
     validation: "json_or_yaml_parse"
 rules:
-  - "Artifacts support primitives, flags, proof, or generated views; they are not product primitives."
+  - "Artifact records are evidence/artifact primitives that support product logic, flags, proof, or generated views."
+  - "Large, binary, private, or generated payload files are attachments or safe refs, not necessarily primitive records themselves."
   - "Governing docs and standard resources do not live under artifacts."

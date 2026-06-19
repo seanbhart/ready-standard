@@ -54,8 +54,11 @@ ready/
       manifests/
 ```
 
-Top-level plural Markdown files are navigation indexes. Primitive source records
-live inside the directories as `.ready.yml` files.
+Top-level plural Markdown files are navigation indexes. Product-logic primitive
+source records live inside the directories as `.ready.yml` files. Other
+primitive classes can live in their own family directories, such as `flags/`,
+`questions/`, `artifacts/`, or `governance/`, with schemas that match their
+machine contract.
 
 `ready/manifest.yaml` should include `default_stage` and a `stages` list with
 `id`, `title`, `path`, `manifest`, `kind`, `status`, `order`,
@@ -63,9 +66,10 @@ live inside the directories as `.ready.yml` files.
 buildable stages and `kind: horizon` for `end-state` or other future concept
 shelves.
 
-Project-specific governance documents belong under `ready/governance/`.
-Reusable Ready resources, task-skill packages, and templates belong in the
-Ready standard package and may be vendored only when a project needs an offline
-copy. Supporting materials belong under milestone artifact directories.
-Products may add `compiled/` or `views/`, but generated outputs must be clearly
-marked and traceable to source record hashes.
+Project-specific governance primitives belong under `ready/governance/`.
+Reusable Ready resources, task-skill packages, and templates belong in the Ready
+standard package and may be vendored only when a project needs an offline copy.
+Evidence/artifact primitives belong under milestone artifact directories, while
+large or sensitive payloads may be stored as safe refs. Products may add
+`compiled/` or `views/`, but generated outputs must be clearly marked and
+traceable to source record hashes.

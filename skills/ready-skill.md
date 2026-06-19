@@ -296,9 +296,25 @@ Next stage:
 - What should be removed from scope because it only serves later scale, polish,
   or automation?
 
-## Ready Primitive Types
+## Ready Primitive Classes
 
-Create only the primitives needed to make the next stage legible.
+Create only the primitives needed to make the next stage legible. A Ready
+primitive is a typed, addressable, reusable unit of product knowledge, decision
+state, workflow state, evidence, or governance context. Do not assume every
+primitive has the same compiler authority.
+
+Use these classes:
+
+- `product_logic`: premises, intents, standards, and services that define the
+  product behavior, constraints, or dependencies.
+- `decision_workflow`: question cards, flags, blockers, drift, proof gaps, and
+  readiness records.
+- `evidence_artifact`: resources, samples, snippets, designs, manifests,
+  screenshots, and handoff records. The artifact record is the primitive; bulky
+  or sensitive payload files are attachments or safe refs.
+- `governance`: authority, process, agent, skill, and template records.
+
+### Product-Logic Primitives
 
 Premises:
 
@@ -334,6 +350,8 @@ Services:
   proof policy, failure modes, simulation rules, observability, privacy, owner,
   and readiness gaps when relevant.
 
+### Decision/Workflow Primitives
+
 Question cards:
 
 - Capture unresolved product-shaping ambiguity.
@@ -342,6 +360,35 @@ Question cards:
   readiness.
 - When answered, apply the resulting primitive or flag edits and remove the
   active question card.
+
+Flags:
+
+- Capture attention, blockers, drift, proof gaps, seed work, and delta work.
+- Keep coding readiness out of product-logic primitive bodies.
+- A flag can be a primitive without being claimable implementation work.
+- Seed and delta flags become claimable only after status, blockers,
+  Completion Proof, and workspace policy allow it.
+
+### Evidence/Artifact Primitives
+
+Artifact records:
+
+- Capture resources, samples, snippets, designs, manifests, screenshots,
+  generated views, and handoff material.
+- Name provenance, privacy state, freshness, expected use, and linked product
+  or proof roles.
+- Store large, binary, private, generated, or licensed payloads as attached
+  files or safe refs instead of inline product truth.
+
+### Governance Primitives
+
+Governance records:
+
+- Capture project authority, product process, agent behavior, skills, and
+  templates.
+- Constrain how other primitives may be edited, approved, claimed, or handed to
+  coding agents.
+- Do not store governance in artifact directories.
 
 ## Specialist Module Loading
 
@@ -377,7 +424,10 @@ the exact primitives, artifacts, services, or flags affected.
 
 ## Writing Rules
 
-Use `.ready.yml` for primitive source records.
+Use `.ready.yml` for product-logic primitive source records. Use specialized
+Ready schemas such as `readyroom/flag/v1` and `readyroom/artifact/v1` when they
+are the clearer machine contract for decision/workflow or evidence/artifact
+primitives.
 
 Stage registry rules:
 
@@ -392,7 +442,7 @@ Stage registry rules:
 - Keep `end-state` or other horizon stages as `kind: horizon` and
   `default_candidate: false`.
 
-Required primitive fields:
+Required product-logic primitive fields:
 
 - `schema: readyroom/primitive/v1`
 - `kind: primitive`
@@ -429,9 +479,9 @@ Relationship rules:
 
 Lifecycle rules:
 
-- Do not store coding lifecycle state on primitives.
-- Use flags for discovery, seed, delta, blocker, drift, proof gap, and question
-  attention.
+- Do not store coding lifecycle state on product-logic primitives.
+- Use decision/workflow primitives for discovery, seed, delta, blocker, drift,
+  proof gap, and question attention.
 - Open seed and delta flags are not coding-ready by default.
 - A coding agent should only claim work when the relevant flag is ready,
   unblocked, claimable, and has Completion Proof.
@@ -439,14 +489,16 @@ Lifecycle rules:
 Artifact rules:
 
 - Store samples, source-shape resources, snippets, screenshots, mockups,
-  manifests, and handoff material as artifacts.
+  manifests, and handoff material as evidence/artifact primitives or as
+  payloads referenced by those primitives.
 - Store generated or gathered sample data only when privacy, license, size, and
   provenance are acceptable.
 - Store sanitized excerpts, summaries, paths, hashes, or evidence refs for
   logs/traces when proof needs them; do not commit sensitive raw logs.
 - Store references to bulky or sensitive materials, not copied source,
   transcripts, provider secrets, raw customer data, or diffs.
-- Link artifacts to primitives, services, flags, or proof by id or path.
+- Link artifacts to product-logic primitives, services, flags, or proof by id
+  or path.
 
 Credential rules:
 
@@ -498,7 +550,7 @@ A Ready tree is usable when:
 - Coding-ready work is gated by seed or delta flags, not primitive prose.
 - Claimable flags have clear scope, constraints, acceptance proof, resources,
   environment setup, and blocker policy.
-- Artifacts are referenced without storing sensitive or bulky source.
+- Evidence/artifact primitives reference sensitive or bulky source safely.
 - The user can review the tree and understand what is in, out, blocked, and
   deferred.
 

@@ -26,7 +26,7 @@ Use this module before any seed or delta flag is made claimable.
 
 A coding agent should receive:
 
-- the flag id and primitive branch;
+- the decision/workflow flag id and product-logic primitive branch;
 - intended product behavior;
 - scope and non-scope;
 - user-facing and system-facing acceptance criteria;

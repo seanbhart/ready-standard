@@ -5,16 +5,22 @@ description: "A Git-backed product tree standard for storing product truth as ty
 
 # Ready
 
-The Ready Product Tree stores product truth as a filetree. Primitives, flags,
-sample refs, artifacts, and generated-view inputs live in ordinary files so
-teams can branch, review, merge, fork, and compare product decisions with the
-same tools they use for code.
+The Ready Product Tree stores product truth as a filetree. Ready primitives are
+typed, addressable records: product logic, questions, flags, artifact records,
+governance records, and generated-view inputs live in ordinary files so teams
+can branch, review, merge, fork, and compare product decisions with the same
+tools they use for code.
 
-The standard separates durable product truth from workflow state:
+The standard separates primitive class from compiler authority:
 
-- Primitive `.ready.yml` files describe why the product exists, what it
-  promises, how it must behave, and what it depends on.
-- Flag files describe attention and work-readiness state.
+- Product-logic `.ready.yml` primitives describe why the product exists, what
+  it promises, how it must behave, and what it depends on.
+- Decision/workflow primitives describe open questions, attention, blockers,
+  and work-readiness state.
+- Evidence/artifact primitives describe samples, resources, snippets, designs,
+  manifests, and generated-view inputs. Large or sensitive payload files may
+  live beside the primitive record as attachments or safe refs.
+- Governance primitives constrain authority, process, and agent behavior.
 - Generated views compile from the tree for different audiences.
 - Local chats, scratchpads, search indexes, raw logs, and transcripts stay in
   local cache unless intentionally promoted into product records.
@@ -48,8 +54,9 @@ ready/
 ```
 
 The directory names can vary by product, but the standard requires one durable
-record per primitive, stable ids in the record, directed refs, and explicit
-claim gates before coding work can start.
+record per Ready primitive, stable ids in the record, directed refs where
+relationships matter, explicit compiler roles, and explicit claim gates before
+coding work can start.
 
 Reusable Ready skills, templates, and documentation live in this package. A
 project may vendor those resources, but a conforming product tree should not

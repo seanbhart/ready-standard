@@ -1,0 +1,21 @@
+schema: readyroom/flag/v1
+kind: flag
+id: Q-001
+type: discovery_question
+primitive_class: decision_workflow
+compiler_role: decision_needed
+title: "{{QUESTION_TITLE}}"
+milestone: "{{MILESTONE_ID}}"
+status: open
+summary: "{{WHAT_IS_UNRESOLVED_AND_WHY_IT_MATTERS}}"
+fields:
+  question: "{{QUESTION_TO_ANSWER}}"
+  why_it_matters: "{{PRODUCT_OR_HANDOFF_RISK}}"
+  current_evidence: []
+  options: []
+  owner_decision_needed: "{{WHO_NEEDS_TO_DECIDE_AND_WHAT_DECISION_IS_NEEDED}}"
+  completion_proof: []
+  claimability: not_claimable_until_intentionally_started
+refs: []
+artifacts: []
+owner_notes: []

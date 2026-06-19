@@ -1,0 +1,18 @@
+schema: readyroom/artifact/v1
+kind: artifact
+id: RE-001
+type: "{{resource|sample_data|snippet|design|manifest}}"
+primitive_class: evidence_artifact
+compiler_role: evidence
+title: "{{ARTIFACT_TITLE}}"
+milestone: "{{MILESTONE_ID}}"
+status: active
+privacy: "{{safe_ref_or_public_resource|sanitized_fixture|private_ref}}"
+retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
+summary: "{{WHAT_THIS_ARTIFACT_PROVES_OR_EXPLAINS}}"
+linked_primitives: []
+files:
+  - path: "{{READY_RELATIVE_OR_EXTERNAL_SAFE_REF}}"
+    purpose: "{{WHY_THIS_FILE_EXISTS}}"
+usage_policy: []
+owner_notes: []

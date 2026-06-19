@@ -1,17 +1,42 @@
 ---
 title: "Primitive Records"
-description: "How to write premises, intents, standards, services, and question cards."
+description: "How to write typed, addressable Ready records."
 ---
 
 # Primitive Records
 
-Primitive records are `.ready.yml` files. Humans normally read compiled views in
-the Ready Room app or docs; the raw file is optimized for parsing, validation,
-diffing, and merge review.
+Primitive records are typed, addressable Ready records. Product-logic
+primitives use `.ready.yml` files with `schema: readyroom/primitive/v1`.
+Decision/workflow primitives, evidence/artifact primitives, and governance
+primitives may use specialized schemas such as `readyroom/flag/v1` or
+`readyroom/artifact/v1` when those schemas are the honest contract for the
+record.
+
+Humans normally read compiled views in the Ready Room app or docs; the raw file
+is optimized for parsing, validation, diffing, and merge review.
+
+## Primitive classes
+
+Use primitive class to describe what kind of authority a record carries:
+
+- `product_logic`: premises, intents, standards, and services that define the
+  product behavior or constraints.
+- `decision_workflow`: question cards, flags, blockers, drift, proof gaps, and
+  other workflow or ambiguity records.
+- `evidence_artifact`: artifact records for resources, samples, snippets,
+  designs, manifests, and handoff material. The record is the primitive; large
+  or binary payload files are attachments or safe refs.
+- `governance`: authority, process, agent, skill, and template records that
+  constrain how product truth may change.
+
+Compiler role matters as much as class. A sample-data primitive may be valid
+evidence without being approved product behavior. A seed-flag primitive may be
+workflow state without being implementation permission until its claim gate
+passes.
 
 ## Common rules
 
-Every primitive record should include:
+Every product-logic primitive record should include:
 
 ```yaml
 schema: readyroom/primitive/v1
@@ -34,13 +59,15 @@ owner_notes: []
 ```
 
 Put every value an app, compiler, validator, search index, or agent must read in
-YAML. Reader-friendly Markdown, PM summaries, developer briefs, designer views,
-and customer-facing docs are compiled from these records.
+structured fields. Reader-friendly Markdown, PM summaries, developer briefs,
+designer views, and customer-facing docs are compiled from these records.
 
 ## File rules
 
-- Use one primitive per file.
-- Use the `.ready.yml` extension for primitive source records.
+- Use one primitive record per source file.
+- Use the `.ready.yml` extension for product-logic primitive source records.
+- Use specialized Ready schemas for decision/workflow, artifact, or governance
+  primitives when a narrower schema preserves a clearer contract.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
 - Store relationships in `refs`, not prose.
@@ -53,11 +80,11 @@ and customer-facing docs are compiled from these records.
 - Compact refs infer `from` as the current primitive id, so use compact refs
   only for outgoing edges from the current primitive.
 - Store bulky samples, mockups, screenshots, snippets, and generated outputs as
-  artifacts referenced by id or path.
+  artifact payloads referenced by an evidence/artifact primitive id or path.
 - Do not store local chat logs, raw provider transcripts, source diffs, secrets,
   or unreviewed scratch content in primitive records.
-- Do not store coding lifecycle state on primitives. Seed and delta flags gate
-  coding claims.
+- Do not store coding lifecycle state on product-logic primitives. Seed and
+  delta flags are decision/workflow primitives that gate coding claims.
 
 ## Premises
 
@@ -88,8 +115,25 @@ product. A service should name readiness by environment, access expectations,
 proof policy, failure modes, simulation rules, observability, privacy, owner,
 and readiness gaps.
 
-## Question cards
+## Question Cards
 
-Question cards hold product-shaping ambiguity. When answered, apply the resulting
-primitive edits or flags and remove the active question card. History belongs in
-Git, events, assessments, or implementation refs.
+Question cards are decision/workflow primitives. They hold product-shaping
+ambiguity. When answered, apply the resulting primitive edits or flags and
+remove the active question card. History belongs in Git, events, assessments,
+or implementation refs.
+
+## Flags
+
+Flags are decision/workflow primitives. They mark attention, blockers, drift,
+proof gaps, and coding-readiness state without putting lifecycle state into
+product-logic primitive bodies. A flag can be a primitive without being a coding
+ticket; claimability still depends on flag type, status, blockers, Completion
+Proof, and workspace policy.
+
+## Artifact Records
+
+Artifact records are evidence/artifact primitives. They describe resources,
+samples, snippets, designs, manifests, screenshots, generated views, or handoff
+material with stable ids, provenance, privacy state, and usage roles. The
+record is primitive source. The attached file may be JSON, Markdown, HTML,
+image, binary, external URL, or safe secret-location reference.

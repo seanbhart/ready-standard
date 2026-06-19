@@ -5,8 +5,9 @@ description: "Where project governance, reusable Ready resources, templates, and
 
 # Governance And Standard Resources
 
-Governance documents and Ready standard resources are first-class product-tree
-records. They are not artifacts.
+Governance documents and Ready standard resources are governance primitives:
+first-class product-tree records that constrain authority, process, and agent
+behavior. They are not evidence/artifact primitives.
 
 Use `ready/governance/` for project-specific files that constrain how product
 work is allowed to happen for that project:
@@ -24,8 +25,8 @@ Use the Ready standard package for project-agnostic resources:
 - Manifest templates.
 - Primitive templates.
 
-Use `ready/**/artifacts/` for supporting material attached to primitives, flags,
-proof, generated views, or handoff:
+Use `ready/**/artifacts/` for evidence/artifact primitives and attached payload
+material used by product logic, flags, proof, generated views, or handoff:
 
 - Sample data.
 - Code snippets.
@@ -43,8 +44,9 @@ in governance.
 If a file defines reusable Ready procedure or a starter template for other
 projects, it belongs in the standard package, not in a project artifact tree.
 
-If a file helps explain, test, prove, or illustrate a primitive, it belongs in
-artifacts.
+If a file helps explain, test, prove, or illustrate product logic, it belongs in
+artifacts as an evidence/artifact primitive record or as a payload referenced by
+one.
 
 ## Runtime use
 

@@ -9,7 +9,8 @@ These guidelines govern product-agent behavior for this project.
 1. `ready/governance/product-process.md`
 2. `ready/governance/product-orchestrator-charter.md`
 3. `ready/governance/workspace-authority-and-access.md`
-4. Milestone primitives, services, flags, and artifacts.
+4. Milestone product-logic primitives, decision/workflow primitives, and
+   evidence/artifact primitives.
 5. User chat and local cache as evidence only.
 
 ## Operating Rules
@@ -17,7 +18,7 @@ These guidelines govern product-agent behavior for this project.
 - Treat docs, code, chat, mockups, generated samples, and model output as
   evidence, not automatic product truth.
 - Preserve uncertainty as question cards, flags, low confidence, or blocked
-  service readiness.
+  service readiness. Questions and flags are decision/workflow primitives.
 - Do not claim implementation is ready while required samples, designs,
   accounts, credentials, environments, or Completion Proof are missing.
 - Never store secrets, raw private data, or sensitive logs in the Ready tree.

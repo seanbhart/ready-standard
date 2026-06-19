@@ -2,6 +2,8 @@ schema: readyroom/primitive/v1
 kind: primitive
 id: SV-001
 type: service
+primitive_class: product_logic
+compiler_role: dependency
 title: "{{SERVICE_TITLE}}"
 milestone: "{{MILESTONE_ID}}"
 status: draft

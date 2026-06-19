@@ -1,0 +1,19 @@
+schema: readyroom/flag/v1
+kind: flag
+id: F-001
+type: "{{discovery|seed|delta|blocker|drift|proof_gap|coverage_gap|question}}"
+primitive_class: decision_workflow
+compiler_role: workflow_state
+title: "{{FLAG_TITLE}}"
+milestone: "{{MILESTONE_ID}}"
+status: open
+summary: "{{WHY_THIS_NEEDS_ATTENTION}}"
+fields:
+  objective: "{{WHAT_NEEDS_TO_BE_RESOLVED_OR_PROVEN}}"
+  blocked_by: []
+  completion_proof: []
+  claimability: "{{not_claimable_until_intentionally_started|blocked_by_listed_dependencies|claimable_when_ready}}"
+  blocker_policy: "{{WHEN_CODING_AGENTS_MAY_OR_MAY_NOT_CLAIM_THIS_WORK}}"
+refs: []
+artifacts: []
+owner_notes: []
