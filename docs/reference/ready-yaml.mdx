@@ -65,30 +65,23 @@ Older v1 records can infer `primitive_class: product_logic` from
 ## Root stage registry
 
 The root `ready/manifest.yaml` controls stage grouping and default selection.
-Use `stages`, not directory sort order, to describe stage meaning:
+Use `stages`, not directory sort order, to describe stage meaning. Stage ids
+may be `m1`, `m2`, `alpha`, `client-pilot`, or another project-specific id;
+the examples currently use `m1`.
 
 ```yaml
 schema: readyroom/product-tree-root/v1
 product: example
 source_root: ready
-default_stage: m2
+default_stage: m1
 stages:
   - id: m1
     title: M1
     path: ready/m1
     manifest: ready/m1/manifest.yaml
     kind: normal
-    status: complete
-    order: 10
-    default_candidate: true
-    coding_claims_enabled: false
-  - id: m2
-    title: M2
-    path: ready/m2
-    manifest: ready/m2/manifest.yaml
-    kind: normal
     status: active
-    order: 20
+    order: 10
     default_candidate: true
     coding_claims_enabled: false
   - id: end-state
@@ -107,27 +100,40 @@ by `order`, then the latest normal stage, and only then non-normal stages.
 
 ## Ref roles
 
-Approved primitive ref roles:
+A ref may connect any primitive type to any other primitive type when the role
+semantics are true. Validators should validate role names and target ids, not a
+fixed product-logic type-pair matrix.
 
-- `serves`
-- `contains_premise`
-- `requires`
-- `governed_by`
-- `questions`
+Approved primitive ref roles and semantics:
 
-Store one directed edge. Views can derive inverse labels.
+- `serves`: source supports, enables, addresses, or is intentionally in service
+  of target. Services and standards may use `serves` to show they serve any
+  primitive type.
+- `contains_premise`: source owns a subordinate premise that should appear
+  under the source instead of as a root premise.
+- `requires`: source cannot be satisfied, proven, or used without target.
+- `governed_by`: source is constrained by target standard or governance
+  primitive.
+- `questions`: source raises an unresolved question about target.
 
-Canonical primitive-tree edges:
+Store one directed edge for each relationship. This reduces merge conflicts and
+prevents source and inverse refs from drifting; views can derive inverse labels.
+
+Common product-tree edges:
 
 - `intent --serves--> premise`: the intent addresses a root product premise.
 - `intent --contains_premise--> premise`: the intent owns a subordinate premise
   that should appear under that intent instead of as a root premise.
 - `intent --requires--> service`: the intent depends on a service.
 - `intent --governed_by--> standard`: the intent must obey a standard.
+- `service --serves--> <any primitive>`: the service exists to support that
+  primitive.
+- `standard --serves--> <any primitive>`: the standard exists to support that
+  primitive.
 
-Do not store inverse edges such as `premise --serves--> intent`,
-`service --serves--> intent`, or `standard --serves--> intent` for primary
-tree placement. Reader views derive inverse labels automatically.
+Do not store an inverse ref for the same assertion. For example, choose either
+`intent --requires--> service` or `service --serves--> intent` for the
+relationship you mean; reader views derive inverse labels automatically.
 
 Compact refs infer `from` as the current primitive id:
 
@@ -140,6 +146,37 @@ refs:
 Use compact refs only for outgoing edges from the current primitive. If a record
 stores an edge whose source is another primitive, include explicit `from` and
 `to` so the canonical direction remains unambiguous.
+
+## Flag metadata
+
+Flag records use `schema: readyroom/flag/v1` and keep the claim gate at the top
+level:
+
+```yaml
+schema: readyroom/flag/v1
+kind: flag
+id: F-001
+type: seed
+primitive_class: decision_workflow
+compiler_role: workflow_state
+title: Build the first usable onboarding path
+milestone: m1
+status: ready
+claimable: true
+blocked_by: []
+completion_proof:
+  - User can complete onboarding in a clean local run.
+  - The documented verification command passes and the evidence artifact is linked.
+summary: Why this implementation work is ready.
+fields:
+  objective: What should be resolved or proven.
+refs: []
+artifacts: []
+owner_notes: []
+```
+
+`completion_proof` is the Definition of Done for the flag. It must be concrete
+proof content, not a one-word status such as `ready` or `done`.
 
 ## Specialized Primitive Schemas
 

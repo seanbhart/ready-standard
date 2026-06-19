@@ -58,6 +58,8 @@ record per Ready primitive, stable ids in the record, directed refs where
 relationships matter, explicit compiler roles, and explicit claim gates before
 coding work can start.
 
-Reusable Ready skills, templates, and documentation live in this package. A
-project may vendor those resources, but a conforming product tree should not
-need to commit a copy of the standard in order to be parsed.
+Reusable Ready skills and templates live in the portable standard package. A
+project that expects agents to edit the tree should vendor that package at
+`ready/standard/` so agent behavior is pinned and reviewable. The `docs/`
+directory in this source repo is Mintlify documentation source; product repos
+do not vendor it.

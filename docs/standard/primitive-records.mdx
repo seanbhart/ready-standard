@@ -71,12 +71,21 @@ designer views, and customer-facing docs are compiled from these records.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
 - Store relationships in `refs`, not prose.
-- Store canonical primitive-tree relationships in source direction:
-  `intent --serves--> premise`, `intent --contains_premise--> premise`,
-  `intent --requires--> service`, and `intent --governed_by--> standard`.
-- Do not store inverse tree edges such as `premise --serves--> intent`,
-  `service --serves--> intent`, or `standard --serves--> intent`; compiled views
-  derive those inverse labels.
+- Any primitive type may relate to any other primitive type when the ref role
+  semantics are true.
+- Store one directed edge for each relationship so source and inverse refs do
+  not drift during concurrent edits; compiled views derive inverse labels.
+- Use approved ref roles with clear semantics: `serves` means source supports or
+  enables target; `contains_premise` means source owns a subordinate premise;
+  `requires` means source depends on target; `governed_by` means target
+  constrains source; `questions` means source raises unresolved ambiguity about
+  target.
+- Product-tree examples include `intent --serves--> premise`,
+  `intent --contains_premise--> premise`, `intent --requires--> service`, and
+  `intent --governed_by--> standard`. Services and standards may also use
+  `serves` when they serve any primitive type.
+- Do not store an inverse ref for the same assertion. Choose the directed edge
+  that states the fact you mean.
 - Compact refs infer `from` as the current primitive id, so use compact refs
   only for outgoing edges from the current primitive.
 - Store bulky samples, mockups, screenshots, snippets, and generated outputs as
@@ -128,7 +137,8 @@ Flags are decision/workflow primitives. They mark attention, blockers, drift,
 proof gaps, and coding-readiness state without putting lifecycle state into
 product-logic primitive bodies. A flag can be a primitive without being a coding
 ticket; claimability still depends on flag type, status, blockers, Completion
-Proof, and workspace policy.
+Proof, and workspace policy. Flag records keep `type`, `claimable`, and
+`completion_proof` at the top level.
 
 ## Artifact Records
 

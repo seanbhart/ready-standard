@@ -26,11 +26,13 @@ branches.
 A coding agent can claim work only when all of these are true:
 
 ```yaml
-flag_type: "seed" # or "delta"
-status: "ready"
+type: seed # or delta
+status: ready
 blocked_by: []
 claimable: true
-completion_proof_state: "ready"
+completion_proof:
+  - "User can complete the target workflow in a clean local run."
+  - "The relevant verification command passes and the evidence artifact is linked."
 ```
 
 The workspace Coding work switch must also be enabled.
@@ -47,10 +49,12 @@ A seed or delta flag may be `ready` while still blocked, but it must be
 non-claimable:
 
 ```yaml
-status: "ready"
+status: ready
 claimable: false
 blocked_by:
-  - "SV-003"
+  - SV-003
+completion_proof:
+  - "The target workflow is implemented and verified with the linked service stub."
 ```
 
 This is useful when the product branch and Completion Proof are well specified,
@@ -59,5 +63,8 @@ implementation.
 
 ## Completion Proof
 
-Ready seed and delta flags must carry Completion Proof. Completion Proof says
-what evidence removes the flag; it does not prescribe file edits.
+Ready seed and delta flags must carry top-level `completion_proof`. Completion
+Proof is the Definition of Done for the flag: the observable outcomes and
+evidence that remove the flag. It must be real DoD content, not a one-word
+status such as `ready`, `done`, or `complete`, and it does not prescribe file
+edits.

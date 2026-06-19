@@ -44,7 +44,8 @@ external sources can remain attached payloads or safe refs.
 
 Seed and delta flags become claimable only when scope, non-scope, required
 standards, services, artifacts, setup, samples, expected outputs, Completion
-Proof, and blocker policy are clear.
+Proof, and blocker policy are clear. Completion Proof is the flag's Definition
+of Done and must name observable evidence, not a one-word status.
 
 ## Review
 

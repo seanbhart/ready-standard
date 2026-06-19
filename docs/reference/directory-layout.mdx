@@ -13,6 +13,10 @@ default selection from directory names.
 ready/
   README.md
   manifest.yaml
+  standard/
+    manifest.yaml
+    skills/
+    templates/
   governance/
     agent-guidelines.md
     product-orchestrator-charter.md
@@ -74,7 +78,11 @@ shelves.
 
 Project-specific governance primitives belong under `ready/governance/`.
 Reusable Ready resources, task-skill packages, and templates belong in the Ready
-standard package and may be vendored only when a project needs an offline copy.
+standard package. Projects that expect agents to edit the tree should vendor the
+portable package at `ready/standard/` and point `ready/manifest.yaml` at it.
+That vendored package contains `README.md`, `manifest.yaml`, `skills/`, and
+`templates/`; it excludes Mintlify `docs/` and Git metadata.
+
 Evidence/artifact primitives belong under milestone artifact directories, while
 large or sensitive payloads may be stored as safe refs. Products may add
 `compiled/` or `views/`, but generated outputs must be clearly marked and

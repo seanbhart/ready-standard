@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.2
+version: 0.3.5
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -29,11 +29,13 @@ tree needs focused work:
 - [modules/perspective-review.md](modules/perspective-review.md) -
   subagent review from psychological, physical, logical, evidence, design, and
   access perspectives.
+- [modules/standard-update.md](modules/standard-update.md) -
+  sync a newer Ready standard package into a product repo and migrate the tree.
 
-The portable package manifest is [manifest.yaml](manifest.yaml).
-Use it when passing the Ready Skill set to agents in another project: copy the
-entrypoint, module files, and package README, then record the copied versions in
-that project's standard-resource manifest.
+The portable package manifest is [manifest.yaml](manifest.yaml). Product repos
+that need deterministic agent edits should keep the portable standard package at
+`ready/standard/`. Normal product agents read that local package. Pulling from
+the source standard repo happens only for explicit standard-update work.
 
 The Ready Skill does not prescribe internal code files, functions, components,
 migrations, or implementation strategy unless those choices are product
@@ -367,7 +369,11 @@ Flags:
 - Keep coding readiness out of product-logic primitive bodies.
 - A flag can be a primitive without being claimable implementation work.
 - Seed and delta flags become claimable only after status, blockers,
-  Completion Proof, and workspace policy allow it.
+  top-level `claimable: true`, top-level Completion Proof, and workspace policy
+  allow it.
+- Completion Proof is the flag's Definition of Done. It must name observable
+  evidence, not a one-word status. Keep it on ready seed or delta flags, not on
+  product-logic intent bodies.
 
 ### Evidence/Artifact Primitives
 
@@ -404,6 +410,8 @@ Load modules based on gaps, not ceremony:
 - Load coding handoff readiness before making seed or delta flags claimable.
 - Load perspective review before implementation handoff, after major
   discovery changes, or when confidence is low.
+- Load standard update when the user asks to update, upgrade, or migrate a
+  product Ready tree to the latest Ready standard.
 
 For substantial Ready tree creation, use subagents when available. Assign
 distinct perspectives instead of duplicating the same review:
@@ -459,17 +467,25 @@ Required product-logic primitive fields:
 Relationship rules:
 
 - Store relationships in `refs`.
-- Store one directed edge.
+- Any primitive type may relate to any other primitive type when the ref role
+  semantics are true.
+- Store one directed edge for each relationship. This reduces conflicts and
+  prevents source and inverse refs from drifting; views derive inverse labels.
 - Use approved roles: `serves`, `contains_premise`, `requires`, `governed_by`,
   and `questions`.
-- Store primary primitive-tree relationships in canonical source direction:
-  - `intent --serves--> premise`
-  - `intent --contains_premise--> premise`
-  - `intent --requires--> service`
-  - `intent --governed_by--> standard`
-- Do not store inverse tree edges such as `premise --serves--> intent`,
-  `service --serves--> intent`, or `standard --serves--> intent`. Views derive
-  inverse labels from the one canonical edge.
+- Role semantics:
+  - `serves`: source supports, enables, addresses, or is intentionally in
+    service of target. Services and standards may use `serves` to show they
+    serve any primitive type.
+  - `contains_premise`: source owns a subordinate premise.
+  - `requires`: source cannot be satisfied, proven, or used without target.
+  - `governed_by`: source is constrained by target standard or governance.
+  - `questions`: source raises unresolved ambiguity about target.
+- Common product-tree examples include `intent --serves--> premise`,
+  `intent --contains_premise--> premise`, `intent --requires--> service`, and
+  `intent --governed_by--> standard`.
+- Do not store an inverse ref for the same assertion. Choose the directed edge
+  that states the fact you mean.
 - Compact refs infer `from` as the current primitive id. Use compact refs only
   when the current primitive is the edge source; otherwise write explicit `from`
   and `to`.
@@ -484,7 +500,7 @@ Lifecycle rules:
   proof gap, and question attention.
 - Open seed and delta flags are not coding-ready by default.
 - A coding agent should only claim work when the relevant flag is ready,
-  unblocked, claimable, and has Completion Proof.
+  unblocked, claimable, and has top-level Completion Proof.
 
 Artifact rules:
 

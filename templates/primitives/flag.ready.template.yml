@@ -7,12 +7,13 @@ compiler_role: workflow_state
 title: "{{FLAG_TITLE}}"
 milestone: "{{MILESTONE_ID}}"
 status: open
+claimable: false
+blocked_by: []
+completion_proof:
+  - "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
 summary: "{{WHY_THIS_NEEDS_ATTENTION}}"
 fields:
   objective: "{{WHAT_NEEDS_TO_BE_RESOLVED_OR_PROVEN}}"
-  blocked_by: []
-  completion_proof: []
-  claimability: "{{not_claimable_until_intentionally_started|blocked_by_listed_dependencies|claimable_when_ready}}"
   blocker_policy: "{{WHEN_CODING_AGENTS_MAY_OR_MAY_NOT_CLAIM_THIS_WORK}}"
 refs: []
 artifacts: []

@@ -20,7 +20,7 @@ Use this module before any seed or delta flag is made claimable.
 - Keep non-blocked seed flags non-ready until product leadership intentionally
   starts implementation.
 - Allow blocked flags to be ready only when `blocked_by` prevents coding claims.
-- Require Completion Proof before In review and closure.
+- Require concrete top-level Completion Proof before review and closure.
 
 ## Work-Package Checklist
 
@@ -49,6 +49,8 @@ A coding agent should receive:
   service, authority, and proof constraints.
 - Do not make a flag claimable because the prose sounds clear while access,
   samples, designs, or proof are missing.
+- Do not treat one-word statuses such as `ready`, `done`, or `complete` as
+  Completion Proof.
 - Do not close flags based on coding-agent self-report.
 
 ## Completion Check

@@ -14,6 +14,8 @@ project-agnostic standard resources, not a project's authority policy.
   and work-package readiness for coding agents.
 - [modules/perspective-review.md](modules/perspective-review.md) - psychological, physical,
   logical, evidence, design, and access challenge review.
+- [modules/standard-update.md](modules/standard-update.md) - sync the latest
+  Ready standard package into a product tree and migrate the tree.
 
 The Ready Skill is the entrypoint. Load only the modules that match the current
 gap, and record loaded module ids and hashes in the agent context manifest.
@@ -27,6 +29,7 @@ the package without resolving working-directory assumptions. Do not include
 local cache, raw transcripts, private samples, secrets, or project-specific
 artifacts.
 
-The receiving project should register the copied files in its own standard
-resource manifest and reference them from project governance when needed. Treat
-the copied package as source text that can be reviewed, versioned, and modified.
+The receiving project should keep the copied package at `ready/standard/` and
+point `ready/manifest.yaml` at that local package. Treat the copied package as
+source text that can be reviewed and versioned. Agents should update it only
+when asked to migrate the project to a newer Ready standard version.

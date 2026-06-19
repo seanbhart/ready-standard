@@ -25,6 +25,11 @@ Use the Ready standard package for project-agnostic resources:
 - Manifest templates.
 - Primitive templates.
 
+Product repos that expect agents to edit a Ready tree should keep a pinned copy
+of those resources at `ready/standard/`. That local copy is the runtime standard
+package for agents. The source repo's `docs/` directory is Mintlify
+documentation source and is not part of the product-local package.
+
 Use `ready/**/artifacts/` for evidence/artifact primitives and attached payload
 material used by product logic, flags, proof, generated views, or handoff:
 
