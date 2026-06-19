@@ -1,5 +1,5 @@
 schema: "readyroom/standard-resources/v1"
-version: "0.3.6"
+version: "0.3.8"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:

@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.6
+version: 0.3.8
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -472,6 +472,24 @@ evidence, Completion Proof, or agent instructions. Ignore them for satisfaction
 and enforcement; promote anything authoritative into typed `fields`, `refs`,
 `artifacts`, or flags.
 
+Premise evidence confidence is derived from linked evidence artifacts, not
+stored on the premise. Do not write `fields.evidence_confidence` on premise
+records. Every evidence artifact must carry `fields.confidence`; until weighted
+evidence is defined, compiled premise confidence is the equal-weight average of
+linked evidence artifact confidence values.
+
+Artifact records use `type` for the specific artifact subtype, not only a broad
+storage bucket. Common artifact types include `customer_statement`,
+`source_document`, `reference_resource`, `access_reference`, `review_protocol`,
+`sample_data`, `code_snippet`, `design_artifact`, and `manifest`. Subtype data
+belongs under `fields`; do not duplicate it in sibling blocks with local-only
+ids.
+
+Product and workflow records reference supporting artifacts through their own
+`artifacts` lists. Artifact records must not keep reverse product/workflow links
+such as `linked_primitives`; artifact records may relate to other artifacts
+when one artifact depends on, derives from, includes, or carries the other.
+
 Relationship rules:
 
 - Store relationships in `refs`.
@@ -479,6 +497,23 @@ Relationship rules:
   semantics are true.
 - Store one directed edge for each relationship. This reduces conflicts and
   prevents source and inverse refs from drifting; views derive inverse labels.
+- Store the edge on the record whose readiness, completeness, implementation,
+  or interpretation depends on the relationship. This ownership rule is about
+  authoring authority, not visual tree nesting.
+- Ownership tie-breakers:
+  - Flags always own their relationships, including relationships to intents
+    and services.
+  - Artifacts never own relationships to product/workflow primitives. Product
+    and workflow records point to artifacts through `artifacts`. Artifact
+    records may own artifact-to-artifact relationships when one artifact
+    depends on, derives from, includes, or carries another artifact.
+  - If an intent participates in a non-flag relationship, store the
+    relationship on the intent.
+  - If no intent participates but a service does, store the relationship on the
+    service.
+  - Same-type relationships follow dependency direction: the record that
+    depends on, derives from, contains, blocks, questions, or requires the
+    other owns the edge.
 - Use approved roles: `serves`, `contains_premise`, `requires`, `governed_by`,
   and `questions`.
 - Role semantics:
@@ -494,6 +529,9 @@ Relationship rules:
   `intent --governed_by--> standard`.
 - Do not store an inverse ref for the same assertion. Choose the directed edge
   that states the fact you mean.
+- Reader tree nesting is a projection of the graph, not the storage direction.
+  For example, a premise can visually parent an intent even though the stored
+  edge is `intent --serves--> premise`.
 - Compact refs infer `from` as the current primitive id. Use compact refs only
   when the current primitive is the edge source; otherwise write explicit `from`
   and `to`.

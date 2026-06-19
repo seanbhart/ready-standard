@@ -59,6 +59,11 @@ to the explicitly requested standard package or docs work.
      refs.
    - Any primitive type may relate to any other primitive type when the ref role
      semantics are true.
+   - Store each edge on the record whose readiness, completeness,
+     implementation, or interpretation depends on the relationship. Flags own
+     all of their relationships; artifacts only own artifact-to-artifact
+     relationships; intents own non-flag relationships that involve intents;
+     services own non-intent/non-flag relationships that involve services.
    - Approved roles are `serves`, `contains_premise`, `requires`,
      `governed_by`, and `questions`.
 8. Preserve project-specific governance and product truth. Do not rewrite
@@ -68,6 +73,8 @@ to the explicitly requested standard package or docs work.
    - every record has a unique id;
    - every directed ref points to an existing id;
    - no duplicate directed edges;
+   - no inverse duplicate edges and no edges stored on a non-owner record under
+     the relationship ownership rules;
    - every flag has top-level `type`, `claimable`, and non-empty concrete
      `completion_proof`;
    - the vendored package differs from the source package only by intentionally
