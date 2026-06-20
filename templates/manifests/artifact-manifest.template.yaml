@@ -1,6 +1,25 @@
 schema: "readyroom/artifact-tree/v1"
 artifact_root: "ready/{{MILESTONE_ID}}/artifacts"
 artifact_index: "ready/{{MILESTONE_ID}}/artifacts.md"
+descriptor_required_top_level:
+  - schema
+  - kind
+  - id
+  - type
+  - title
+  - milestone
+  - status
+descriptor_required_fields:
+  - purpose
+  - content
+  - intended_use
+  - format
+evidence_or_proof_required_fields:
+  - confidence
+  - provenance
+file_backed_required_file_fields:
+  - path
+  - role
 artifact_types:
   customer_statement:
     id_prefix: "AR"
@@ -9,6 +28,11 @@ artifact_types:
     privacy: "user_provided_customer_statement"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - statement
       - speaker_type
       - supports
@@ -19,6 +43,11 @@ artifact_types:
     privacy: "safe_ref_or_public_resource"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - source_kind
   reference_resource:
     id_prefix: "AR"
@@ -27,7 +56,11 @@ artifact_types:
     privacy: "safe_ref_or_public_resource"
     required_fields:
       - confidence
+      - provenance
       - purpose
+      - content
+      - intended_use
+      - format
   access_reference:
     id_prefix: "AR"
     directory: "resources/"
@@ -35,6 +68,11 @@ artifact_types:
     privacy: "safe_ref_or_private_ref"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - access_scope
   review_protocol:
     id_prefix: "AR"
@@ -43,6 +81,11 @@ artifact_types:
     privacy: "safe_ref_or_public_resource"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - protocol_scope
   proof_corpus:
     id_prefix: "AP"
@@ -51,6 +94,11 @@ artifact_types:
     privacy: "sanitized_fixture_or_explicit_user_stub"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - proof_role
       - authority_level
       - dataset_contract
@@ -63,6 +111,11 @@ artifact_types:
     validation: "markdown_or_text"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - snippet_scope
   design_artifact:
     id_prefix: "AD"
@@ -70,6 +123,11 @@ artifact_types:
     validation: "external_or_binary_ref"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - design_scope
   manifest:
     id_prefix: "AM"
@@ -77,8 +135,16 @@ artifact_types:
     validation: "json_or_yaml_parse"
     required_fields:
       - confidence
+      - provenance
+      - purpose
+      - content
+      - intended_use
+      - format
       - manifest_scope
 rules:
-  - "Artifact records are evidence/artifact primitives that support product logic, flags, proof, or generated views."
-  - "Large, binary, private, or generated payload files are attachments or safe refs, not necessarily primitive records themselves."
+  - "Artifact descriptors are evidence/artifact primitives that support product logic, flags, proof, or generated views."
+  - "One descriptor records one artifact purpose; do not bundle files with different purposes into the same descriptor."
+  - "A descriptor may list multiple files only when those files are interchangeable versions or representations of the same purpose."
+  - "Every referenced non-.ready payload file should be represented by a descriptor."
+  - "Large, binary, private, or generated payload files are attachments or safe refs, not primitive records themselves."
   - "Governing docs and standard resources do not live under artifacts."

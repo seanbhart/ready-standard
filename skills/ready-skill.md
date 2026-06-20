@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.14
+version: 0.3.16
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -314,7 +314,7 @@ Use these classes:
   interrupts.
 - `evidence_artifact`: resources, samples, snippets, designs, manifests,
   screenshots, and handoff records. These use A-family ids because they are
-  durable supporting content. The artifact record is the primitive; bulky or
+  durable supporting content. The artifact descriptor is the primitive; bulky or
   sensitive payload files are attachments or safe refs.
 - `governance`: authority, process, agent, skill, and template records.
 
@@ -353,6 +353,9 @@ Standards:
 - Make standards concrete enough to validate.
 - Avoid vague standards like "make it clean" or "good UX" unless the rule says
   what that means.
+- Do not put deferred or future-only rules on active standards. Capture that
+  work as a flag in a later or horizon milestone, with the future proof gate on
+  the flag.
 
 Services:
 
@@ -388,7 +391,7 @@ Flags:
 
 ### Evidence/Artifact Primitives
 
-Artifact records:
+Artifact descriptors:
 
 - Capture resources, samples, snippets, designs, manifests, screenshots,
   generated views, and handoff material.
@@ -489,12 +492,23 @@ records. Every evidence artifact must carry `fields.confidence`; until weighted
 evidence is defined, compiled premise confidence is the equal-weight average of
 linked evidence artifact confidence values.
 
-Artifact records use `type` for the specific artifact subtype, not only a broad
+Artifact descriptors use `type` for the specific artifact subtype, not only a broad
 storage bucket. Common artifact types include `customer_statement`,
 `source_document`, `reference_resource`, `access_reference`, `review_protocol`,
 `proof_corpus`, `code_snippet`, `design_artifact`, and `manifest`. Subtype data
 belongs under `fields`; do not duplicate it in sibling blocks with local-only
 ids.
+
+Every artifact descriptor must carry `fields.purpose`, `fields.content`,
+`fields.intended_use`, and `fields.format`. Evidence and proof descriptors must
+also carry `fields.confidence` and `fields.provenance`. File-backed descriptors
+must give every file a `path` and `role`.
+
+One descriptor records one artifact purpose. A descriptor may list multiple
+files only when those files are interchangeable versions or representations of
+that same purpose. Files with different purposes, such as
+buyer inputs, seller inputs, scoring config, expected scoring outputs, and
+diagnostics, need separate descriptors.
 
 Use `proof_corpus` for replayable inputs, configs, expected outputs, diagnostic
 outputs, and negative cases used to prove or regress product behavior. Proof
@@ -504,58 +518,32 @@ limitations under `fields`. Do not use proof corpus success as a stronger claim
 than its authority level supports.
 
 Product and workflow records reference supporting artifacts through their own
-`artifacts` lists. Artifact records must not keep reverse product/workflow links
-such as `linked_primitives`; artifact records may relate to other artifacts
+`artifacts` lists. Artifact descriptors must not keep reverse product/workflow links
+such as `linked_primitives`; artifact descriptors may relate to other artifacts
 when one artifact depends on, derives from, includes, or carries the other.
 
 Relationship rules:
 
 - Store relationships in `refs`.
-- Any primitive type may relate to any other primitive type when the ref role
-  semantics are true.
-- Store one directed edge for each relationship. This reduces conflicts and
-  prevents source and inverse refs from drifting; views derive inverse labels.
-- Store the edge on the record whose readiness, completeness, implementation,
-  or interpretation depends on the relationship. This ownership rule is about
-  authoring authority, not visual tree nesting.
-- Ownership tie-breakers:
-  - Flags always own their relationships, including relationships to intents
-    and services.
-  - Artifacts never own relationships to product/workflow primitives. Product
-    and workflow records point to artifacts through `artifacts`. Artifact
-    records may own artifact-to-artifact relationships when one artifact
-    depends on, derives from, includes, or carries another artifact.
-  - If an intent participates in a non-flag relationship, store the
-    relationship on the intent.
-  - If no intent participates but a service does, store the relationship on the
-    service.
-  - Same-type relationships follow dependency direction: the record that
-    depends on, derives from, contains, blocks, questions, or requires the
-    other owns the edge.
-- Use approved roles: `serves`, `contains_premise`, `requires`, `governed_by`,
-  and `questions`.
-- Role semantics:
-  - `serves`: source supports, enables, addresses, or is intentionally in
-    service of target. Services and standards may use `serves` to show they
-    serve any primitive type.
-  - `contains_premise`: source owns a subordinate premise.
-  - `requires`: source cannot be satisfied, proven, or used without target.
-  - `governed_by`: source is constrained by target standard or governance.
-  - `questions`: source raises unresolved ambiguity about target.
-- Common product-tree examples include `intent --serves--> premise`,
-  `intent --contains_premise--> premise`, `intent --requires--> service`, and
-  `intent --governed_by--> standard`.
-- Do not store an inverse ref for the same assertion. Choose the directed edge
-  that states the fact you mean.
-- Reader tree nesting is a projection of the graph, not the storage direction.
-  For example, a premise can visually parent an intent even though the stored
-  edge is `intent --serves--> premise`.
-- Compact refs infer `from` as the current primitive id. Use compact refs only
-  when the current primitive is the edge source; otherwise write explicit `from`
-  and `to`.
-- Required services and standards belong in directed `refs`, not duplicated
+- Store structural roles only: `peer`, `parent`, and `child`.
+- In compact refs, the role describes the target primitive's position relative
+  to the current primitive. `parent` means the target parents the current
+  record; `child` means the target is a child of the current record; `peer`
+  means the target is lateral.
+- If an app needs numeric relationship codes, use `0 = peer`, `1 = parent`,
+  and `2 = child`. Source YAML should use the strings.
+- Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
+  `contains_premise`, or `questions` as ref roles.
+- Derive reader verbs from source type, target type, and structural role. For
+  example, `intent --parent--> premise` can render as `serves`,
+  `intent --child--> service` can render as `requires`, and
+  `intent --child--> standard` can render as `governed by`.
+- Do not store an inverse ref for the same assertion. Choose one structural edge
+  and let views invert parent/child labels when needed.
+- Artifact descriptors only own artifact-to-artifact relationships. Product and
+  workflow records point to artifacts through `artifacts`.
+- Required services and standards belong in structural `refs`, not duplicated
   under intent `fields`.
-- Views can derive inverse labels.
 
 Lifecycle rules:
 
@@ -569,16 +557,16 @@ Lifecycle rules:
 Artifact rules:
 
 - Store proof corpora, source-shape resources, snippets, screenshots, mockups,
-  manifests, and handoff material as evidence/artifact primitives or as
-  payloads referenced by those primitives.
+  manifests, and handoff material as artifact descriptors or as payloads
+  referenced by those descriptors.
 - Store generated or gathered proof data only when privacy, license, size, and
   provenance are acceptable, and state the proof role and authority level.
 - Store sanitized excerpts, summaries, paths, hashes, or evidence refs for
   logs/traces when proof needs them; do not commit sensitive raw logs.
 - Store references to bulky or sensitive materials, not copied source,
   transcripts, provider secrets, raw customer data, or diffs.
-- Link artifacts to product-logic primitives, services, flags, or proof by id
-  or path.
+- Link artifacts to product-logic primitives, services, flags, or proof by
+  descriptor id. Use raw paths only for direct source/file access.
 
 Credential rules:
 
@@ -631,7 +619,7 @@ A Ready tree is usable when:
 - Coding-ready work is gated by seed or change flags, not primitive prose.
 - Claimable flags have clear scope, constraints, acceptance proof, resources,
   environment setup, and blocker policy.
-- Evidence/artifact primitives reference sensitive or bulky source safely.
+- Artifact descriptors reference sensitive or bulky source safely.
 - The user can review the tree and understand what is in, out, blocked, and
   deferred.
 

@@ -10,7 +10,7 @@ Ready-specific extension so tools can distinguish source records from navigation
 Markdown, generated docs, manifests, and generic payload files.
 
 Ready has a broader primitive model than this one schema. Flags, Decision flags,
-artifact records, and governance records are also Ready primitives when they are
+artifact descriptors, and governance records are also Ready primitives when they are
 typed, addressable, reusable records. They may use specialized schemas such as
 `readyroom/flag/v1` or `readyroom/artifact/v1` when those schemas carry a more
 precise machine contract.
@@ -65,7 +65,7 @@ fields:
   required_surfaces: User, operator, or internal surfaces required.
   operating_envelope: Quality/runtime limits when behavior can vary.
 refs:
-  - role: serves
+  - role: parent
     id: P-001
 artifacts: []
 owner_notes: []
@@ -82,7 +82,7 @@ Required fields:
   though the root manifest standardizes the grouping as `stages`
 - `status`: product status, such as `active`, `draft`, or `blocked`
 - `fields`: type-specific structured content
-- `refs`: directed semantic edges
+- `refs`: directed structural relationships
 
 Recommended fields:
 
@@ -137,79 +137,69 @@ stages:
 If `default_stage` is absent, tools choose the latest normal default candidate
 by `order`, then the latest normal stage, and only then non-normal stages.
 
-## Ref roles
+## Primitive Relationships
 
-A ref may connect any primitive type to any other primitive type when the role
-semantics are true. Validators should validate role names and target ids, not a
-fixed product-logic type-pair matrix.
+Primitive refs store structural position only. Do not store semantic relationship
+verbs such as `serves`, `requires`, `governed_by`, `contains_premise`, or
+`questions` in source records. Those words are reader labels derived from the
+source primitive type, target primitive type, and structural role.
 
-Approved primitive ref roles and semantics:
+Approved primitive ref roles:
 
-- `serves`: source supports, enables, addresses, or is intentionally in service
-  of target. Services and standards may use `serves` to show they serve any
-  primitive type.
-- `contains_premise`: source owns a subordinate premise that should appear
-  under the source instead of as a root premise.
-- `requires`: source cannot be satisfied, proven, or used without target.
-- `governed_by`: source is constrained by target standard or governance
-  primitive.
-- `questions`: source raises an unresolved question about target.
+| Role | Optional code | Meaning for compact refs |
+| --- | ---: | --- |
+| `peer` | `0` | Target is lateral to the current primitive. |
+| `parent` | `1` | Target is a parent of the current primitive. |
+| `child` | `2` | Target is a child of the current primitive. |
+
+The numeric codes are an implementation convention for applications that want a
+compact internal enum. Source YAML should prefer the readable role strings.
+
+A ref may connect any primitive type to any other primitive type when the
+structural relationship is true. Validators should validate role names and
+target ids. They may warn on type pairs that are not listed in the display
+lookup table, but the stored relationship remains only `peer`, `parent`, or
+`child`.
 
 Store one directed edge for each relationship. This reduces merge conflicts and
-prevents source and inverse refs from drifting; views can derive inverse labels.
+prevents source and inverse refs from drifting; views derive inverse labels.
 
-Ref storage ownership follows dependency and implementation ownership, not the
-visual tree direction. Store the edge on the record whose readiness,
-completeness, implementation, or interpretation depends on the relationship.
-Use these tie-breakers:
+Common display lookup examples:
 
-- Flags always own their relationships, including relationships to intents,
-  services, standards, premises, and artifacts.
-- Artifact records do not own relationships to product or workflow primitives.
-  Product/workflow records point to artifacts through `artifacts`. Artifact
-  records may own artifact-to-artifact relationships when one artifact depends
-  on, derives from, includes, or carries another artifact.
-- If an intent participates in a non-flag relationship, store the relationship
-  on the intent.
-- If no intent participates but a service does, store the relationship on the
-  service.
-- Same-type relationships follow dependency direction: the record that depends
-  on, derives from, contains, blocks, questions, or requires the other owns the
-  edge.
+| Current primitive | Ref role | Target primitive | Reader verb from current to target |
+| --- | --- | --- | --- |
+| intent | parent | premise | serves |
+| intent | child | premise | contains |
+| intent | child | service | requires |
+| intent | child | standard | governed by |
+| premise | child | intent | served by |
+| premise | child | premise | refined by |
+| service | child | service | requires |
+| service | child | standard | governed by |
+| flag | parent | any primitive | interrupts |
+| artifact | child | artifact | supports |
+| any primitive | peer | same or related primitive | related to |
 
-Common product-tree edges:
+Projects may extend the display lookup table for local primitive classes, but
+must not add new stored relationship roles when a display verb will do.
 
-- `intent --serves--> premise`: the intent addresses a root product premise.
-- `intent --contains_premise--> premise`: the intent owns a subordinate premise
-  that should appear under that intent instead of as a root premise.
-- `intent --requires--> service`: the intent depends on a service.
-- `intent --governed_by--> standard`: the intent must obey a standard.
-- `service --serves--> <any primitive>`: the service exists to support that
-  primitive.
-- `standard --serves--> <any primitive>`: the standard exists to support that
-  primitive.
-
-Do not store an inverse ref for the same assertion. For example, choose either
-`intent --requires--> service` or `service --serves--> intent` for the
-relationship you mean; reader views derive inverse labels automatically.
-
-Reader tree nesting is a projection of the graph, not the storage direction.
-Common projections include premises as roots, intents under the premises they
-serve, services and standards under the intents that require or are governed by
-them, and contained premises under the owning intent. Reader views may render
-incoming refs with inverse labels such as `Served by` or `Required by`.
+Reader tree nesting is a projection of the graph. A compact ref with
+`role: parent` means the target should be treated as the current primitive's
+parent for relationship display; a compact ref with `role: child` means the
+target should be treated as the current primitive's child. Views may render
+incoming refs by inverting those two roles.
 
 Compact refs infer `from` as the current primitive id:
 
 ```yaml
 refs:
-  - role: requires
+  - role: child
     id: SV-001
 ```
 
-Use compact refs only for outgoing edges from the current primitive. If a record
-stores an edge whose source is another primitive, include explicit `from` and
-`to` so the canonical direction remains unambiguous.
+Use compact refs for relationships owned by the current primitive. If a record
+must store an edge whose source is another primitive, include explicit `from`
+and `to` so the direction remains unambiguous.
 
 ## Flag metadata
 
@@ -267,13 +257,42 @@ metadata for search, graph traversal, validation, and compiled views. They do
 not use a root `summary`; short explanatory text belongs in type-specific
 `fields` only when it is real product data.
 
-## Artifact metadata
+## Artifact descriptors
 
-Artifact records use artifact `.ready.yml` files. Typed manifests and Markdown
-index rows can summarize or group artifacts, but they are generated/navigation
-material, not the primitive source record. At minimum, an artifact primitive
-should identify the id, specific `type`, privacy state, confidence, proof role,
-and any attached file path or safe ref.
+Artifact descriptors use artifact descriptor `.ready.yml` files. Typed manifests and
+Markdown index rows can summarize or group artifacts, but they are
+generated/navigation material, not the primitive source record. The descriptor
+is the semantic Ready reference; raw JSON, JSONL, Markdown, HTML, image, CSV, or
+other payload files are attachments or safe refs owned by a descriptor.
+
+Every non-`.ready` file that is referenced by product, workflow, proof, or agent
+work should have an artifact descriptor. Reference the descriptor id from
+primitives, not the raw payload path, when the reference is meant to carry
+meaning. Direct file/path links are still useful for source access, but they are
+not semantic product references.
+
+One descriptor records one artifact purpose. Do not use a descriptor as a folder
+inventory or test bundle when its files have different purposes. A descriptor
+may list multiple files only when those files are interchangeable versions or
+representations of the same artifact purpose.
+
+Required descriptor fields:
+
+- `schema`
+- `kind`
+- `id`
+- `type`
+- `title`
+- `milestone`
+- `status`
+- `fields.purpose`
+- `fields.content`
+- `fields.intended_use`
+- `fields.format`
+
+Evidence and proof descriptors must also carry `fields.confidence` and
+`fields.provenance`. File-backed descriptors must include `files[].path` and
+`files[].role`.
 
 Use `type` for the specific artifact subtype, not only a storage bucket. Common
 types include `customer_statement`, `source_document`, `reference_resource`,
@@ -284,21 +303,24 @@ duplicate it in sibling payload blocks with local-only ids.
 ```yaml
 schema: readyroom/artifact/v1
 kind: artifact
-id: AP-001
+id: AP-010
 type: proof_corpus
 primitive_class: evidence_artifact
 compiler_role: evidence
-title: Synthetic proof corpus
+title: Synthetic replay proof run
 milestone: m1
 status: active
 privacy: sanitized_fixture
 fields:
   confidence: medium
+  provenance: Generated from local deterministic fixture data.
+  purpose: Replay one deterministic proof run.
+  content: Descriptor ids for the input corpus, scoring config, expected output, diagnostics, and replay contract.
+  intended_use: Use as committed regression proof for the linked harness.
+  format: yaml
   proof_role: regression
   authority_level: deterministic_fixture
   lifecycle_state: frozen
-  summary: Synthetic input/output corpus for replayable proof.
-  primary_use: Verify the harness produces expected outputs from known inputs and config.
   coverage:
     proves:
       - deterministic replay shape
@@ -307,12 +329,14 @@ fields:
     forbidden_uses:
       - treating fixture success as production validation
   dataset_contract:
-    root: ready/m1/artifacts/samples/synthetic-proof
     input_sets:
-      - ready/m1/artifacts/samples/synthetic-proof/inputs.jsonl
+      - AP-011
+    config:
+      - AP-012
     expected_outputs:
-      - ready/m1/artifacts/samples/synthetic-proof/expected.jsonl
-    diagnostic_outputs: []
+      - AP-013
+    diagnostic_outputs:
+      - AP-014
     generated_outputs: []
   oracle_policy:
     oracle_type: exact_match
@@ -322,8 +346,8 @@ fields:
     invariants: []
     update_policy: owner_approved_fixture_update
   replay:
-    verify_command: npm run verify:proof-corpus -- AP-001
-    regenerate_command: npm run regenerate:proof-corpus -- AP-001
+    verify_command: npm run verify:proof-corpus -- AP-010
+    regenerate_command: npm run regenerate:proof-corpus -- AP-010
     regenerate_policy: owner_approval_required
   acceptance_contract:
     accepted_when:
@@ -334,17 +358,45 @@ fields:
       - replay log
   limitations:
     - Fixture proof is not customer or production evidence.
-files:
-  - path: ready/m1/artifacts/samples/payloads/AP-001.json
-    purpose: Supporting payload for the proof corpus.
+artifacts:
+  - AP-011
+  - AP-012
+  - AP-013
+  - AP-014
 usage_policy: []
 owner_notes: []
 ```
 
-Do not use artifact records as reverse indexes for product primitives. Product
+Each non-interchangeable payload purpose gets its own descriptor:
+
+```yaml
+schema: readyroom/artifact/v1
+kind: artifact
+id: AP-011
+type: proof_corpus
+title: Synthetic replay input corpus
+milestone: m1
+status: active
+fields:
+  confidence: medium
+  provenance: Generated from local deterministic fixture data.
+  purpose: Provide the replay input rows.
+  content: Input rows consumed by the replay harness.
+  intended_use: Use as the input artifact for AP-010.
+  format: jsonl
+files:
+  - path: ready/m1/artifacts/samples/synthetic-proof/inputs.jsonl
+    role: primary
+    purpose: Replay input rows.
+```
+
+Do not use artifact descriptors as reverse indexes for product primitives. Product
 and workflow records point to artifacts through their own `artifacts` field.
-Artifact records may point to other artifacts through `artifacts` or `refs` when
+Artifact descriptors may point to other artifacts through `artifacts` or `refs` when
 the artifact depends on, derives from, includes, or carries another artifact.
+When a proof run uses several non-interchangeable inputs, configs, expected
+outputs, and diagnostics, give each purpose its own descriptor and have the run
+or harness descriptor reference them by id.
 
 ```yaml
 schema: readyroom/artifact/v1
@@ -360,6 +412,11 @@ privacy: user_provided_customer_statement
 retrieved_at: '2026-06-19'
 fields:
   confidence: high
+  provenance: User-provided customer statement, 2026-06-19.
+  purpose: Preserve one customer statement as direct evidence.
+  content: A verbatim customer statement about buyer-specific pitch proof.
+  intended_use: Use as evidence for premises or decisions that cite buyer-specific pitch needs.
+  format: text
   statement: "I need to pitch my product in a way that shows how their existing customers will want to buy them."
   speaker_type: customer
   supports:

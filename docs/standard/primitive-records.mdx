@@ -23,7 +23,7 @@ Use primitive class to describe what kind of authority a record carries:
   product behavior or constraints.
 - `decision_workflow`: decision flags, blockers, drift, proof gaps, and
   other workflow or ambiguity records.
-- `evidence_artifact`: artifact records for resources, proof corpora, snippets,
+- `evidence_artifact`: artifact descriptors for resources, proof corpora, snippets,
   designs, manifests, and handoff material. The record is the primitive; large
   or binary payload files are attachments or safe refs.
 - `governance`: authority, process, agent, skill, and template records that
@@ -42,7 +42,7 @@ Ready ids encode the broad authority family first.
 corpora, references, diagrams, reports, snippets, designs, manifests, and other
 content that supports product work. They may inform, verify, or explain the
 product, but they are not the canonical product intent and they are not active
-process state. All artifact records start with `A`. Projects may add a one- or
+process state. All artifact descriptors start with `A`. Projects may add a one- or
 two-letter class suffix after `A` for well-understood artifact classes, such as
 `AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for snippets, `AD-*`
 for designs, or `AM-*` for manifests. One-off artifacts may use plain `A-*`.
@@ -93,7 +93,7 @@ fields:
   required_surfaces: Surfaces that must exist for the promise to be inspectable.
   operating_envelope: Runtime or quality limits when behavior can vary.
 refs:
-  - role: serves
+  - role: parent
     id: P-001
 artifacts: []
 owner_notes: []
@@ -122,37 +122,28 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
 - Store relationships in `refs`, not prose.
-- Any primitive type may relate to any other primitive type when the ref role
-  semantics are true.
-- Store one directed edge for each relationship so source and inverse refs do
-  not drift during concurrent edits; compiled views derive inverse labels.
-- Store each edge on the record whose readiness, completeness,
-  implementation, or interpretation depends on that relationship. This storage
-  owner can differ from the visual parent in a reader tree.
-- Flags always own their relationships. Artifact records only own
-  artifact-to-artifact relationships; product and workflow records point to
-  artifacts through `artifacts`.
-- If an intent participates in a non-flag relationship, the intent owns the
-  edge. If no intent participates but a service does, the service owns the
-  edge. Same-type relationships follow dependency direction.
-- Use approved ref roles with clear semantics: `serves` means source supports or
-  enables target; `contains_premise` means source owns a subordinate premise;
-  `requires` means source depends on target; `governed_by` means target
-  constrains source; `questions` means source raises unresolved ambiguity about
-  target.
-- Product-tree examples include `intent --serves--> premise`,
-  `intent --contains_premise--> premise`, `intent --requires--> service`, and
-  `intent --governed_by--> standard`. Services and standards may also use
-  `serves` when they serve any primitive type.
-- Do not store an inverse ref for the same assertion. Choose the directed edge
-  that states the fact you mean.
-- Reader tree nesting is a projection of the graph, not the storage direction.
-  For example, a premise can visually parent an intent even though the stored
-  edge is `intent --serves--> premise`.
-- Compact refs infer `from` as the current primitive id, so use compact refs
-  only for outgoing edges from the current primitive.
+- Store structural relationships only. Approved stored roles are `peer`,
+  `parent`, and `child`.
+- In compact refs, the role describes the target primitive's position relative
+  to the current primitive: `parent` means the target parents the current
+  record; `child` means the target is a child of the current record; `peer`
+  means the target is lateral.
+- Optional numeric codes are implementation details: `0 = peer`, `1 = parent`,
+  and `2 = child`. Source YAML should prefer role strings.
+- Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
+  `contains_premise`, or `questions` as ref roles. Reader views derive those
+  labels from source type, target type, and structural role.
+- Example derived labels: `intent --parent--> premise` can render as
+  `serves`; `intent --child--> service` can render as `requires`;
+  `intent --child--> standard` can render as `governed by`; `intent
+  --child--> premise` can render as `contains`.
+- Do not store an inverse ref for the same assertion. Choose one structural edge
+  and let views invert parent/child labels when needed.
+- Artifact descriptors only own artifact-to-artifact relationships; product and
+  workflow records point to artifacts through `artifacts`.
 - Store bulky samples, mockups, screenshots, snippets, and generated outputs as
-  artifact payloads referenced by an evidence/artifact primitive id or path.
+  artifact payloads referenced by an artifact descriptor id. Raw paths are for
+  direct source/file access, not semantic product references.
 - Do not store local chat logs, raw provider transcripts, source diffs, secrets,
   or unreviewed scratch content in primitive records.
 - Do not store coding lifecycle state on product-logic primitives. Seed and
@@ -206,7 +197,9 @@ seed or change flags.
 
 Standards state rules for implementation, measurement, judgment, behavior, or
 maintenance. Global standards apply through workspace standard refs; primitive
-specific standards apply through directed `governed_by` refs.
+specific standards apply through structural refs that reader views can label
+`governed by`. Active standards should not carry deferred or future-only rules;
+put that work in a flag in a later or horizon milestone instead.
 
 ## Services
 
@@ -239,27 +232,36 @@ Proof, and workspace policy. Flag records keep `type`, `claimable`, and
 
 ## Artifact Records
 
-Artifact records are evidence/artifact primitives. They describe resources,
-proof corpora, snippets, designs, manifests, screenshots, generated views, or
-handoff material with stable ids, provenance, privacy state, and usage roles. The
-`.ready.yml` record is primitive source. The attached file may be JSON,
-Markdown, HTML, image, binary, external URL, or safe secret-location reference;
-that attached payload is not a primitive unless it also has a Ready-defined
+Artifact descriptors are evidence/artifact primitives. They describe one
+artifact purpose with stable ids, provenance, privacy state, usage roles, and
+the payload files or safe refs that satisfy that purpose. The `.ready.yml`
+record is primitive source. The attached file may be JSON, JSONL, Markdown,
+HTML, image, binary, external URL, or safe secret-location reference; that
+attached payload is not a primitive unless it also has a Ready-defined
 schema/pattern.
 
-`proof_corpus` is the artifact subtype for replayable proof material: inputs,
-config, expected outputs, diagnostic outputs, generated outputs, negative
-cases, and the harness contract that proves or regresses product behavior. Use
+Every artifact descriptor must carry `fields.purpose`, `fields.content`,
+`fields.intended_use`, and `fields.format`. Evidence and proof descriptors must
+also carry `fields.confidence` and `fields.provenance`. File-backed descriptors
+must give every file a `path` and `role`.
+
+One descriptor records one artifact purpose. It may list multiple files only
+when those files are interchangeable versions or representations of
+that same purpose. Files with different purposes, such as buyer inputs, seller
+inputs, scoring config, expected scoring outputs, and diagnostics, need separate
+descriptors.
+
+`proof_corpus` is the artifact subtype for replayable proof material. Use
 `fields` for proof-corpus-specific structure, including `proof_role`,
 `authority_level`, `lifecycle_state`, `coverage`, `dataset_contract`,
 `oracle_policy`, `replay`, `acceptance_contract`, and `limitations`. The core
-contract is: inputs plus config plus harness produce expected outputs. A proof
-corpus can prove process behavior, fixture conformance, or regression stability;
-it must not be cited as human-labeled quality truth, live production validity,
-or customer evidence unless those authorities are explicitly present in its
-fields.
+contract is explicit about which descriptor ids are inputs, configs, expected
+outputs, diagnostics, generated outputs, and harnesses. A proof corpus can prove
+process behavior, fixture conformance, or regression stability; it must not be
+cited as human-labeled quality truth, live production validity, or customer
+evidence unless those authorities are explicitly present in its fields.
 
 Product and workflow records reference supporting artifacts through their own
-`artifacts` lists. Artifact records must not keep reverse product/workflow links
-such as `linked_primitives`; artifact records may relate to other artifacts
+`artifacts` lists. Artifact descriptors must not keep reverse product/workflow links
+such as `linked_primitives`; artifact descriptors may relate to other artifacts
 when one artifact depends on, derives from, includes, or carries the other.

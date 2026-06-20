@@ -1,5 +1,5 @@
 schema: "readyroom/standard-resources/v1"
-version: "0.3.14"
+version: "0.3.16"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -46,5 +46,5 @@ rules:
   - "Product agents read a target project's vendored ready/standard package for normal tree edits."
   - "Fetching this source repo's latest standard is explicit standard-update work, not normal tree-edit behavior."
   - "The vendored package excludes Mintlify docs and Git metadata."
-  - "Evidence/artifact primitives support product truth and do not store governance or standard resources."
+  - "Artifact descriptors support product truth and do not store governance or standard resources."
   - "Templates must use placeholders for project-specific authority, owners, services, and milestones."

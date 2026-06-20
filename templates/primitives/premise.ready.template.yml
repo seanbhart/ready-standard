@@ -10,7 +10,6 @@ status: draft
 fields:
   premise_type: "{{constraint|need|risk|opportunity}}"
   statement: "{{WHAT_IS_TRUE_OR_BELIEVED}}"
-  evidence_provenance: "{{SOURCE_OR_EVIDENCE}}"
   product_implication: "{{WHAT_THIS_REQUIRES_OR_RULES_OUT}}"
 refs: []
 artifacts: []

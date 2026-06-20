@@ -59,26 +59,24 @@ to the explicitly requested standard package or docs work.
      observable proof, not a one-word status.
    - Product-logic intents do not store coding Definition of Done; coding DoD
      belongs on claimable seed or change flags.
-   - Store one directed edge per relationship in `refs`; do not mirror inverse
+   - Store one structural edge per relationship in `refs`; do not mirror inverse
      refs.
-   - Any primitive type may relate to any other primitive type when the ref role
-     semantics are true.
-   - Store each edge on the record whose readiness, completeness,
-     implementation, or interpretation depends on the relationship. Flags own
-     all of their relationships; artifacts only own artifact-to-artifact
-     relationships; intents own non-flag relationships that involve intents;
-     services own non-intent/non-flag relationships that involve services.
-   - Approved roles are `serves`, `contains_premise`, `requires`,
-     `governed_by`, and `questions`.
+   - Any primitive type may relate to any other primitive type when the
+     structural relationship is true.
+   - Approved stored roles are `peer`, `parent`, and `child`. In compact refs,
+     the role describes the target primitive's position relative to the current
+     primitive.
+   - Semantic verbs such as `serves`, `requires`, `governed_by`,
+     `contains_premise`, and `questions` are derived reader labels, not stored
+     ref roles.
 8. Preserve project-specific governance and product truth. Do not rewrite
    product meaning merely to fit a template.
 9. Verify the migrated tree:
    - no stale standard versions or deprecated fields;
    - every record has a unique id;
-   - every directed ref points to an existing id;
-   - no duplicate directed edges;
-   - no inverse duplicate edges and no edges stored on a non-owner record under
-     the relationship ownership rules;
+   - every structural ref points to an existing id;
+   - no duplicate structural edges;
+   - no inverse duplicate edges and no semantic roles left in `refs`;
    - every flag has top-level `type`, `claimable`, and non-empty concrete
      `completion_proof`;
    - the vendored package differs from the source package only by intentionally

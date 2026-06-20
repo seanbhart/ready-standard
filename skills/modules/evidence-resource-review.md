@@ -13,7 +13,7 @@ user can provide.
 ## Responsibilities
 
 - Inventory every product-logic primitive, service, decision/workflow primitive,
-  and evidence/artifact primitive that depends on a
+  and artifact descriptor that depends on a
   sample, resource, data source, screenshot, export, document, benchmark,
   external API shape, or expected output.
 - Gather safe public resources when they can answer the gap. Prefer official
@@ -23,7 +23,7 @@ user can provide.
   private or real user data.
 - Ask the user for private or user-only material only when it materially changes
   the next stage.
-- Store resources as evidence/artifact primitive records or safe references,
+- Store resources as artifact descriptors or safe references,
   not as hidden chat memory.
 - Record source, license or terms risk, retrieval date, privacy state,
   freshness, generation method, schema, and expected outputs.
@@ -67,8 +67,10 @@ Keep proof corpus purposes distinct:
 - qualification corpora prove the product behavior is correct enough for review;
 - health corpora support ongoing checks after the feature exists.
 
-One file can serve more than one purpose only when that does not hide coverage
-gaps. If the same corpus is reused, name every purpose it serves.
+One artifact descriptor records one purpose. A descriptor may list multiple
+files only when those files are interchangeable versions or representations of
+the same purpose. Files with different purposes need separate
+descriptors even when one harness or proof run consumes them together.
 
 ## Storage Rules
 
@@ -76,7 +78,7 @@ gaps. If the same corpus is reused, name every purpose it serves.
 - Use `samples/` for typed proof corpus payloads, `resources/` for gathered reference
   resources, `manifests/` for machine-readable support manifests, `designs/` for
   visual artifacts, and `snippets/` for intentional handoff code or component
-  contracts. Each reusable item should have an evidence/artifact primitive
+  contracts. Each reusable item should have an artifact descriptor
   record when tools need to address, search, link, or validate it directly.
 - Do not commit raw customer data, private transcripts, provider secrets,
 - browser cookies, sensitive raw logs, large binary assets, or copied source
@@ -96,7 +98,7 @@ result as evidence with lower confidence instead of product truth.
 
 The module is complete when every build-critical primitive or flag has one of:
 
-- attached sample/resource artifact primitives;
+- attached sample/resource artifact descriptors;
 - generated fixtures with expected outputs;
 - public-source references with provenance;
 - a precise user-only ask;

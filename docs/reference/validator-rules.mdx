@@ -16,13 +16,15 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Every Ready primitive record, including specialized flag, artifact, decision,
   and governance schemas, has a stable `id`.
 - No two records share the same `id`.
-- Artifact records use `A*` ids. Optional class suffixes may identify
+- Artifact descriptors use `A*` ids. Optional class suffixes may identify
   well-understood artifact classes, but every artifact id must start with `A`.
 - Flag records use `X*` ids. Optional class suffixes may identify
   well-understood flag classes, but every flag id must start with `X`.
 - Primitive `type` and primitive class are valid.
-- Directed refs point to existing ids.
-- Ref roles are approved.
+- Structural refs point to existing ids.
+- Ref roles are one of `peer`, `parent`, or `child`; semantic verbs such as
+  `serves`, `requires`, `governed_by`, `contains_premise`, and `questions` are
+  derived reader labels and are not accepted as stored roles.
 - Generated indexes do not carry independent primitive truth.
 - Flag records keep `type`, `claimable`, and `completion_proof` at the top level.
 - Decision flags use `type: decision`, stable `XD-*` ids, `fields.question`,
@@ -45,9 +47,19 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   directories.
 - Vendored standard packages exclude Mintlify `docs/`, Git metadata, local
   cache, raw logs, transcripts, private samples, and secrets.
-- Artifact primitive ids are unique within their artifact family and globally
+- Artifact descriptor ids are unique within their artifact family and globally
   unique when a project uses global id lookup.
-- Proof corpus artifacts use `type: proof_corpus` and carry
+- Artifact descriptors carry the required top-level fields: `schema`, `kind`,
+  `id`, `type`, `title`, `milestone`, and `status`.
+- Artifact descriptors carry `fields.purpose`, `fields.content`,
+  `fields.intended_use`, and `fields.format`; evidence and proof descriptors
+  also carry `fields.confidence` and `fields.provenance`.
+- File-backed artifact descriptors give every file a `path` and `role`.
+- Artifact descriptors have one purpose; files with different purposes are split
+  into separate descriptors.
+- Referenced non-`.ready` payload files have an artifact descriptor unless the
+  reference is only a direct source/path link.
+- Proof corpus descriptors use `type: proof_corpus` and carry
   `fields.proof_role`, `fields.authority_level`, `fields.dataset_contract`,
   `fields.oracle_policy`, `fields.replay`, `fields.acceptance_contract`, and
   `fields.limitations`.

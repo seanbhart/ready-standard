@@ -9,7 +9,7 @@ handed to coding agents for this project.
 
 - Durable product truth lives in `ready/`.
 - Ready primitives are typed, addressable records. Product-logic primitives use
-  `.ready.yml`; flags and artifact records may use specialized Ready schemas.
+  `.ready.yml`; flags and artifact descriptors may use specialized Ready schemas.
 - Generated views compile from product-logic, decision/workflow,
   evidence/artifact, and governance primitives.
 - Chat and local cache are evidence until promoted into the tree.
@@ -24,7 +24,7 @@ decision flags or discovery flags.
 
 Every build-critical intent or service should have proof corpus inputs, expected
 outputs, public resources, user-only asks, or explicit blockers. Store safe
-resources as evidence/artifact primitives under the milestone artifact tree and
+resources as artifact descriptors under the milestone artifact tree and
 sensitive material as refs.
 
 ## Access And Services
@@ -39,7 +39,7 @@ commit raw secrets.
 
 UI or interaction work should have enough mockups, flows, states, copy, assets,
 component snippets, or design refs for coding agents to implement faithfully.
-Record the design metadata as evidence/artifact primitives; large binaries or
+Record the design metadata as artifact descriptors; large binaries or
 external sources can remain attached payloads or safe refs.
 
 ## Coding Handoff

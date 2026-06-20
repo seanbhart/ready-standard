@@ -92,9 +92,9 @@ Core classes:
 - `decision_workflow`: Decision flags, blockers, drift, proof gaps, and other
   records that direct attention or readiness.
 - `evidence_artifact`: resources, proof corpora, snippets, designs, manifests,
-  screenshots, and handoff notes. The primitive is the artifact metadata record;
-  a bulky, binary, private, or generated payload file is an attachment or safe
-  ref, not necessarily a primitive record itself.
+  screenshots, and handoff notes. The primitive is the artifact descriptor; a
+  bulky, binary, private, or generated payload file is an attachment or safe ref,
+  not the semantic product reference.
 - `governance`: project authority, process, agent guidelines, skills, and
   templates that constrain how the tree may be changed.
 
@@ -106,7 +106,7 @@ The first product-logic primitive types are:
 - `service`: what the product depends on to build, prove, run, or monitor.
 
 Decision flags and flags are decision/workflow primitives and use X-family ids.
-Artifact records are evidence/artifact primitives and use A-family ids.
+Artifact descriptors are evidence/artifact primitives and use A-family ids.
 Governance docs are governance primitives. Product compilers should use
 explicit class and role metadata rather than assuming a directory name gives
 every primitive the same authority.
@@ -119,10 +119,11 @@ standard package. Together they constrain how product truth is created,
 changed, approved, and handed to agents.
 
 Artifacts live under milestone artifact directories such as
-`ready/m1/artifacts/`. Artifact records are evidence/artifact primitives that
-support product logic and proof with samples, snippets, design assets,
+`ready/m1/artifacts/`. Artifact descriptors are evidence/artifact primitives
+that support product logic and proof with samples, snippets, design assets,
 manifests, screenshots, and handoff notes. Attached payload files can use their
-native formats when they are clearly referenced by an artifact record.
+native formats when they are clearly referenced by a descriptor. Each descriptor
+has one purpose; files with different purposes need different descriptors.
 
 ## Generated views
 

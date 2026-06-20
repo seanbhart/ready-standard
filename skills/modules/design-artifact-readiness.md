@@ -27,7 +27,7 @@ must implement faithfully.
 
 ## Artifact Guidance
 
-Store design-support material as evidence/artifact primitives under milestone
+Store design-support material as artifact descriptors under milestone
 artifacts:
 
 - `designs/` for mockups, screenshots, visual references, diagrams, and design
@@ -43,7 +43,7 @@ prototype, generated concept, stale, or superseded. If a design conflicts with
 primitive truth, create a decision flag or primitive edit proposal instead of
 silently blending them.
 
-Do not bury design decisions in chat. Link the artifact primitive to the
+Do not bury design decisions in chat. Link the artifact descriptor to the
 affected product-logic primitive, service, or flag.
 
 ## Design Completeness Checklist
