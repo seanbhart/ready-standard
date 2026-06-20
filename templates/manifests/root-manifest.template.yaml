@@ -4,11 +4,11 @@ source_root: "ready"
 default_stage: "{{DEFAULT_STAGE_ID}}"
 governance_directory: "ready/governance"
 ready_standard:
-  version: "0.3.11"
+  version: "0.3.12"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.11/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.12/docs"
 stages:
   - id: "{{DEFAULT_STAGE_ID}}"
     title: "{{DEFAULT_STAGE_TITLE}}"

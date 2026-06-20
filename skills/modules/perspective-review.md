@@ -80,5 +80,5 @@ The review is complete when every material issue becomes one of:
 - an evidence/artifact primitive or resource task;
 - a service readiness update;
 - a flag change;
-- a question card;
+- a decision flag;
 - an explicit cut from the next stage.

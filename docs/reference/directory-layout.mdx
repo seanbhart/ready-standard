@@ -67,8 +67,8 @@ Top-level plural Markdown files are navigation indexes. Product-logic primitive
 source records live inside the directories as `.ready.yml` files. Other
 primitive classes can live in their own family directories, such as `flags/`,
 `artifacts/`, or `governance/`, with schemas that match their machine contract.
-Discovery questions are decision/workflow flag records and live under
-`flags/discovery/`.
+Decision flags are decision/workflow `readyroom/flag/v1` records with
+`type: decision` and live under `flags/discovery/`.
 
 `ready/manifest.yaml` should include `default_stage` and a `stages` list with
 `id`, `title`, `path`, `manifest`, `kind`, `status`, `order`,

@@ -21,7 +21,7 @@ Use primitive class to describe what kind of authority a record carries:
 
 - `product_logic`: premises, intents, standards, and services that define the
   product behavior or constraints.
-- `decision_workflow`: question cards, flags, blockers, drift, proof gaps, and
+- `decision_workflow`: decision flags, blockers, drift, proof gaps, and
   other workflow or ambiguity records.
 - `evidence_artifact`: artifact records for resources, samples, snippets,
   designs, manifests, and handoff material. The record is the primitive; large
@@ -194,12 +194,17 @@ state, and capture blockers, access expectations, safe credential
 location, evidence, proof required, input/output types and samples,
 implementation instructions, off-limits work, and failure modes.
 
-## Question Cards
+## Decision Flags
 
-Question cards are decision/workflow primitives. They hold product-shaping
-ambiguity. When answered, apply the resulting primitive edits or flags and
-remove the active question card. History belongs in Git, events, assessments,
-or implementation refs.
+Decision flags are `readyroom/flag/v1` records with `type: decision`. They hold
+product-shaping ambiguity as work that must be resolved, not as loose questions.
+Keep the unresolved prompt in `fields.question`, the conservative interim
+behavior in `fields.safe_default`, candidate answers in structured
+`fields.proposals`, and the decision Definition of Done in top-level
+`completion_proof`. When resolved, record the accepted proposal or explicit
+deferral, apply or list the resulting primitive edits, flags, actions, or
+artifacts, and remove the active decision flag from the open set. History
+belongs in Git, events, assessments, or implementation refs.
 
 ## Flags
 

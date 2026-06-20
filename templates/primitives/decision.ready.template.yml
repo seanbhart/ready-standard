@@ -1,0 +1,59 @@
+schema: readyroom/flag/v1
+kind: flag
+id: D-001
+type: decision
+primitive_class: decision_workflow
+compiler_role: decision_needed
+title: "{{DECISION_TITLE}}"
+milestone: "{{MILESTONE_ID}}"
+status: open
+claimable: false
+blocked_by: []
+completion_proof:
+  - "{{ACCEPTED_PROPOSAL_OR_EXPLICIT_DEFERRAL_IS_RECORDED}}"
+  - "{{RATIONALE_CITES_EVIDENCE_AND_CONTRADICTIONS}}"
+  - "{{AFFECTED_PRIMITIVES_FLAGS_ACTIONS_OR_ARTIFACTS_ARE_UPDATED_OR_LISTED_AS_REQUIRED_OUTPUTS}}"
+  - "{{OWNER_APPROVAL_OR_AUTHORITY_IS_RECORDED}}"
+fields:
+  question: "{{QUESTION_TO_ANSWER}}"
+  decision_needed: "{{CHOICE_DEFERRAL_CUT_OR_SEQUENCE_NEEDED}}"
+  why_it_matters: "{{PRODUCT_OR_HANDOFF_RISK}}"
+  safe_default: "{{WHAT_AGENTS_MUST_DO_UNTIL_THIS_DECISION_CLOSES}}"
+  evidence:
+    implemented_behavior: []
+    relevant_docs: []
+    validation_assets: []
+    contradictions: []
+  proposals:
+    - id: "{{PROPOSAL_ID}}"
+      status: "{{candidate|recommended|rejected|accepted|superseded}}"
+      decision: "{{PROPOSED_DECISION}}"
+      summary: "{{WHAT_CHANGES_IF_ACCEPTED}}"
+      rationale: []
+      advantages: []
+      risks: []
+      requires: []
+      changes_if_accepted:
+        primitive_edits: []
+        standards: []
+        services: []
+        artifacts: []
+        actions: []
+      forbidden_claims_preserved: []
+      rejection_conditions: []
+  recommended_proposal: "{{PROPOSAL_ID_OR_NONE}}"
+  decision_rubric:
+    prefer: []
+    reject: []
+  decision_outputs:
+    primitive_edits: []
+    actions_to_create: []
+    artifacts_to_update: []
+    standards_to_update: []
+    services_to_update: []
+  post_decision_policy:
+    agent_allowed_to: []
+    agent_not_allowed_to: []
+refs: []
+artifacts: []
+owner_notes: []

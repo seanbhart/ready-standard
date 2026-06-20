@@ -6,7 +6,7 @@ description: "A Git-backed product tree standard for storing product truth as ty
 # Ready
 
 The Ready Product Tree stores product truth as a filetree. Ready primitives are
-typed, addressable records: product logic, questions, flags, artifact records,
+typed, addressable records: product logic, Decision flags, artifact records,
 governance records, and generated-view inputs live in ordinary files so teams
 can branch, review, merge, fork, and compare product decisions with the same
 tools they use for code.
@@ -15,7 +15,7 @@ The standard separates primitive class from compiler authority:
 
 - Product-logic `.ready.yml` primitives describe why the product exists, what
   it promises, how it must behave, and what it depends on.
-- Decision/workflow primitives describe open questions, attention, blockers,
+- Decision/workflow primitives describe open Decisions, attention, blockers,
   and work-readiness state.
 - Evidence/artifact primitives describe samples, resources, snippets, designs,
   manifests, and generated-view inputs. Large or sensitive payload files may

@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.11
+version: 0.3.12
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -139,7 +139,7 @@ Act like a product leader, discoverer, and practical unblocker:
   source-shape references when they can fill safe gaps.
 - Direct the user only for information, samples, credentials, accounts, business
   judgment, or private resources that cannot be safely obtained another way.
-- Preserve uncertainty as question cards, draft fields, low confidence, or flags.
+- Preserve uncertainty as decision flags, draft fields, low confidence, or flags.
 - Prefer a smaller next stage that proves the core promise.
 - Cut nice-to-have work until it clearly supports the next stage.
 - Keep implementation details out of primitives unless they are true product
@@ -173,7 +173,7 @@ Process:
 7. Preserve conflicts instead of averaging them.
 8. Ask the user to resolve only product-shaping gaps that affect the next stage.
 9. Create draft or active `.ready.yml` primitives with evidence confidence.
-10. Create flags or question cards where work is not ready.
+10. Create flags or decision flags where work is not ready.
 
 Documentation-only trees should be explicit about whether a fact is user-stated,
 doc-stated, inferred, stale, generated, gathered from public sources, or
@@ -200,7 +200,7 @@ Process:
    resources are missing, what credentials or accounts are needed, and what
    should be cut from the next stage.
 7. Create a Ready tree that separates existing behavior from approved direction.
-8. Use flags or question cards for gaps that code cannot answer.
+8. Use flags or decision flags for gaps that code cannot answer.
 
 Codebase-only trees should be conservative. They can describe observed behavior
 with medium or high evidence confidence, but user need and product priority
@@ -309,7 +309,7 @@ Use these classes:
 
 - `product_logic`: premises, intents, standards, and services that define the
   product behavior, constraints, or dependencies.
-- `decision_workflow`: question cards, flags, blockers, drift, proof gaps, and
+- `decision_workflow`: decision flags, blockers, drift, proof gaps, and
   readiness records.
 - `evidence_artifact`: resources, samples, snippets, designs, manifests,
   screenshots, and handoff records. The artifact record is the primitive; bulky
@@ -325,7 +325,7 @@ Premises:
 - Include product implications: what the premise requires, rules out, or
   prioritizes.
 - If the premise is not clear enough to support intent work, create a discovery
-  flag or question card.
+  flag or decision flag.
 
 Intents:
 
@@ -363,14 +363,14 @@ Services:
 
 ### Decision/Workflow Primitives
 
-Question cards:
+Decision flags:
 
 - Capture unresolved product-shaping ambiguity.
 - Use them when a decision blocks product truth, proof, service readiness,
   resource readiness, access readiness, design readiness, or coding claim
   readiness.
-- When answered, apply the resulting primitive or flag edits and remove the
-  active question card.
+- When decided, apply the resulting primitive or flag edits and remove the
+  active decision flag.
 
 Flags:
 
@@ -597,7 +597,7 @@ Keep only work that is required to prove the next stage:
 - the flags needed to make gaps visible.
 
 Move everything else out of the next stage. Use future milestone notes, draft
-primitives, question cards, or flags when the idea is useful but not needed now.
+primitives, decision flags, or flags when the idea is useful but not needed now.
 Record that future work in a later `normal` stage, an `experiment` stage, or a
 `horizon` stage rather than leaving it hidden in chat.
 
@@ -618,7 +618,7 @@ A Ready tree is usable when:
   when coding depends on them.
 - Required accounts, credentials, environments, and secret-location references
   are available or explicitly blocked.
-- Unknowns are question cards, low-confidence fields, or flags.
+- Unknowns are decision flags, low-confidence fields, or flags.
 - Coding-ready work is gated by seed or delta flags, not primitive prose.
 - Claimable flags have clear scope, constraints, acceptance proof, resources,
   environment setup, and blocker policy.

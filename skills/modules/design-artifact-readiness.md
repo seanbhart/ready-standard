@@ -40,7 +40,7 @@ artifacts:
 
 Record each design artifact's authority: target, reference, evidence,
 prototype, generated concept, stale, or superseded. If a design conflicts with
-primitive truth, create a question card or primitive edit proposal instead of
+primitive truth, create a decision flag or primitive edit proposal instead of
 silently blending them.
 
 Do not bury design decisions in chat. Link the artifact primitive to the

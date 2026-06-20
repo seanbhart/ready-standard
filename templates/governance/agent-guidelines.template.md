@@ -17,8 +17,9 @@ These guidelines govern product-agent behavior for this project.
 
 - Treat docs, code, chat, mockups, generated samples, and model output as
   evidence, not automatic product truth.
-- Preserve uncertainty as question cards, flags, low confidence, or blocked
-  service readiness. Questions and flags are decision/workflow primitives.
+- Preserve uncertainty as decision flags, flags, low confidence, or blocked
+  service readiness. Decision flags use `type: decision` and keep their
+  unresolved prompt in `fields.question`.
 - Do not claim implementation is ready while required samples, designs,
   accounts, credentials, environments, or Completion Proof are missing.
 - Never store secrets, raw private data, or sensitive logs in the Ready tree.

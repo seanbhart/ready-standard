@@ -18,7 +18,7 @@ handed to coding agents for this project.
 
 Start with the product-user problem, need, desire, constraint, or success
 condition. Capture premises before solutioning. Preserve unresolved ambiguity as
-question cards or discovery flags.
+decision flags or discovery flags.
 
 ## Evidence And Resources
 

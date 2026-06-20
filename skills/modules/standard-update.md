@@ -49,8 +49,12 @@ to the explicitly requested standard package or docs work.
 6. Read the new local `ready/standard/skills/ready-skill.md` and modules needed
    for the migration.
 7. Migrate product records to the new standard. For the current standard:
-   - Flag and question records use top-level `type`, `claimable`, `blocked_by`,
+   - Flag and Decision records use top-level `type`, `claimable`, `blocked_by`,
      and `completion_proof`.
+   - Legacy unresolved-decision records migrate to `type: decision`, stable `D-*` ids,
+     `fields.safe_default`, structured `fields.proposals`, and
+     `fields.decision_needed`; remove deprecated answer and owner-decision
+     fields.
    - `completion_proof` is the Definition of Done. It must contain concrete
      observable proof, not a one-word status.
    - Product-logic intents do not store coding Definition of Done; coding DoD

@@ -89,7 +89,7 @@ Core classes:
 
 - `product_logic`: source product truth. Common types are `premise`, `intent`,
   `standard`, and `service`.
-- `decision_workflow`: questions, flags, blockers, drift, proof gaps, and other
+- `decision_workflow`: Decision flags, blockers, drift, proof gaps, and other
   records that direct attention or readiness.
 - `evidence_artifact`: resources, sample data, snippets, designs, manifests,
   screenshots, and handoff notes. The primitive is the artifact metadata record;
@@ -105,7 +105,7 @@ The first product-logic primitive types are:
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
 
-Question cards are decision/workflow primitives. Flags are decision/workflow
+Decision flags are decision/workflow primitives. Flags are decision/workflow
 primitives. Artifact records are evidence/artifact primitives. Governance docs
 are governance primitives. Product compilers should use explicit class and role
 metadata rather than assuming a directory name gives every primitive the same

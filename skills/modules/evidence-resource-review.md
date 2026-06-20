@@ -100,4 +100,4 @@ The module is complete when every build-critical primitive or flag has one of:
 - generated fixtures with expected outputs;
 - public-source references with provenance;
 - a precise user-only ask;
-- a blocked flag or question card explaining why the gap remains.
+- a blocked flag or decision flag explaining why the gap remains.

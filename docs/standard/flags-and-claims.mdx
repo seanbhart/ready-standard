@@ -18,8 +18,10 @@ branches.
 - `blocker`: claim, proof, service, authority, or environment blocker.
 - `drift`: detected divergence between product truth and implementation.
 - `proof_gap`: missing proof detail.
-- `question`: lightweight attention marker that does not need a full question
-  card yet.
+- `decision`: product-shaping ambiguity that needs a Decision flag. Use the
+  dedicated Decision template with a `D-*` id, `fields.question`,
+  `fields.safe_default`, structured `fields.proposals`, and top-level
+  `completion_proof`.
 
 ## Claim gate
 

@@ -13,7 +13,7 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Every product-logic primitive source record has
   `schema: readyroom/primitive/v1`.
 - Every product-logic primitive source record has `kind: primitive`.
-- Every Ready primitive record, including specialized flag, artifact, question,
+- Every Ready primitive record, including specialized flag, artifact, decision,
   and governance schemas, has a stable `id`.
 - No two records share the same `id`.
 - Primitive `type` and primitive class are valid.
@@ -21,6 +21,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Ref roles are approved.
 - Generated indexes do not carry independent primitive truth.
 - Flag records keep `type`, `claimable`, and `completion_proof` at the top level.
+- Decision flags use `type: decision`, stable `D-*` ids, `fields.question`,
+  `fields.safe_default`, structured `fields.proposals`, and concrete top-level
+  `completion_proof`.
 - Seed and delta flags are non-claimable unless they pass the claim gate.
 - Claimable flags carry concrete Completion Proof that functions as the
   Definition of Done, not a one-word status.
@@ -42,7 +45,7 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 ## Warning checks
 
 - Primitive record body is too large to review comfortably.
-- Premise confidence is low without a discovery flag or question card.
+- Premise confidence is low without a discovery flag or decision flag.
 - Intent lacks failure behavior.
 - Intent lacks claim level, process decision, or validation boundary.
 - Intent lacks input/output sample refs when sample artifacts exist.
