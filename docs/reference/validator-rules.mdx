@@ -44,7 +44,10 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Primitive record body is too large to review comfortably.
 - Premise confidence is low without a discovery flag or question card.
 - Intent lacks failure behavior.
-- Intent lacks required services or standards.
+- Intent lacks claim level, process decision, or validation boundary.
+- Intent lacks input/output sample refs when sample artifacts exist.
+- Intent names a product surface only in prose instead of `required_surfaces`.
+- Intent lacks required service or standard refs when its work depends on them.
 - Quality-bearing intent lacks an Operating Envelope.
 - Service readiness is unknown without a blocker.
 - Product-shaping ambiguity appears only in prose.

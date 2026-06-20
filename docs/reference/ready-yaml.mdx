@@ -22,18 +22,34 @@ schema: readyroom/primitive/v1
 kind: primitive
 id: I-001
 type: intent
+primitive_class: product_logic
+compiler_role: source_truth
 title: Human-readable title
 milestone: m1
 status: active
 fields:
-  statement: The primary product-truth statement.
+  statement: The concise product-promise statement.
+  intent_type: functional
+  claim_level: process_proof
+  actor: The user, operator, system, or agent this promise serves.
+  trigger: The event or state that starts the promise.
+  action: The behavior the actor or system performs.
+  expected_end_state: The observable fulfilled state.
   value: Why the product promise matters.
-  input_data: What the intent reads.
-  output_data: What the intent produces.
+  scope: What is included.
+  non_scope: What is excluded.
+  failure_behavior: What happens when the intent cannot work.
+  process_decision: Current process choice or proof baseline.
+  validation_boundary: What this intent does and does not validate.
+  input_types: What the intent reads.
+  input_samples: Sample artifact ids for representative inputs.
+  output_types: What the intent produces.
+  output_samples: Sample artifact ids for representative outputs.
+  required_surfaces: User, operator, or internal surfaces required.
+  operating_envelope: Quality/runtime limits when behavior can vary.
 refs:
-  - from: I-001
-    role: serves
-    to: P-001
+  - role: serves
+    id: P-001
 artifacts: []
 owner_notes: []
 ```

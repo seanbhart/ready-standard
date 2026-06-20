@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.8
+version: 0.3.10
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -330,9 +330,16 @@ Premises:
 Intents:
 
 - Capture product promises.
-- Name actor, trigger, action, expected end state, value, scope, non-scope,
-  failure behavior, inputs, outputs, required services, required artifacts, and
-  required standards when those details matter.
+- Keep `statement` concise, then decompose the promise into actor, trigger,
+  action, expected end state, value, scope, non-scope, failure behavior,
+  claim level, process decision, validation boundary, input/output types,
+  input/output sample refs, required surfaces, and operating envelope.
+- Use `claim_level` to name the strongest supported evidence posture, such as
+  `concept`, `process_proof`, `simulation_baseline`, `fixture_validated`,
+  `human_labeled_validated`, or `production_monitored`. Do not use it as
+  Completion Proof.
+- Put required services, standards, and intent dependencies in `refs`, not in
+  duplicate `fields`.
 - Every committed intent should trace to at least one premise unless explicitly
   marked exploratory.
 - Quality-bearing or live-variable intents need an operating envelope.
@@ -535,8 +542,8 @@ Relationship rules:
 - Compact refs infer `from` as the current primitive id. Use compact refs only
   when the current primitive is the edge source; otherwise write explicit `from`
   and `to`.
-- `required_services` and `required_standards` fields are reader aids; matching
-  canonical refs are still required for graph traversal and validation.
+- Required services and standards belong in directed `refs`, not duplicated
+  under intent `fields`.
 - Views can derive inverse labels.
 
 Lifecycle rules:

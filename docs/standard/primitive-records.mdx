@@ -36,24 +36,43 @@ passes.
 
 ## Common rules
 
-Every product-logic primitive record should include:
+Every product-logic primitive record should keep metadata at the top level and
+type-specific product truth under `fields`. For example, an intent record
+normally includes:
 
 ```yaml
 schema: readyroom/primitive/v1
 kind: primitive
 id: I-001
 type: intent
+primitive_class: product_logic
+compiler_role: source_truth
 title: Browse and edit the primitive-backed product spine
 milestone: m1
 status: active
 fields:
   statement: The product promise.
+  intent_type: functional
+  claim_level: process_proof
+  actor: The user, operator, system, or agent this promise serves.
+  trigger: The event or state that starts the promise.
+  action: The behavior the actor or system performs.
+  expected_end_state: The observable state that means the promise was fulfilled.
   value: Why this matters to the user or operator.
+  scope: What is included.
+  non_scope: What is excluded.
   failure_behavior: What happens when the intent cannot be fulfilled.
+  process_decision: Current process choice or proof baseline.
+  validation_boundary: What this intent does and does not validate.
+  input_types: What the intent reads.
+  input_samples: Sample artifact ids for representative inputs.
+  output_types: What the intent produces.
+  output_samples: Sample artifact ids for representative outputs.
+  required_surfaces: Surfaces that must exist for the promise to be inspectable.
+  operating_envelope: Runtime or quality limits when behavior can vary.
 refs:
-  - from: I-001
-    role: serves
-    to: P-001
+  - role: serves
+    id: P-001
 artifacts: []
 owner_notes: []
 ```
@@ -129,10 +148,34 @@ confidence values.
 
 ## Intents
 
-Intents are product promises. Each committed intent should have an actor, action,
-expected end state, value, scope, non-scope, failure behavior, input/output data,
-required services, required standards, and an Operating Envelope when behavior
-can vary materially after release.
+Intents are product promises. Keep `statement` as the concise title-card
+promise, then decompose the promise into fields that coding agents can build
+from: `intent_type`, `claim_level`, `actor`, `trigger`, `action`,
+`expected_end_state`, `value`, `scope`, `non_scope`, `failure_behavior`,
+`process_decision`, `validation_boundary`, `input_types`, `input_samples`,
+`output_types`, `output_samples`, `required_surfaces`, and
+`operating_envelope`.
+
+Use the decomposition to separate the promise, behavior boundary, data
+contract, proof boundary, and operating limits. `statement` should remain
+readable prose; it is not the whole implementation contract.
+
+`claim_level` names the strongest claim the current product evidence supports.
+Use simple values such as `concept`, `process_proof`, `simulation_baseline`,
+`fixture_validated`, `human_labeled_validated`, or `production_monitored`.
+This is not Completion Proof. It prevents an intent from implying stronger
+validation than the evidence supports.
+
+`intent_type` should name the main promise shape, such as `workflow`,
+`functional`, `quality_bearing`, `safety`, or `failure`. Use conservative
+values and rely on `validation_boundary` when an intent could be mistaken for a
+stronger claim.
+
+Required services, standards, and intent dependencies belong in directed
+`refs`, not duplicate `fields`. Supporting examples and outputs belong in
+`input_samples`, `output_samples`, and `artifacts`. Quality-bearing or
+live-variable intents must carry an Operating Envelope when behavior can vary
+materially after release.
 
 Completion Proof does not live on persistent intent bodies. It belongs on ready
 seed or delta flags.

@@ -1,7 +1,7 @@
 schema: "readyroom/skill-package/v1"
 package_id: "ready-product-leader"
 package_name: "Ready Product Leader Skill Pack"
-version: "0.3.8"
+version: "0.3.10"
 entrypoint: "skills/ready-skill.md"
 package_root: "skills"
 copy_root: "skills"
