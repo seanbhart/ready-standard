@@ -16,18 +16,23 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Every Ready primitive record, including specialized flag, artifact, decision,
   and governance schemas, has a stable `id`.
 - No two records share the same `id`.
+- Artifact records use `A*` ids. Optional class suffixes may identify
+  well-understood artifact classes, but every artifact id must start with `A`.
+- Flag records use `X*` ids. Optional class suffixes may identify
+  well-understood flag classes, but every flag id must start with `X`.
 - Primitive `type` and primitive class are valid.
 - Directed refs point to existing ids.
 - Ref roles are approved.
 - Generated indexes do not carry independent primitive truth.
 - Flag records keep `type`, `claimable`, and `completion_proof` at the top level.
-- Decision flags use `type: decision`, stable `D-*` ids, `fields.question`,
+- Decision flags use `type: decision`, stable `XD-*` ids, `fields.question`,
   `fields.safe_default`, structured `fields.proposals`, and concrete top-level
   `completion_proof`.
+- Change flags use `type: change` and stable `XC-*` ids.
 - Decision-specific content lives under `fields`; top-level keys are reserved
   for shared flag metadata, claimability, blockers, refs, artifacts, owner
   notes, and Completion Proof.
-- Seed and delta flags are non-claimable unless they pass the claim gate.
+- Seed and change flags are non-claimable unless they pass the claim gate.
 - Claimable flags carry concrete Completion Proof that functions as the
   Definition of Done, not a one-word status.
 - `ready` flags with non-empty `blocked_by` remain non-claimable.

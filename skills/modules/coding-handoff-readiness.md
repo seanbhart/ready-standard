@@ -6,7 +6,7 @@ description: Ensure Ready tree work packages are complete enough for coding agen
 
 # Coding Handoff Readiness
 
-Use this module before any seed or delta flag is made claimable.
+Use this module before any seed or change flag is made claimable.
 
 ## Responsibilities
 

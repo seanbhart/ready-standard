@@ -51,14 +51,14 @@ to the explicitly requested standard package or docs work.
 7. Migrate product records to the new standard. For the current standard:
    - Flag and Decision records use top-level `type`, `claimable`, `blocked_by`,
      and `completion_proof`.
-   - Legacy unresolved-decision records migrate to `type: decision`, stable `D-*` ids,
+   - Legacy unresolved-decision records migrate to `type: decision`, stable `XD-*` ids,
      `fields.safe_default`, structured `fields.proposals`, and
      `fields.decision_needed`; remove deprecated answer and owner-decision
      fields.
    - `completion_proof` is the Definition of Done. It must contain concrete
      observable proof, not a one-word status.
    - Product-logic intents do not store coding Definition of Done; coding DoD
-     belongs on claimable seed or delta flags.
+     belongs on claimable seed or change flags.
    - Store one directed edge per relationship in `refs`; do not mirror inverse
      refs.
    - Any primitive type may relate to any other primitive type when the ref role

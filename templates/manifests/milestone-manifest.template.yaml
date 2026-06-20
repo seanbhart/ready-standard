@@ -18,11 +18,11 @@ governance_docs:
   product_process: "../governance/product-process.md"
   workspace_authority_and_access: "../governance/workspace-authority-and-access.md"
 ready_standard:
-  version: "0.3.13"
+  version: "0.3.14"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "../standard"
   package_manifest: "../standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.13/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.14/docs"
 primitive_directories:
   premises: "premises/"
   intents: "intents/"
@@ -39,7 +39,7 @@ primitive_classes:
     directories:
       decisions: "flags/discovery/"
       seed_flags: "flags/seed/"
-      delta_flags: "flags/delta/"
+      change_flags: "flags/change/"
       discovery_flags: "flags/discovery/"
   evidence_artifact:
     directories:
@@ -53,7 +53,7 @@ primitive_classes:
       governance: "../governance/"
 flag_directories:
   seed: "flags/seed/"
-  delta: "flags/delta/"
+  change: "flags/change/"
   discovery: "flags/discovery/"
 decision_directories:
   open: "flags/discovery/"

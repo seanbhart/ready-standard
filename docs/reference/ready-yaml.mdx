@@ -15,6 +15,23 @@ typed, addressable, reusable records. They may use specialized schemas such as
 `readyroom/flag/v1` or `readyroom/artifact/v1` when those schemas carry a more
 precise machine contract.
 
+## ID families
+
+Product-logic ids keep their existing product prefixes, such as `P-*`, `I-*`,
+`ST-*`, and `SV-*`.
+
+All artifacts start with `A`. They may optionally use one or two additional
+letters after `A` for a well-understood artifact class. For example, projects
+may use `AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for snippets,
+`AD-*` for designs, and `AM-*` for manifests. Arbitrary or one-off artifacts
+may use plain `A-*`.
+
+All flags start with `X`. They may optionally use one or two additional letters
+after `X` for a well-understood flag class. For example, projects may use
+`XD-*` for decisions, `XS-*` for seed flags, `XC-*` for change flags, and
+`XR-*` for resource/readiness flags. Arbitrary or one-off process interrupts
+may use plain `X-*`.
+
 ## Product-Logic Primitive Record
 
 ```yaml
@@ -202,7 +219,7 @@ level:
 ```yaml
 schema: readyroom/flag/v1
 kind: flag
-id: F-001
+id: X-001
 type: seed
 primitive_class: decision_workflow
 compiler_role: workflow_state
@@ -236,7 +253,7 @@ artifact primitive.
 Examples:
 
 - `readyroom/flag/v1`: decision/workflow primitive for attention, blockers,
-  drift, proof gaps, seed work, or delta work.
+  drift, proof gaps, seed work, or change work.
 - `readyroom/artifact/v1`: evidence/artifact primitive for a typed artifact
   such as a customer statement, source document, reference resource, access
   reference, review protocol, proof corpus, code snippet, design artifact,
@@ -267,7 +284,7 @@ duplicate it in sibling payload blocks with local-only ids.
 ```yaml
 schema: readyroom/artifact/v1
 kind: artifact
-id: SA-001
+id: AP-001
 type: proof_corpus
 primitive_class: evidence_artifact
 compiler_role: evidence
@@ -305,8 +322,8 @@ fields:
     invariants: []
     update_policy: owner_approved_fixture_update
   replay:
-    verify_command: npm run verify:proof-corpus -- SA-001
-    regenerate_command: npm run regenerate:proof-corpus -- SA-001
+    verify_command: npm run verify:proof-corpus -- AP-001
+    regenerate_command: npm run regenerate:proof-corpus -- AP-001
     regenerate_policy: owner_approval_required
   acceptance_contract:
     accepted_when:
@@ -318,7 +335,7 @@ fields:
   limitations:
     - Fixture proof is not customer or production evidence.
 files:
-  - path: ready/m1/artifacts/samples/payloads/SA-001.json
+  - path: ready/m1/artifacts/samples/payloads/AP-001.json
     purpose: Supporting payload for the proof corpus.
 usage_policy: []
 owner_notes: []
@@ -332,7 +349,7 @@ the artifact depends on, derives from, includes, or carries another artifact.
 ```yaml
 schema: readyroom/artifact/v1
 kind: artifact
-id: RE-011
+id: AR-011
 type: customer_statement
 primitive_class: evidence_artifact
 compiler_role: evidence
@@ -356,5 +373,5 @@ The premise that uses this statement owns the artifact link:
 
 ```yaml
 artifacts:
-  - RE-011
+  - AR-011
 ```

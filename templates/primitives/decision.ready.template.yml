@@ -1,6 +1,6 @@
 schema: readyroom/flag/v1
 kind: flag
-id: D-001
+id: XD-001
 type: decision
 primitive_class: decision_workflow
 compiler_role: decision_needed

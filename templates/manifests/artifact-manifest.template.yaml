@@ -3,7 +3,7 @@ artifact_root: "ready/{{MILESTONE_ID}}/artifacts"
 artifact_index: "ready/{{MILESTONE_ID}}/artifacts.md"
 artifact_types:
   customer_statement:
-    id_prefix: "RE"
+    id_prefix: "AR"
     directory: "resources/"
     validation: "yaml_parse"
     privacy: "user_provided_customer_statement"
@@ -13,7 +13,7 @@ artifact_types:
       - speaker_type
       - supports
   source_document:
-    id_prefix: "RE"
+    id_prefix: "AR"
     directory: "resources/"
     validation: "markdown_json_yaml_or_external_ref"
     privacy: "safe_ref_or_public_resource"
@@ -21,7 +21,7 @@ artifact_types:
       - confidence
       - source_kind
   reference_resource:
-    id_prefix: "RE"
+    id_prefix: "AR"
     directory: "resources/"
     validation: "markdown_json_yaml_or_external_ref"
     privacy: "safe_ref_or_public_resource"
@@ -29,7 +29,7 @@ artifact_types:
       - confidence
       - purpose
   access_reference:
-    id_prefix: "RE"
+    id_prefix: "AR"
     directory: "resources/"
     validation: "yaml_parse"
     privacy: "safe_ref_or_private_ref"
@@ -37,7 +37,7 @@ artifact_types:
       - confidence
       - access_scope
   review_protocol:
-    id_prefix: "RE"
+    id_prefix: "AR"
     directory: "resources/"
     validation: "yaml_parse"
     privacy: "safe_ref_or_public_resource"
@@ -45,7 +45,7 @@ artifact_types:
       - confidence
       - protocol_scope
   proof_corpus:
-    id_prefix: "SA"
+    id_prefix: "AP"
     directory: "samples/"
     validation: "json_parse"
     privacy: "sanitized_fixture_or_explicit_user_stub"
@@ -58,21 +58,21 @@ artifact_types:
       - replay
       - acceptance_contract
   code_snippet:
-    id_prefix: "SN"
+    id_prefix: "ASN"
     directory: "snippets/"
     validation: "markdown_or_text"
     required_fields:
       - confidence
       - snippet_scope
   design_artifact:
-    id_prefix: "DA"
+    id_prefix: "AD"
     directory: "designs/"
     validation: "external_or_binary_ref"
     required_fields:
       - confidence
       - design_scope
   manifest:
-    id_prefix: "MA"
+    id_prefix: "AM"
     directory: "manifests/"
     validation: "json_or_yaml_parse"
     required_fields:

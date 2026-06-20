@@ -15,11 +15,13 @@ The standard separates primitive class from compiler authority:
 
 - Product-logic `.ready.yml` primitives describe why the product exists, what
   it promises, how it must behave, and what it depends on.
-- Decision/workflow primitives describe open Decisions, attention, blockers,
-  and work-readiness state.
-- Evidence/artifact primitives describe samples, resources, snippets, designs,
-  manifests, and generated-view inputs. Large or sensitive payload files may
-  live beside the primitive record as attachments or safe refs.
+- X primitives describe temporary process interrupts: open Decisions,
+  attention, blockers, routing, review, approval, correction, escalation, and
+  work-readiness state.
+- A primitives describe durable supporting content: proof corpora, documents,
+  resources, snippets, designs, manifests, reports, and generated-view inputs.
+  Large or sensitive payload files may live beside the primitive record as
+  attachments or safe refs.
 - Governance primitives constrain authority, process, and agent behavior.
 - Generated views compile from the tree for different audiences.
 - Local chats, scratchpads, search indexes, raw logs, and transcripts stay in
@@ -46,7 +48,7 @@ ready/
     services/
     flags/
       seed/
-      delta/
+      change/
       discovery/
     artifacts/
       samples/

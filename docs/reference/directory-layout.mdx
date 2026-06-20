@@ -43,24 +43,24 @@ ready/
     flags.md
     flags/
       seed/
-        f-001-example.ready.yml
-      delta/
+        xs-001-example.ready.yml
+      change/
       discovery/
     artifacts.md
     artifacts/
       manifest.yaml
       samples/
-        sa-001-example.ready.yml
+        ap-001-example.ready.yml
         payloads/
-          SA-001.json
+          AP-001.json
       resources/
-        re-001-example.ready.yml
+        ar-001-example.ready.yml
       snippets/
-        sn-001-example.ready.yml
+        asn-001-example.ready.yml
       designs/
-        da-001-example.ready.yml
+        ad-001-example.ready.yml
       manifests/
-        ma-001-example.ready.yml
+        am-001-example.ready.yml
 ```
 
 Top-level plural Markdown files are navigation indexes. Product-logic primitive
@@ -68,7 +68,7 @@ source records live inside the directories as `.ready.yml` files. Other
 primitive classes can live in their own family directories, such as `flags/`,
 `artifacts/`, or `governance/`, with schemas that match their machine contract.
 Decision flags are decision/workflow `readyroom/flag/v1` records with
-`type: decision` and live under `flags/discovery/`.
+`type: decision`, use `XD-*` ids, and live under `flags/discovery/`.
 
 `ready/manifest.yaml` should include `default_stage` and a `stages` list with
 `id`, `title`, `path`, `manifest`, `kind`, `status`, `order`,

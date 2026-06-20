@@ -1,7 +1,7 @@
 schema: readyroom/flag/v1
 kind: flag
-id: F-001
-type: "{{discovery|seed|delta|blocker|drift|proof_gap|coverage_gap}}"
+id: "{{X_ID_OR_CLASS_ID}}"
+type: "{{discovery|seed|change|blocker|drift|proof_gap|coverage_gap}}"
 primitive_class: decision_workflow
 compiler_role: workflow_state
 title: "{{FLAG_TITLE}}"

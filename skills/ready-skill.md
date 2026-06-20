@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.13
+version: 0.3.14
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -310,10 +310,12 @@ Use these classes:
 - `product_logic`: premises, intents, standards, and services that define the
   product behavior, constraints, or dependencies.
 - `decision_workflow`: decision flags, blockers, drift, proof gaps, and
-  readiness records.
+  readiness records. These use X-family ids because they are temporary process
+  interrupts.
 - `evidence_artifact`: resources, samples, snippets, designs, manifests,
-  screenshots, and handoff records. The artifact record is the primitive; bulky
-  or sensitive payload files are attachments or safe refs.
+  screenshots, and handoff records. These use A-family ids because they are
+  durable supporting content. The artifact record is the primitive; bulky or
+  sensitive payload files are attachments or safe refs.
 - `governance`: authority, process, agent, skill, and template records.
 
 ### Product-Logic Primitives
@@ -374,14 +376,14 @@ Decision flags:
 
 Flags:
 
-- Capture attention, blockers, drift, proof gaps, seed work, and delta work.
+- Capture attention, blockers, drift, proof gaps, seed work, and change work.
 - Keep coding readiness out of product-logic primitive bodies.
 - A flag can be a primitive without being claimable implementation work.
-- Seed and delta flags become claimable only after status, blockers,
+- Seed and change flags become claimable only after status, blockers,
   top-level `claimable: true`, top-level Completion Proof, and workspace policy
   allow it.
 - Completion Proof is the flag's Definition of Done. It must name observable
-  evidence, not a one-word status. Keep it on ready seed or delta flags, not on
+  evidence, not a one-word status. Keep it on ready seed or change flags, not on
   product-logic intent bodies.
 
 ### Evidence/Artifact Primitives
@@ -416,7 +418,7 @@ Load modules based on gaps, not ceremony:
   OAuth app, provider session, CLI auth, or deployment target is required.
 - Load design artifact readiness when the product has a UI, user workflow,
   visual review surface, component contract, or customer-facing copy.
-- Load coding handoff readiness before making seed or delta flags claimable.
+- Load coding handoff readiness before making seed or change flags claimable.
 - Load perspective review before implementation handoff, after major
   discovery changes, or when confidence is low.
 - Load standard update when the user asks to update, upgrade, or migrate a
@@ -558,9 +560,9 @@ Relationship rules:
 Lifecycle rules:
 
 - Do not store coding lifecycle state on product-logic primitives.
-- Use decision/workflow primitives for discovery, seed, delta, blocker, drift,
+- Use decision/workflow primitives for discovery, seed, change, blocker, drift,
   proof gap, and question attention.
-- Open seed and delta flags are not coding-ready by default.
+- Open seed and change flags are not coding-ready by default.
 - A coding agent should only claim work when the relevant flag is ready,
   unblocked, claimable, and has top-level Completion Proof.
 
@@ -626,7 +628,7 @@ A Ready tree is usable when:
 - Required accounts, credentials, environments, and secret-location references
   are available or explicitly blocked.
 - Unknowns are decision flags, low-confidence fields, or flags.
-- Coding-ready work is gated by seed or delta flags, not primitive prose.
+- Coding-ready work is gated by seed or change flags, not primitive prose.
 - Claimable flags have clear scope, constraints, acceptance proof, resources,
   environment setup, and blocker policy.
 - Evidence/artifact primitives reference sensitive or bulky source safely.

@@ -34,6 +34,28 @@ process or regression evidence without being approved product behavior. A
 seed-flag primitive may be workflow state without being implementation
 permission until its claim gate passes.
 
+## ID families
+
+Ready ids encode the broad authority family first.
+
+`A` primitives are durable supporting content. They include documents, proof
+corpora, references, diagrams, reports, snippets, designs, manifests, and other
+content that supports product work. They may inform, verify, or explain the
+product, but they are not the canonical product intent and they are not active
+process state. All artifact records start with `A`. Projects may add a one- or
+two-letter class suffix after `A` for well-understood artifact classes, such as
+`AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for snippets, `AD-*`
+for designs, or `AM-*` for manifests. One-off artifacts may use plain `A-*`.
+
+`X` primitives are temporary process interrupts. They exist when normal product
+flow needs to be blocked, altered, routed, reviewed, escalated, approved,
+corrected, or decided. All flag records start with `X`. Projects may add a
+one- or two-letter class suffix after `X` for well-understood flag classes,
+such as `XD-*` for decisions, `XS-*` for seed flags, `XC-*` for change flags,
+or `XR-*` for resource/readiness flags. An `X` item should close once the
+required action or decision is complete, leaving the durable result on the
+affected intent, change record, artifact, proof, workflow state, or trace.
+
 ## Common rules
 
 Every product-logic primitive record should keep metadata at the top level and
@@ -134,7 +156,7 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Do not store local chat logs, raw provider transcripts, source diffs, secrets,
   or unreviewed scratch content in primitive records.
 - Do not store coding lifecycle state on product-logic primitives. Seed and
-  delta flags are decision/workflow primitives that gate coding claims.
+  change flags are decision/workflow primitives that gate coding claims.
 
 ## Premises
 
@@ -178,7 +200,7 @@ live-variable intents must carry an Operating Envelope when behavior can vary
 materially after release.
 
 Completion Proof does not live on persistent intent bodies. It belongs on ready
-seed or delta flags.
+seed or change flags.
 
 ## Standards
 

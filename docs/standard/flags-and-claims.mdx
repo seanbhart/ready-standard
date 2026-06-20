@@ -9,17 +9,25 @@ Flags are decision/workflow primitives. They are not product-logic primitives
 and not tickets. They are attention and readiness records attached to primitive
 branches.
 
+Every flag id starts with `X`. A flag may use a one- or two-letter class suffix
+after `X` when the class is well understood: for example `XD-*` for decisions,
+`XS-*` for seed flags, `XC-*` for change flags, or `XR-*` for
+resource/readiness flags. Plain `X-*` is valid for arbitrary or one-off process
+interrupts. An X primitive should close once the required process action or
+decision is complete; durable results belong on the affected product primitive,
+artifact, proof, workflow state, or trace.
+
 ## Flag types
 
 - `discovery`: premise or product discovery before intent work is ready.
 - `seed`: implementation work for a proposed or missing intent.
-- `delta`: implementation work needed after an approved intent changes.
+- `change`: implementation work needed after an approved intent changes.
 - `coverage_gap`: missing primitive coverage.
 - `blocker`: claim, proof, service, authority, or environment blocker.
 - `drift`: detected divergence between product truth and implementation.
 - `proof_gap`: missing proof detail.
 - `decision`: product-shaping ambiguity that needs a Decision flag. Use the
-  dedicated Decision template with a `D-*` id, `fields.question`,
+  dedicated Decision template with an `XD-*` id, `fields.question`,
   `fields.safe_default`, structured `fields.proposals`, and top-level
   `completion_proof`.
 
@@ -28,7 +36,7 @@ branches.
 A coding agent can claim work only when all of these are true:
 
 ```yaml
-type: seed # or delta
+type: seed # or change
 status: ready
 blocked_by: []
 claimable: true
@@ -41,13 +49,13 @@ The workspace Coding work switch must also be enabled.
 
 ## Open flags
 
-An open discovery, seed, or delta flag may be sparse. It only needs to point to
+An open discovery, seed, or change flag may be sparse. It only needs to point to
 the primitive branch that needs attention and preserve the trigger context. Open
-seed and delta flags are product/design responsibility, not coding workflow.
+seed and change flags are product/design responsibility, not coding workflow.
 
 ## Ready but blocked
 
-A seed or delta flag may be `ready` while still blocked, but it must be
+A seed or change flag may be `ready` while still blocked, but it must be
 non-claimable:
 
 ```yaml
@@ -65,7 +73,7 @@ implementation.
 
 ## Completion Proof
 
-Ready seed and delta flags must carry top-level `completion_proof`. Completion
+Ready seed and change flags must carry top-level `completion_proof`. Completion
 Proof is the Definition of Done for the flag: the observable outcomes and
 evidence that remove the flag. It must be real DoD content, not a one-word
 status such as `ready`, `done`, or `complete`, and it does not prescribe file
