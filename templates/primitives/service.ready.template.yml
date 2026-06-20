@@ -8,11 +8,19 @@ title: "{{SERVICE_TITLE}}"
 milestone: "{{MILESTONE_ID}}"
 status: draft
 fields:
-  purpose: "{{WHY_THIS_SERVICE_IS_NEEDED}}"
-  readiness: "{{ready|simulated|missing|blocked|not_needed_yet}}"
+  role: "{{WHAT_THIS_SERVICE_PROVIDES_OR_ENABLES}}"
+  blockers:
+    - "{{CURRENT_SERVICE_BLOCKER_OR_NONE}}"
   access_required: "{{ACCOUNT_OR_CREDENTIAL_NEEDS}}"
   credential_location: "{{SAFE_SECRET_LOCATION_REFERENCE_OR_NONE}}"
-  proof_policy: "{{HOW_TO_VERIFY_SERVICE_READINESS}}"
+  evidence: "{{CURRENT_EVIDENCE_FOR_SERVICE_STATE}}"
+  proof_required: "{{HOW_TO_VERIFY_SERVICE_IS_USABLE}}"
+  input_types: "{{WHAT_THE_SERVICE_READS_OR_RECEIVES}}"
+  input_samples: "{{SAMPLE_INPUT_ARTIFACT_REFS_OR_NONE}}"
+  output_types: "{{WHAT_THE_SERVICE_PRODUCES_OR_CHANGES}}"
+  output_samples: "{{SAMPLE_OUTPUT_ARTIFACT_REFS_OR_NONE}}"
+  instructions: "{{IMPLEMENTATION_DOC_ARTIFACT_REFS_OR_EXTERNAL_DOC_LINKS}}"
+  off_limits: "{{WHAT_THIS_SERVICE_MUST_NOT_DO_OR_IS_NOT_CLAIMABLE_NOW}}"
   failure_modes: "{{EXPECTED_FAILURES_AND_DEGRADATION}}"
 refs: []
 artifacts: []

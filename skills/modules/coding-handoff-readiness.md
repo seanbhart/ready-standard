@@ -30,7 +30,7 @@ A coding agent should receive:
 - intended product behavior;
 - scope and non-scope;
 - user-facing and system-facing acceptance criteria;
-- required services and readiness state;
+- required services with status, blockers, access, proof, and instructions;
 - setup and verification commands;
 - required artifacts and sample ids;
 - design, snippet, or component references when applicable;

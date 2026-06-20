@@ -29,9 +29,11 @@ sensitive material as refs.
 
 ## Access And Services
 
-Every required service should name account owner, access state, credential
-location reference, setup path, verification check, simulation policy, and
-failure modes. Never commit raw secrets.
+Every required service should use top-level `status` for state and name
+blockers, account owner, access requirements, credential location reference,
+evidence, proof required, setup or implementation instructions, input/output
+types and samples, off-limits work, simulation policy, and failure modes. Never
+commit raw secrets.
 
 ## Design And Artifacts
 

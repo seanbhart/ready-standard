@@ -40,8 +40,14 @@ For each required service, capture:
 
 - service name and environment;
 - account owner;
-- access status: ready, simulated, missing, blocked, or not needed yet;
+- top-level service `status`;
+- blockers when status is blocked, draft, or not currently usable;
 - credential type and safe storage location;
+- current evidence;
+- proof required;
+- input and output types plus representative sample refs;
+- implementation instructions or external setup docs;
+- off-limits work;
 - required scopes or permissions;
 - setup steps the user must complete;
 - setup steps the agent can complete safely;
@@ -62,6 +68,6 @@ Make account setup easy for a distracted user:
 
 ## Completion Check
 
-The module is complete when every required service has a readiness state,
+The module is complete when every required service has a top-level status,
 credential-location reference or blocked reason, setup path, verification check,
-and coding-agent-visible failure policy.
+implementation instructions, and coding-agent-visible failure policy.

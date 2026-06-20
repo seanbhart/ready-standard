@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.10
+version: 0.3.11
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -355,9 +355,11 @@ Standards:
 Services:
 
 - Capture dependencies required to build, prove, run, or monitor the product.
-- Name readiness by environment, access requirements, credential location,
-  proof policy, failure modes, simulation rules, observability, privacy, owner,
-  and readiness gaps when relevant.
+- Put `role` first in service fields and use top-level `status` for readiness
+  state.
+- Capture blockers, access requirements, credential location, evidence,
+  proof required, input/output types and samples, implementation instructions,
+  off-limits work, and failure modes when relevant.
 
 ### Decision/Workflow Primitives
 
@@ -608,7 +610,8 @@ A Ready tree is usable when:
 - The next stage is named and bounded.
 - Active intents trace to premises.
 - Required standards and services are represented.
-- Service readiness gaps are visible.
+- Service blockers, proof required, access needs, and implementation
+  instructions are visible.
 - Samples, resources, expected outputs, and difficult cases exist or are blocked
   by specific user-only asks.
 - Design artifacts, interaction states, copy, assets, and modular snippets exist

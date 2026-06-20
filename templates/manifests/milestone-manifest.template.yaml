@@ -18,11 +18,11 @@ governance_docs:
   product_process: "../governance/product-process.md"
   workspace_authority_and_access: "../governance/workspace-authority-and-access.md"
 ready_standard:
-  version: "0.3.10"
+  version: "0.3.11"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "../standard"
   package_manifest: "../standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.10/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.11/docs"
 primitive_directories:
   premises: "premises/"
   intents: "intents/"

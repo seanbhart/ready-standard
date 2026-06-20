@@ -82,7 +82,7 @@ structured fields. Reader-friendly Markdown, PM summaries, developer briefs,
 designer views, and customer-facing docs are compiled from these records.
 Do not add a root `summary` field to primitives. If a short summary is genuinely
 part of a type's source data, store it under `fields.summary`; otherwise prefer
-the type's primary field such as `statement`, `rule`, `purpose`, `objective`, or
+the type's primary field such as `statement`, `rule`, `role`, `objective`, or
 `question`.
 
 Use `owner_notes` only for human product-owner annotations that should travel
@@ -189,9 +189,10 @@ specific standards apply through directed `governed_by` refs.
 ## Services
 
 Services capture dependencies required to build, prove, run, or monitor the
-product. A service should name readiness by environment, access expectations,
-proof policy, failure modes, simulation rules, observability, privacy, owner,
-and readiness gaps.
+product. A service should put `role` first, use top-level `status` for service
+state, and capture blockers, access expectations, safe credential
+location, evidence, proof required, input/output types and samples,
+implementation instructions, off-limits work, and failure modes.
 
 ## Question Cards
 
