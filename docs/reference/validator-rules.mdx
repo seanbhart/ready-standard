@@ -24,6 +24,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Decision flags use `type: decision`, stable `D-*` ids, `fields.question`,
   `fields.safe_default`, structured `fields.proposals`, and concrete top-level
   `completion_proof`.
+- Decision-specific content lives under `fields`; top-level keys are reserved
+  for shared flag metadata, claimability, blockers, refs, artifacts, owner
+  notes, and Completion Proof.
 - Seed and delta flags are non-claimable unless they pass the claim gate.
 - Claimable flags carry concrete Completion Proof that functions as the
   Definition of Done, not a one-word status.
@@ -39,6 +42,10 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   cache, raw logs, transcripts, private samples, and secrets.
 - Artifact primitive ids are unique within their artifact family and globally
   unique when a project uses global id lookup.
+- Proof corpus artifacts use `type: proof_corpus` and carry
+  `fields.proof_role`, `fields.authority_level`, `fields.dataset_contract`,
+  `fields.oracle_policy`, `fields.replay`, `fields.acceptance_contract`, and
+  `fields.limitations`.
 - Sensitive content, source excerpts, diffs, raw logs, and secrets are absent.
 - Large artifacts use storage paths or external refs instead of inline payloads.
 

@@ -239,7 +239,7 @@ Examples:
   drift, proof gaps, seed work, or delta work.
 - `readyroom/artifact/v1`: evidence/artifact primitive for a typed artifact
   such as a customer statement, source document, reference resource, access
-  reference, review protocol, sample data, code snippet, design artifact,
+  reference, review protocol, proof corpus, code snippet, design artifact,
   manifest, generated view, or handoff record.
 - `readyroom/governance/v1`: governance primitive for authority, process, skill,
   or template records when a project uses structured governance records.
@@ -260,7 +260,7 @@ and any attached file path or safe ref.
 
 Use `type` for the specific artifact subtype, not only a storage bucket. Common
 types include `customer_statement`, `source_document`, `reference_resource`,
-`access_reference`, `review_protocol`, `sample_data`, `code_snippet`,
+`access_reference`, `review_protocol`, `proof_corpus`, `code_snippet`,
 `design_artifact`, and `manifest`. Put subtype data under `fields`; do not
 duplicate it in sibling payload blocks with local-only ids.
 
@@ -268,19 +268,58 @@ duplicate it in sibling payload blocks with local-only ids.
 schema: readyroom/artifact/v1
 kind: artifact
 id: SA-001
-type: sample_data
+type: proof_corpus
 primitive_class: evidence_artifact
 compiler_role: evidence
-title: Synthetic fixture
+title: Synthetic proof corpus
 milestone: m1
 status: active
 privacy: sanitized_fixture
 fields:
   confidence: medium
-  fixture_scope: Synthetic input fixture.
+  proof_role: regression
+  authority_level: deterministic_fixture
+  lifecycle_state: frozen
+  summary: Synthetic input/output corpus for replayable proof.
+  primary_use: Verify the harness produces expected outputs from known inputs and config.
+  coverage:
+    proves:
+      - deterministic replay shape
+    does_not_prove:
+      - live user quality
+    forbidden_uses:
+      - treating fixture success as production validation
+  dataset_contract:
+    root: ready/m1/artifacts/samples/synthetic-proof
+    input_sets:
+      - ready/m1/artifacts/samples/synthetic-proof/inputs.jsonl
+    expected_outputs:
+      - ready/m1/artifacts/samples/synthetic-proof/expected.jsonl
+    diagnostic_outputs: []
+    generated_outputs: []
+  oracle_policy:
+    oracle_type: exact_match
+    oracle_authority: committed_expected_outputs
+    comparison_mode: inputs_plus_config_produce_expected_outputs
+    ignored_fields: []
+    invariants: []
+    update_policy: owner_approved_fixture_update
+  replay:
+    verify_command: npm run verify:proof-corpus -- SA-001
+    regenerate_command: npm run regenerate:proof-corpus -- SA-001
+    regenerate_policy: owner_approval_required
+  acceptance_contract:
+    accepted_when:
+      - verify command passes against committed expected outputs
+    fails_when:
+      - inputs plus config do not produce expected outputs
+    evidence_required:
+      - replay log
+  limitations:
+    - Fixture proof is not customer or production evidence.
 files:
   - path: ready/m1/artifacts/samples/payloads/SA-001.json
-    purpose: Synthetic input fixture.
+    purpose: Supporting payload for the proof corpus.
 usage_policy: []
 owner_notes: []
 ```

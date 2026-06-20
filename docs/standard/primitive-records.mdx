@@ -23,16 +23,16 @@ Use primitive class to describe what kind of authority a record carries:
   product behavior or constraints.
 - `decision_workflow`: decision flags, blockers, drift, proof gaps, and
   other workflow or ambiguity records.
-- `evidence_artifact`: artifact records for resources, samples, snippets,
+- `evidence_artifact`: artifact records for resources, proof corpora, snippets,
   designs, manifests, and handoff material. The record is the primitive; large
   or binary payload files are attachments or safe refs.
 - `governance`: authority, process, agent, skill, and template records that
   constrain how product truth may change.
 
-Compiler role matters as much as class. A sample-data primitive may be valid
-evidence without being approved product behavior. A seed-flag primitive may be
-workflow state without being implementation permission until its claim gate
-passes.
+Compiler role matters as much as class. A proof-corpus primitive may be valid
+process or regression evidence without being approved product behavior. A
+seed-flag primitive may be workflow state without being implementation
+permission until its claim gate passes.
 
 ## Common rules
 
@@ -218,12 +218,24 @@ Proof, and workspace policy. Flag records keep `type`, `claimable`, and
 ## Artifact Records
 
 Artifact records are evidence/artifact primitives. They describe resources,
-samples, snippets, designs, manifests, screenshots, generated views, or handoff
-material with stable ids, provenance, privacy state, and usage roles. The
+proof corpora, snippets, designs, manifests, screenshots, generated views, or
+handoff material with stable ids, provenance, privacy state, and usage roles. The
 `.ready.yml` record is primitive source. The attached file may be JSON,
 Markdown, HTML, image, binary, external URL, or safe secret-location reference;
 that attached payload is not a primitive unless it also has a Ready-defined
 schema/pattern.
+
+`proof_corpus` is the artifact subtype for replayable proof material: inputs,
+config, expected outputs, diagnostic outputs, generated outputs, negative
+cases, and the harness contract that proves or regresses product behavior. Use
+`fields` for proof-corpus-specific structure, including `proof_role`,
+`authority_level`, `lifecycle_state`, `coverage`, `dataset_contract`,
+`oracle_policy`, `replay`, `acceptance_contract`, and `limitations`. The core
+contract is: inputs plus config plus harness produce expected outputs. A proof
+corpus can prove process behavior, fixture conformance, or regression stability;
+it must not be cited as human-labeled quality truth, live production validity,
+or customer evidence unless those authorities are explicitly present in its
+fields.
 
 Product and workflow records reference supporting artifacts through their own
 `artifacts` lists. Artifact records must not keep reverse product/workflow links

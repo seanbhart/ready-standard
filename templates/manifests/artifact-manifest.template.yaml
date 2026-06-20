@@ -44,14 +44,19 @@ artifact_types:
     required_fields:
       - confidence
       - protocol_scope
-  sample_data:
+  proof_corpus:
     id_prefix: "SA"
     directory: "samples/"
     validation: "json_parse"
     privacy: "sanitized_fixture_or_explicit_user_stub"
     required_fields:
       - confidence
-      - fixture_scope
+      - proof_role
+      - authority_level
+      - dataset_contract
+      - oracle_policy
+      - replay
+      - acceptance_contract
   code_snippet:
     id_prefix: "SN"
     directory: "snippets/"

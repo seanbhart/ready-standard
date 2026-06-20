@@ -1,12 +1,12 @@
 ---
 name: ready-evidence-resource-review
 version: 0.1.0
-description: Gather evidence, sample data, public resources, generated fixtures, and user-only information needed to make a Ready tree buildable.
+description: Gather evidence, proof corpora, public resources, generated fixtures, and user-only information needed to make a Ready tree buildable.
 ---
 
 # Evidence Resource Review
 
-Use this module when a Ready tree needs evidence, sample data, expected outputs,
+Use this module when a Ready tree needs evidence, proof corpora, expected outputs,
 source-shape references, public resources, or private information that only the
 user can provide.
 
@@ -30,7 +30,7 @@ user can provide.
 
 ## User Support
 
-Assume the user is busy or tired. Do not say "send sample data" without help.
+Assume the user is busy or tired. Do not say "send raw examples" without help.
 Provide a short, concrete ask:
 
 - what to export or capture;
@@ -45,7 +45,7 @@ Provide a short, concrete ask:
 When several asks exist, rank them by implementation value. Ask for the one or
 two samples that most reduce coding-agent ambiguity.
 
-## Sample Types
+## Proof Corpus Types
 
 Use at least these categories:
 
@@ -59,21 +59,21 @@ Use at least these categories:
 - proof evidence that should close a flag;
 - proof evidence that should not close a flag.
 
-## Sample Purposes
+## Proof Corpus Purposes
 
-Keep sample purposes distinct:
+Keep proof corpus purposes distinct:
 
-- development samples help coding agents build and debug locally;
-- qualification samples prove the product behavior is correct enough for review;
-- health samples support ongoing checks after the feature exists.
+- development corpora help coding agents build and debug locally;
+- qualification corpora prove the product behavior is correct enough for review;
+- health corpora support ongoing checks after the feature exists.
 
 One file can serve more than one purpose only when that does not hide coverage
-gaps. If the same sample is reused, name every purpose it serves.
+gaps. If the same corpus is reused, name every purpose it serves.
 
 ## Storage Rules
 
 - Put generated and sanitized fixture files under the milestone artifact tree.
-- Use `samples/` for typed sample data, `resources/` for gathered reference
+- Use `samples/` for typed proof corpus payloads, `resources/` for gathered reference
   resources, `manifests/` for machine-readable support manifests, `designs/` for
   visual artifacts, and `snippets/` for intentional handoff code or component
   contracts. Each reusable item should have an evidence/artifact primitive

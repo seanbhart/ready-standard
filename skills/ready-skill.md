@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.12
+version: 0.3.13
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -16,7 +16,7 @@ This is an orchestration skill. Load specialist Ready Skill modules when the
 tree needs focused work:
 
 - [modules/evidence-resource-review.md](modules/evidence-resource-review.md) -
-  evidence, sample data, online resources, generated fixtures, and user-only
+  evidence, proof corpora, online resources, generated fixtures, and user-only
   information.
 - [modules/access-readiness.md](modules/access-readiness.md) -
   accounts, credentials, environments, secret-location references, and setup
@@ -220,7 +220,7 @@ Process:
 5. Shape one or more solution candidates.
 6. Choose the next product stage and add it to the root stage registry.
 7. Cut scope until the next stage can prove the core promise.
-8. Identify standards, services, artifacts, sample data, resources, accounts,
+8. Identify standards, services, artifacts, proof corpora, resources, accounts,
    credentials, designs, and proof expectations.
 9. Create the Ready tree and review it with the user.
 
@@ -490,9 +490,16 @@ linked evidence artifact confidence values.
 Artifact records use `type` for the specific artifact subtype, not only a broad
 storage bucket. Common artifact types include `customer_statement`,
 `source_document`, `reference_resource`, `access_reference`, `review_protocol`,
-`sample_data`, `code_snippet`, `design_artifact`, and `manifest`. Subtype data
+`proof_corpus`, `code_snippet`, `design_artifact`, and `manifest`. Subtype data
 belongs under `fields`; do not duplicate it in sibling blocks with local-only
 ids.
+
+Use `proof_corpus` for replayable inputs, configs, expected outputs, diagnostic
+outputs, and negative cases used to prove or regress product behavior. Proof
+corpus records must state their proof role, authority level, coverage,
+dataset contract, oracle policy, replay commands, acceptance contract, and
+limitations under `fields`. Do not use proof corpus success as a stronger claim
+than its authority level supports.
 
 Product and workflow records reference supporting artifacts through their own
 `artifacts` lists. Artifact records must not keep reverse product/workflow links
@@ -559,11 +566,11 @@ Lifecycle rules:
 
 Artifact rules:
 
-- Store samples, source-shape resources, snippets, screenshots, mockups,
+- Store proof corpora, source-shape resources, snippets, screenshots, mockups,
   manifests, and handoff material as evidence/artifact primitives or as
   payloads referenced by those primitives.
-- Store generated or gathered sample data only when privacy, license, size, and
-  provenance are acceptable.
+- Store generated or gathered proof data only when privacy, license, size, and
+  provenance are acceptable, and state the proof role and authority level.
 - Store sanitized excerpts, summaries, paths, hashes, or evidence refs for
   logs/traces when proof needs them; do not commit sensitive raw logs.
 - Store references to bulky or sensitive materials, not copied source,

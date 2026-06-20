@@ -22,7 +22,7 @@ decision flags or discovery flags.
 
 ## Evidence And Resources
 
-Every build-critical intent or service should have sample data, expected
+Every build-critical intent or service should have proof corpus inputs, expected
 outputs, public resources, user-only asks, or explicit blockers. Store safe
 resources as evidence/artifact primitives under the milestone artifact tree and
 sensitive material as refs.
