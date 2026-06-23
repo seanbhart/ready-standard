@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.16
+version: 0.3.21
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -32,8 +32,9 @@ tree needs focused work:
 - [modules/standard-update.md](modules/standard-update.md) -
   sync a newer Ready standard package into a product repo and migrate the tree.
 
-The portable package manifest is [manifest.yaml](manifest.yaml). Product repos
-that need deterministic agent edits should keep the portable standard package at
+The portable package manifest is [manifest.yaml](manifest.yaml). The canonical
+vocabulary file is [vocabulary.yaml](../vocabulary.yaml). Product repos that
+need deterministic agent edits should keep the portable standard package at
 `ready/standard/`. Normal product agents read that local package. Pulling from
 the source standard repo happens only for explicit standard-update work.
 
@@ -160,12 +161,13 @@ lists, design docs, or strategy prose, but no reliable codebase signal.
 Process:
 
 1. Inventory the docs and note source age, author intent, and confidence.
-2. Extract premise candidates from problems, actors, contexts, constraints,
-   motivations, risks, and success claims.
-3. Extract intent candidates from user promises, workflows, outcomes, and
-   requirements.
-4. Extract standards from explicit rules, quality bars, compliance needs,
-   measurement rules, and non-negotiable behavior.
+2. Extract premise candidates from observations, beliefs, assumptions, needs,
+   problems, motivations, risks, opportunities, and success claims.
+3. Extract intent candidates from product promises, observable product
+   behaviors, workflows, outcomes, capabilities, experiences, safety behavior,
+   failure behavior, and requirements.
+4. Extract standards from constraints, explicit rules, quality bars, compliance
+   needs, measurement rules, and non-negotiable behavior.
 5. Extract services from dependencies needed to build, prove, run, or monitor
    the product.
 6. Identify missing samples, resources, designs, accounts, credentials, and
@@ -323,6 +325,10 @@ Use these classes:
 Premises:
 
 - Capture why the product, milestone, or feature should exist.
+- Use `fields.premise_type` to clarify the discovery role. Valid values are in
+  `ready/standard/vocabulary.yaml`.
+- Put constraints, rules, quality bars, compliance needs, and measurement rules
+  in `standard` records, not premise records.
 - Include evidence provenance and confidence.
 - Include product implications: what the premise requires, rules out, or
   prioritizes.
@@ -332,6 +338,8 @@ Premises:
 Intents:
 
 - Capture product promises.
+- Use `fields.intent_type` to clarify the commitment shape. Valid values are in
+  `ready/standard/vocabulary.yaml`.
 - Keep `statement` concise, then decompose the promise into actor, trigger,
   action, expected end state, value, scope, non-scope, failure behavior,
   claim level, process decision, validation boundary, input/output types,
@@ -534,10 +542,15 @@ Relationship rules:
   and `2 = child`. Source YAML should use the strings.
 - Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
   `contains_premise`, or `questions` as ref roles.
-- Derive reader verbs from source type, target type, and structural role. For
-  example, `intent --parent--> premise` can render as `serves`,
-  `intent --child--> service` can render as `requires`, and
-  `intent --child--> standard` can render as `governed by`.
+- Derive reader phrases from source type, target type, and structural role.
+  The semantic relationship display lookup lives in
+  `ready/standard/vocabulary.yaml` and must include source-to-target and
+  target-to-source phrases for the same stored edge. For example,
+  `intent --parent--> premise` renders as the intent `serves` the premise and
+  as the premise is `served by` the intent; `intent --child--> service` renders
+  as `requires` / `required by`; `intent --child--> intent` renders as
+  `fulfilled by` / `fulfills`; `intent --child--> standard` renders as
+  `governed by` / `governs`.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
 - Artifact descriptors only own artifact-to-artifact relationships. Product and

@@ -21,10 +21,17 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Flag records use `X*` ids. Optional class suffixes may identify
   well-understood flag classes, but every flag id must start with `X`.
 - Primitive `type` and primitive class are valid.
+- Product-logic primitive subtypes are valid according to
+  `ready/standard/vocabulary.yaml` when present.
+- Constraints, rules, quality bars, compliance needs, measurement rules, and
+  non-negotiable behavior are modeled as `standard` records, not premise
+  subtypes.
 - Structural refs point to existing ids.
 - Ref roles are one of `peer`, `parent`, or `child`; semantic verbs such as
   `serves`, `requires`, `governed_by`, `contains_premise`, and `questions` are
   derived reader labels and are not accepted as stored roles.
+- Semantic relationship display lookups in `vocabulary.yaml` define both
+  source-to-target and target-to-source phrases for the same stored edge.
 - Generated indexes do not carry independent primitive truth.
 - Flag records keep `type`, `claimable`, and `completion_proof` at the top level.
 - Decision flags use `type: decision`, stable `XD-*` ids, `fields.question`,
@@ -79,6 +86,8 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Service `status` is blocked without a blocker, evidence, proof required, or
   off-limits explanation.
 - Product-shaping ambiguity appears only in prose.
+- A local semantic relationship display extension defines a source-to-target
+  phrase without the matching target-to-source phrase.
 
 ## Importer behavior
 

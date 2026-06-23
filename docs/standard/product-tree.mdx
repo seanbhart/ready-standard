@@ -105,6 +105,11 @@ The first product-logic primitive types are:
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
 
+Keep these four primitive types stable and use subtypes from
+`ready/standard/vocabulary.yaml` to make the discovery process intuitive.
+Constraints are standards: use `standard` records for constraints, rules,
+quality bars, compliance needs, measurement rules, and non-negotiable behavior.
+
 Decision flags and flags are decision/workflow primitives and use X-family ids.
 Artifact descriptors are evidence/artifact primitives and use A-family ids.
 Governance docs are governance primitives. Product compilers should use

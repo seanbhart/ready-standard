@@ -20,6 +20,7 @@ is:
 
 - `README.md`
 - `manifest.yaml`
+- `vocabulary.yaml`
 - `skills/`
 - `templates/`
 

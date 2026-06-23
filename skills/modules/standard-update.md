@@ -69,6 +69,10 @@ to the explicitly requested standard package or docs work.
    - Semantic verbs such as `serves`, `requires`, `governed_by`,
      `contains_premise`, and `questions` are derived reader labels, not stored
      ref roles.
+   - Valid vocabulary lives in `ready/standard/vocabulary.yaml`.
+   - Semantic relationship display lookups in vocabulary.yaml include both
+     source-to-target and target-to-source phrases for the same stored edge,
+     such as `serves` / `served by`.
 8. Preserve project-specific governance and product truth. Do not rewrite
    product meaning merely to fit a template.
 9. Verify the migrated tree:

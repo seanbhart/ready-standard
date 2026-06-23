@@ -1,0 +1,48 @@
+---
+title: "Ready Vocabulary"
+description: "Where valid Ready kinds, types, primitive classes, subtypes, and relationship phrases are defined."
+---
+
+# Ready Vocabulary
+
+The canonical vocabulary source is [`vocabulary.yaml`](../../vocabulary.yaml).
+It is part of the portable `ready/standard/` package and is the source of truth
+for tools, validators, app views, and agents.
+
+Project teams may add local display labels, but stored Ready source records
+should use the values from `vocabulary.yaml` unless a project standard
+explicitly extends them.
+
+## What It Defines
+
+`vocabulary.yaml` defines:
+
+- record kinds and their schemas;
+- stage kinds;
+- primitive classes;
+- product-logic types;
+- product-logic subtypes such as `fields.premise_type` and
+  `fields.intent_type`;
+- flag types;
+- artifact descriptor types;
+- claim levels;
+- structural relationship roles;
+- semantic relationship display phrases in both directions.
+
+## Relationship Display
+
+Source records store only structural `refs` roles: `peer`, `parent`, and
+`child`. Reader views derive semantic phrases from the `relationship_display`
+entries in `vocabulary.yaml`.
+
+Each semantic display entry must define both `source_to_target` and
+`target_to_source` for the same stored edge. For example,
+`intent --parent--> premise` renders as the intent `serves` the premise, and as
+the premise is `served by` the intent.
+
+## Extension Rule
+
+If a project extends the vocabulary, the extension should be explicit,
+reviewable, and local to that project. Do not create new stored relationship
+roles when a semantic display phrase can derive from `peer`, `parent`, or
+`child`.

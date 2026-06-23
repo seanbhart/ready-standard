@@ -46,7 +46,7 @@ milestone: m1
 status: active
 fields:
   statement: The concise product-promise statement.
-  intent_type: functional
+  intent_type: behavior
   claim_level: process_proof
   actor: The user, operator, system, or agent this promise serves.
   trigger: The event or state that starts the promise.
@@ -83,6 +83,10 @@ Required fields:
 - `status`: product status, such as `active`, `draft`, or `blocked`
 - `fields`: type-specific structured content
 - `refs`: directed structural relationships
+
+Product-logic primitive subtypes live under `fields`, not top-level `type`.
+Valid subtype values live in [`vocabulary.yaml`](../../vocabulary.yaml).
+Constraints are `standard` records, not premise subtypes.
 
 Recommended fields:
 
@@ -162,26 +166,17 @@ lookup table, but the stored relationship remains only `peer`, `parent`, or
 `child`.
 
 Store one directed edge for each relationship. This reduces merge conflicts and
-prevents source and inverse refs from drifting; views derive inverse labels.
+prevents source and inverse refs from drifting; views derive both forward and
+reverse labels from the same stored edge.
 
-Common display lookup examples:
-
-| Current primitive | Ref role | Target primitive | Reader verb from current to target |
-| --- | --- | --- | --- |
-| intent | parent | premise | serves |
-| intent | child | premise | contains |
-| intent | child | service | requires |
-| intent | child | standard | governed by |
-| premise | child | intent | served by |
-| premise | child | premise | refined by |
-| service | child | service | requires |
-| service | child | standard | governed by |
-| flag | parent | any primitive | interrupts |
-| artifact | child | artifact | supports |
-| any primitive | peer | same or related primitive | related to |
-
-Projects may extend the display lookup table for local primitive classes, but
-must not add new stored relationship roles when a display verb will do.
+The semantic display lookup lives in `vocabulary.yaml`. The source-to-target
+phrase renders from the record that stores or owns the ref. The
+target-to-source phrase renders when a view shows the same edge from the target
+side. For example, `intent --parent--> premise` renders as the intent `serves`
+the premise, and as the premise is `served by` the intent. Projects may extend
+the display lookup table for local primitive classes, but every extension should
+define both directions and must not add new stored relationship roles when a
+display phrase will do.
 
 Reader tree nesting is a projection of the graph. A compact ref with
 `role: parent` means the target should be treated as the current primitive's
@@ -247,7 +242,8 @@ Examples:
 - `readyroom/artifact/v1`: evidence/artifact primitive for a typed artifact
   such as a customer statement, source document, reference resource, access
   reference, review protocol, proof corpus, code snippet, design artifact,
-  manifest, generated view, or handoff record.
+  or manifest. Artifact descriptors can support generated views and handoff
+  material without making those support roles separate artifact types.
 - `readyroom/governance/v1`: governance primitive for authority, process, skill,
   or template records when a project uses structured governance records.
 

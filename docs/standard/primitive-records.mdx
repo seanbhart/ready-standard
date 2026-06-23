@@ -74,7 +74,7 @@ milestone: m1
 status: active
 fields:
   statement: The product promise.
-  intent_type: functional
+  intent_type: behavior
   claim_level: process_proof
   actor: The user, operator, system, or agent this promise serves.
   trigger: The event or state that starts the promise.
@@ -133,10 +133,14 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
   `contains_premise`, or `questions` as ref roles. Reader views derive those
   labels from source type, target type, and structural role.
-- Example derived labels: `intent --parent--> premise` can render as
-  `serves`; `intent --child--> service` can render as `requires`;
-  `intent --child--> standard` can render as `governed by`; `intent
-  --child--> premise` can render as `contains`.
+- Derived relationship labels must include source-to-target and
+  target-to-source phrases for the same stored edge. For example,
+  `intent --parent--> premise` renders as the intent `serves` the premise and
+  as the premise is `served by` the intent; `intent --child--> service` renders
+  as `requires` / `required by`; `intent --child--> intent` renders as
+  `fulfilled by` / `fulfills`; `intent --child--> standard` renders as
+  `governed by` / `governs`; `intent --child--> premise` renders as
+  `contains` / `contained by`.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
 - Artifact descriptors only own artifact-to-artifact relationships; product and
@@ -159,6 +163,11 @@ linked evidence artifacts, and each evidence artifact must carry
 premise confidence as the equal-weight average of linked evidence artifact
 confidence values.
 
+Use `fields.premise_type` to name the discovery role. Valid values live in
+[`vocabulary.yaml`](../../vocabulary.yaml). Do not use premises for
+constraints. Constraints, rules, quality bars, compliance needs, measurement
+rules, and non-negotiable behavior are `standard` records.
+
 ## Intents
 
 Intents are product promises. Keep `statement` as the concise title-card
@@ -179,10 +188,9 @@ Use simple values such as `concept`, `process_proof`, `simulation_baseline`,
 This is not Completion Proof. It prevents an intent from implying stronger
 validation than the evidence supports.
 
-`intent_type` should name the main promise shape, such as `workflow`,
-`functional`, `quality_bearing`, `safety`, or `failure`. Use conservative
-values and rely on `validation_boundary` when an intent could be mistaken for a
-stronger claim.
+`intent_type` should name the main promise shape. Valid values live in
+`vocabulary.yaml`. Use conservative values and rely on `validation_boundary`
+when an intent could be mistaken for a stronger claim.
 
 Required services, standards, and intent dependencies belong in directed
 `refs`, not duplicate `fields`. Supporting examples and outputs belong in

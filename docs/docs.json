@@ -28,6 +28,7 @@
         "pages": [
           "reference/directory-layout",
           "reference/ready-yaml",
+          "reference/vocabulary",
           "reference/validator-rules"
         ]
       }

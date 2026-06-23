@@ -1,5 +1,5 @@
 schema: "readyroom/standard-resources/v1"
-version: "0.3.16"
+version: "0.3.21"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -7,6 +7,7 @@ portable_package:
   include:
     - "README.md"
     - "manifest.yaml"
+    - "vocabulary.yaml"
     - "skills/"
     - "templates/"
   exclude:
@@ -29,6 +30,9 @@ resources:
   - id: "RS-004"
     path: "skills/modules/standard-update.md"
     role: "standard_update_procedure"
+  - id: "RS-005"
+    path: "vocabulary.yaml"
+    role: "canonical_vocabulary"
 skill_modules:
   - "skills/modules/evidence-resource-review.md"
   - "skills/modules/access-readiness.md"
@@ -48,3 +52,4 @@ rules:
   - "The vendored package excludes Mintlify docs and Git metadata."
   - "Artifact descriptors support product truth and do not store governance or standard resources."
   - "Templates must use placeholders for project-specific authority, owners, services, and milestones."
+  - "Valid kinds, types, primitive classes, subtypes, claim levels, and relationship display phrases are centralized in vocabulary.yaml."
