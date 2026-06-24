@@ -1,5 +1,5 @@
 schema: "readyroom/standard-vocabulary/v1"
-version: "0.3.21"
+version: "0.3.23"
 record_kinds:
   - id: "primitive"
     schema: "readyroom/primitive/v1"
@@ -24,6 +24,11 @@ stage_kinds:
     description: "Historical stage, not default-selectable."
   - id: "template"
     description: "Reusable starter shape."
+scope_kinds:
+  - id: "stage"
+    description: "Records scoped to one stage under ready/stages/<stage-id>."
+  - id: "shared"
+    description: "Cross-stage product truth under ready/shared that any stage may reference without copying."
 primitive_classes:
   - id: "product_logic"
     description: "Durable source product truth: premises, intents, standards, and services."

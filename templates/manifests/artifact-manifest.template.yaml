@@ -1,13 +1,12 @@
 schema: "readyroom/artifact-tree/v1"
-artifact_root: "ready/{{MILESTONE_ID}}/artifacts"
-artifact_index: "ready/{{MILESTONE_ID}}/artifacts.md"
+artifact_root: "{{SCOPE_PATH}}/artifacts"
+artifact_index: "{{SCOPE_PATH}}/artifacts.md"
 descriptor_required_top_level:
   - schema
   - kind
   - id
   - type
   - title
-  - milestone
   - status
 descriptor_required_fields:
   - purpose

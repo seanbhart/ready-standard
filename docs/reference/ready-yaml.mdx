@@ -42,7 +42,6 @@ type: intent
 primitive_class: product_logic
 compiler_role: source_truth
 title: Human-readable title
-milestone: m1
 status: active
 fields:
   statement: The concise product-promise statement.
@@ -78,8 +77,6 @@ Required fields:
 - `id`: stable primitive id, such as `P-001`, `I-001`, `ST-001`, or `SV-001`
 - `type`: `premise`, `intent`, `standard`, or `service`
 - `title`: human-readable label
-- `milestone`: owning stage id; the v1 field name remains `milestone` even
-  though the root manifest standardizes the grouping as `stages`
 - `status`: product status, such as `active`, `draft`, or `blocked`
 - `fields`: type-specific structured content
 - `refs`: directed structural relationships
@@ -105,23 +102,35 @@ flags.
 Older v1 records can infer `primitive_class: product_logic` from
 `schema: readyroom/primitive/v1` and the four product-logic types.
 
-## Root stage registry
+Stage or shared-scope ownership is not stored inside primitive records. Tools
+derive scope from the file location declared by `ready/manifest.yaml`:
+`ready/shared/**` for shared records and each registered `stages[].path` for
+stage-scoped records. Extra top-level keys may be ignored by tools, but
+`milestone` is not part of the standard primitive contract.
 
-The root `ready/manifest.yaml` controls stage grouping and default selection.
-Use `stages`, not directory sort order, to describe stage meaning. Stage ids
-may be `m1`, `m2`, `alpha`, `client-pilot`, or another project-specific id;
-the examples currently use `m1`.
+## Root scope and stage registry
+
+The root `ready/manifest.yaml` controls shared-scope location, stage grouping,
+and default selection. Use `shared_scope`, `stage_root`, and `stages`, not
+directory sort order, to describe tree meaning. Stage ids may be `m1`, `m2`,
+`alpha`, `client-pilot`, or another project-specific id; the examples
+currently use `m1`.
 
 ```yaml
 schema: readyroom/product-tree-root/v1
 product: example
 source_root: ready
 default_stage: m1
+shared_scope:
+  id: shared
+  path: ready/shared
+  manifest: ready/shared/manifest.yaml
+stage_root: ready/stages
 stages:
   - id: m1
     title: M1
-    path: ready/m1
-    manifest: ready/m1/manifest.yaml
+    path: ready/stages/m1
+    manifest: ready/stages/m1/manifest.yaml
     kind: normal
     status: active
     order: 10
@@ -129,8 +138,8 @@ stages:
     coding_claims_enabled: false
   - id: end-state
     title: End State
-    path: ready/end-state
-    manifest: ready/end-state/manifest.yaml
+    path: ready/stages/end-state
+    manifest: ready/stages/end-state/manifest.yaml
     kind: horizon
     status: horizon
     order: 9999
@@ -140,6 +149,24 @@ stages:
 
 If `default_stage` is absent, tools choose the latest normal default candidate
 by `order`, then the latest normal stage, and only then non-normal stages.
+
+Shared primitives live under the configured `shared_scope.path`. When useful,
+describe how they apply with a structured scope:
+
+```yaml
+scope:
+  kind: shared
+  applies_to: all
+```
+
+For a shared primitive that applies only to some stages:
+
+```yaml
+scope:
+  kind: shared
+  applies_to:
+    stages: [m1, m2]
+```
 
 ## Primitive Relationships
 
@@ -209,7 +236,6 @@ type: seed
 primitive_class: decision_workflow
 compiler_role: workflow_state
 title: Build the first usable onboarding path
-milestone: m1
 status: ready
 claimable: true
 blocked_by: []
@@ -279,7 +305,6 @@ Required descriptor fields:
 - `id`
 - `type`
 - `title`
-- `milestone`
 - `status`
 - `fields.purpose`
 - `fields.content`
@@ -304,7 +329,6 @@ type: proof_corpus
 primitive_class: evidence_artifact
 compiler_role: evidence
 title: Synthetic replay proof run
-milestone: m1
 status: active
 privacy: sanitized_fixture
 fields:
@@ -371,7 +395,6 @@ kind: artifact
 id: AP-011
 type: proof_corpus
 title: Synthetic replay input corpus
-milestone: m1
 status: active
 fields:
   confidence: medium
@@ -381,7 +404,7 @@ fields:
   intended_use: Use as the input artifact for AP-010.
   format: jsonl
 files:
-  - path: ready/m1/artifacts/samples/synthetic-proof/inputs.jsonl
+  - path: ready/stages/m1/artifacts/samples/synthetic-proof/inputs.jsonl
     role: primary
     purpose: Replay input rows.
 ```
@@ -402,7 +425,6 @@ type: customer_statement
 primitive_class: evidence_artifact
 compiler_role: evidence
 title: Customer statement - buyer-specific pitch proof
-milestone: m1
 status: active
 privacy: user_provided_customer_statement
 retrieved_at: '2026-06-19'

@@ -74,7 +74,9 @@ descriptors even when one harness or proof run consumes them together.
 
 ## Storage Rules
 
-- Put generated and sanitized fixture files under the milestone artifact tree.
+- Put generated and sanitized fixture files under the artifact tree for the
+  scope they support, such as `ready/shared/artifacts/` or
+  `ready/stages/<stage-id>/artifacts/`.
 - Use `samples/` for typed proof corpus payloads, `resources/` for gathered reference
   resources, `manifests/` for machine-readable support manifests, `designs/` for
   visual artifacts, and `snippets/` for intentional handoff code or component

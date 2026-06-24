@@ -70,7 +70,6 @@ type: intent
 primitive_class: product_logic
 compiler_role: source_truth
 title: Browse and edit the primitive-backed product spine
-milestone: m1
 status: active
 fields:
   statement: The product promise.
@@ -119,6 +118,8 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Use the `.ready.yml` extension for product-logic primitive source records.
 - Use specialized Ready schemas for decision/workflow, artifact, or governance
   primitives when a narrower schema preserves a clearer contract.
+- Place records under the configured `ready/shared/` or `stages[].path`
+  directory. File location is authoritative for shared/stage assignment.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
 - Store relationships in `refs`, not prose.

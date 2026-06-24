@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.21
+version: 0.3.23
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -56,10 +56,7 @@ ready/
     product-orchestrator-charter.md
     product-process.md
     workspace-authority-and-access.md
-  end-state/
-    manifest.yaml
-    README.md
-  m1/
+  shared/
     manifest.yaml
     README.md
     premises/
@@ -68,11 +65,24 @@ ready/
     services/
     flags/
     artifacts/
-      samples/
-      resources/
-      snippets/
-      designs/
-      manifests/
+  stages/
+    end-state/
+      manifest.yaml
+      README.md
+    m1/
+      manifest.yaml
+      README.md
+      premises/
+      intents/
+      standards/
+      services/
+      flags/
+      artifacts/
+        samples/
+        resources/
+        snippets/
+        designs/
+        manifests/
 ```
 
 The root `manifest.yaml` must include a stage registry:
@@ -82,11 +92,16 @@ schema: readyroom/product-tree-root/v1
 product: example
 source_root: ready
 default_stage: m1
+shared_scope:
+  id: shared
+  path: ready/shared
+  manifest: ready/shared/manifest.yaml
+stage_root: ready/stages
 stages:
   - id: m1
     title: M1
-    path: ready/m1
-    manifest: ready/m1/manifest.yaml
+    path: ready/stages/m1
+    manifest: ready/stages/m1/manifest.yaml
     kind: normal
     status: active
     order: 10
@@ -94,8 +109,8 @@ stages:
     coding_claims_enabled: false
   - id: end-state
     title: End State
-    path: ready/end-state
-    manifest: ready/end-state/manifest.yaml
+    path: ready/stages/end-state
+    manifest: ready/stages/end-state/manifest.yaml
     kind: horizon
     status: horizon
     order: 9999
@@ -107,6 +122,12 @@ Use `kind: normal` for buildable product stages. Use `kind: horizon` for
 future concept shelves such as `end-state`. Do not rely on directory names or
 alphabetical order to decide the default stage.
 
+Use `ready/shared/` for product truth that applies across all or multiple
+stages. Do not put `shared` under `ready/stages/`; it is not selectable,
+ordered, claimable, or archived like a stage. File location is authoritative
+for shared/stage assignment; primitive records do not carry a `milestone`
+field.
+
 Primitive source records are `.ready.yml` files with:
 
 ```yaml
@@ -115,7 +136,6 @@ kind: primitive
 id: I-001
 type: intent
 title: Human-readable title
-milestone: m1
 status: draft
 fields:
   statement: Concise product-truth statement
@@ -462,6 +482,9 @@ primitives.
 Stage registry rules:
 
 - Use `stages` in `ready/manifest.yaml` as the authoritative list of stages.
+- Use `shared_scope` for `ready/shared/` and `stage_root` for `ready/stages/`.
+- Keep cross-stage product truth in `ready/shared/`; stage records should
+  reference shared primitives instead of copying them.
 - Give every stage `id`, `title`, `path`, `manifest`, `kind`, `status`, `order`,
   `default_candidate`, and `coding_claims_enabled`.
 - Prefer stage kinds `normal`, `horizon`, `experiment`, `archive`, and
@@ -479,11 +502,12 @@ Required product-logic primitive fields:
 - `id`
 - `type`
 - `title`
-- `milestone` (the owning stage id; the v1 primitive field name is still
-  `milestone`)
 - `status`
 - `fields`
 - `refs`
+
+Stage/shared ownership is derived from file location under `ready/shared/` or a
+registered `stages[].path`, not from a primitive field.
 
 Do not add root `summary` to primitives. If summary text is truly source data,
 it belongs under `fields.summary`; otherwise use the type's primary field.

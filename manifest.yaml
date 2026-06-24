@@ -1,5 +1,5 @@
 schema: "readyroom/standard-resources/v1"
-version: "0.3.21"
+version: "0.3.23"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -46,6 +46,7 @@ template_directories:
   primitives: "templates/primitives"
 rules:
   - "Project-specific governance lives in ready/governance."
+  - "Cross-stage product truth lives in ready/shared; stage-specific product truth lives in ready/stages/<stage-id>."
   - "Project-agnostic Ready resources and templates live in the Ready standard package."
   - "Product agents read a target project's vendored ready/standard package for normal tree edits."
   - "Fetching this source repo's latest standard is explicit standard-update work, not normal tree-edit behavior."

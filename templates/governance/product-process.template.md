@@ -24,7 +24,7 @@ decision flags or discovery flags.
 
 Every build-critical intent or service should have proof corpus inputs, expected
 outputs, public resources, user-only asks, or explicit blockers. Store safe
-resources as artifact descriptors under the milestone artifact tree and
+resources as artifact descriptors under the shared or stage artifact tree and
 sensitive material as refs.
 
 ## Access And Services

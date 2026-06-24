@@ -5,7 +5,6 @@ type: standard
 primitive_class: product_logic
 compiler_role: constraint
 title: "{{STANDARD_TITLE}}"
-milestone: "{{MILESTONE_ID}}"
 status: draft
 fields:
   rule: "{{VALIDATABLE_RULE}}"

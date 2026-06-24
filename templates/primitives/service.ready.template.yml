@@ -5,7 +5,6 @@ type: service
 primitive_class: product_logic
 compiler_role: dependency
 title: "{{SERVICE_TITLE}}"
-milestone: "{{MILESTONE_ID}}"
 status: draft
 fields:
   role: "{{WHAT_THIS_SERVICE_PROVIDES_OR_ENABLES}}"

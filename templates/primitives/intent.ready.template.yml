@@ -5,7 +5,6 @@ type: intent
 primitive_class: product_logic
 compiler_role: source_truth
 title: "{{INTENT_TITLE}}"
-milestone: "{{MILESTONE_ID}}"
 status: draft
 fields:
   statement: "{{AS_ACTOR_I_CAN_OUTCOME_SO_VALUE}}"

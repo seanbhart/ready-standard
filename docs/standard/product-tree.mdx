@@ -25,22 +25,29 @@ Markdown is still useful for navigation, governance, and generated views, but it
 is not the primitive source format. Top-level index files are allowed for
 navigation, but they must not duplicate record truth.
 
-## Stages
+## Scopes and stages
 
-The root `ready/manifest.yaml` owns the stage registry. Stage directories may be
-named `m1`, `m2`, `alpha`, `client-pilot`, or another project-specific id, but
-tools should use manifest metadata instead of inferring meaning from directory
-names or sort order. Current standard examples use `m1`.
+The root `ready/manifest.yaml` owns the shared-scope pointer and stage
+registry. Cross-stage product truth lives in `ready/shared/`; stage-specific
+truth lives in `ready/stages/<stage-id>/`. Stage directories may be named `m1`,
+`m2`, `alpha`, `client-pilot`, or another project-specific id, but tools should
+use manifest metadata instead of inferring meaning from directory names or sort
+order. Current standard examples use `m1`.
 
-Use `stages` in the root manifest:
+Use `shared_scope`, `stage_root`, and `stages` in the root manifest:
 
 ```yaml
+shared_scope:
+  id: shared
+  path: ready/shared
+  manifest: ready/shared/manifest.yaml
+stage_root: ready/stages
 default_stage: m1
 stages:
   - id: m1
     title: M1
-    path: ready/m1
-    manifest: ready/m1/manifest.yaml
+    path: ready/stages/m1
+    manifest: ready/stages/m1/manifest.yaml
     kind: normal
     status: active
     order: 10
@@ -48,8 +55,8 @@ stages:
     coding_claims_enabled: false
   - id: end-state
     title: End State
-    path: ready/end-state
-    manifest: ready/end-state/manifest.yaml
+    path: ready/stages/end-state
+    manifest: ready/stages/end-state/manifest.yaml
     kind: horizon
     status: horizon
     order: 9999
@@ -76,6 +83,11 @@ Default selection is deterministic:
 
 `end-state` is not special because of its name. It is excluded from the normal
 default path because it is `kind: horizon` and `default_candidate: false`.
+
+`shared` is not a stage. It is not ordered, selectable as a default stage,
+claimable as a release scope, or archived as a historical stage. Shared
+primitives can be referenced by any stage; tools should resolve those refs
+without copying the shared record into the stage.
 
 ## Primitive classes
 
@@ -123,12 +135,13 @@ Reusable Ready resources, task-skill packages, and templates live in the Ready
 standard package. Together they constrain how product truth is created,
 changed, approved, and handed to agents.
 
-Artifacts live under milestone artifact directories such as
-`ready/m1/artifacts/`. Artifact descriptors are evidence/artifact primitives
-that support product logic and proof with samples, snippets, design assets,
-manifests, screenshots, and handoff notes. Attached payload files can use their
-native formats when they are clearly referenced by a descriptor. Each descriptor
-has one purpose; files with different purposes need different descriptors.
+Artifacts live under the scope they support, such as `ready/shared/artifacts/`
+or `ready/stages/m1/artifacts/`. Artifact descriptors are evidence/artifact
+primitives that support product logic and proof with samples, snippets, design
+assets, manifests, screenshots, and handoff notes. Attached payload files can
+use their native formats when they are clearly referenced by a descriptor. Each
+descriptor has one purpose; files with different purposes need different
+descriptors.
 
 ## Generated views
 

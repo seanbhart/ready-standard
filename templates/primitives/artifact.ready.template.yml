@@ -5,7 +5,6 @@ type: "{{customer_statement|source_document|reference_resource|access_reference|
 primitive_class: evidence_artifact
 compiler_role: evidence
 title: "{{ARTIFACT_TITLE}}"
-milestone: "{{MILESTONE_ID}}"
 status: active
 privacy: "{{safe_ref_or_public_resource|sanitized_fixture|private_ref}}"
 retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"

@@ -5,7 +5,6 @@ type: premise
 primitive_class: product_logic
 compiler_role: source_truth
 title: "{{PREMISE_TITLE}}"
-milestone: "{{MILESTONE_ID}}"
 status: draft
 fields:
   premise_type: "{{PREMISE_TYPE_FROM_READY_VOCABULARY}}"

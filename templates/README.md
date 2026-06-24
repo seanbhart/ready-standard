@@ -7,8 +7,8 @@ own product truth.
 Template groups:
 
 - [governance/](governance/) - project-specific governance document templates.
-- [manifests/](manifests/) - root, governance, stage/milestone, and artifact manifest
-  templates.
+- [manifests/](manifests/) - root, shared-scope, governance,
+  stage/milestone, and artifact manifest templates.
 - [primitives/](primitives/) - starter product-logic, decision/workflow, and
   evidence/artifact primitive templates.
 

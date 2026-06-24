@@ -23,6 +23,10 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Primitive `type` and primitive class are valid.
 - Product-logic primitive subtypes are valid according to
   `ready/standard/vocabulary.yaml` when present.
+- Shared primitives live under the configured `shared_scope.path` and do not
+  appear in `stages` as selectable stages.
+- Stage-scoped primitives live under a registered `stages[].path`. File
+  location is authoritative for stage assignment.
 - Constraints, rules, quality bars, compliance needs, measurement rules, and
   non-negotiable behavior are modeled as `standard` records, not premise
   subtypes.
@@ -57,7 +61,7 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Artifact descriptor ids are unique within their artifact family and globally
   unique when a project uses global id lookup.
 - Artifact descriptors carry the required top-level fields: `schema`, `kind`,
-  `id`, `type`, `title`, `milestone`, and `status`.
+  `id`, `type`, `title`, and `status`.
 - Artifact descriptors carry `fields.purpose`, `fields.content`,
   `fields.intended_use`, and `fields.format`; evidence and proof descriptors
   also carry `fields.confidence` and `fields.provenance`.

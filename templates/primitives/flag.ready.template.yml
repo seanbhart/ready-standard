@@ -5,7 +5,6 @@ type: "{{discovery|seed|change|blocker|drift|proof_gap|coverage_gap}}"
 primitive_class: decision_workflow
 compiler_role: workflow_state
 title: "{{FLAG_TITLE}}"
-milestone: "{{MILESTONE_ID}}"
 status: open
 claimable: false
 blocked_by: []

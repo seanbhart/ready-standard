@@ -1,26 +1,22 @@
-schema: "readyroom/product-tree/v1"
+schema: "readyroom/product-tree-shared/v1"
 product: "{{PRODUCT_ID}}"
-stage:
-  id: "{{MILESTONE_ID}}"
-  title: "{{MILESTONE_TITLE}}"
-  kind: "normal"
-  status: "active"
-  order: 10
-  default_candidate: true
-  coding_claims_enabled: false
+scope:
+  id: "shared"
+  kind: "shared"
+  applies_to: "all"
 source_model: "file_per_record_ready_yaml"
-source_root: "ready/stages/{{MILESTONE_ID}}"
+source_root: "ready/shared"
 governance_docs:
-  root: "../../governance/"
-  agent_guidelines: "../../governance/agent-guidelines.md"
-  product_orchestrator_charter: "../../governance/product-orchestrator-charter.md"
-  product_process: "../../governance/product-process.md"
-  workspace_authority_and_access: "../../governance/workspace-authority-and-access.md"
+  root: "../governance/"
+  agent_guidelines: "../governance/agent-guidelines.md"
+  product_orchestrator_charter: "../governance/product-orchestrator-charter.md"
+  product_process: "../governance/product-process.md"
+  workspace_authority_and_access: "../governance/workspace-authority-and-access.md"
 ready_standard:
   version: "0.3.23"
   repository: "https://github.com/seanbhart/ready-standard"
-  package_path: "../../standard"
-  package_manifest: "../../standard/manifest.yaml"
+  package_path: "../standard"
+  package_manifest: "../standard/manifest.yaml"
   docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.23/docs"
 primitive_directories:
   premises: "premises/"
@@ -49,7 +45,7 @@ primitive_classes:
       manifests: "artifacts/manifests/"
   governance:
     directories:
-      governance: "../../governance/"
+      governance: "../governance/"
 flag_directories:
   seed: "flags/seed/"
   change: "flags/change/"
