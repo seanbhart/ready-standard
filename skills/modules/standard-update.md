@@ -73,6 +73,9 @@ to the explicitly requested standard package or docs work.
    - Semantic relationship display lookups in vocabulary.yaml include both
      source-to-target and target-to-source phrases for the same stored edge,
      such as `serves` / `served by`.
+   - Standards that govern premises, intents, services, flags, or other standards
+     should usually migrate to `peer` refs. Keep `child` standard refs only when
+     preserving older fallback semantics or intentional nesting.
 8. Preserve project-specific governance and product truth. Do not rewrite
    product meaning merely to fit a template.
 9. Verify the migrated tree:

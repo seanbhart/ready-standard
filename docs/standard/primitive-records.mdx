@@ -139,9 +139,13 @@ into typed `fields`, `refs`, `artifacts`, or flags.
   `intent --parent--> premise` renders as the intent `serves` the premise and
   as the premise is `served by` the intent; `intent --child--> service` renders
   as `requires` / `required by`; `intent --child--> intent` renders as
-  `fulfilled by` / `fulfills`; `intent --child--> standard` renders as
+  `fulfilled by` / `fulfills`; `intent --peer--> standard` renders as
   `governed by` / `governs`; `intent --child--> premise` renders as
   `contains` / `contained by`.
+- Standards that govern premises, intents, services, flags, or other standards
+  should normally be `peer` refs because governance is lateral product truth,
+  not decomposition. Child standard refs remain valid fallback semantics for
+  older trees or intentionally nested subordinate standards.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
 - Artifact descriptors only own artifact-to-artifact relationships; product and
@@ -193,9 +197,9 @@ validation than the evidence supports.
 `vocabulary.yaml`. Use conservative values and rely on `validation_boundary`
 when an intent could be mistaken for a stronger claim.
 
-Required services, standards, and intent dependencies belong in directed
-`refs`, not duplicate `fields`. Supporting examples and outputs belong in
-`input_samples`, `output_samples`, and `artifacts`. Quality-bearing or
+Required services, governing standards, and intent dependencies belong in
+directed `refs`, not duplicate `fields`. Supporting examples and outputs belong
+in `input_samples`, `output_samples`, and `artifacts`. Quality-bearing or
 live-variable intents must carry an Operating Envelope when behavior can vary
 materially after release.
 
@@ -206,9 +210,11 @@ seed or change flags.
 
 Standards state rules for implementation, measurement, judgment, behavior, or
 maintenance. Global standards apply through workspace standard refs; primitive
-specific standards apply through structural refs that reader views can label
-`governed by`. Active standards should not carry deferred or future-only rules;
-put that work in a flag in a later or horizon milestone instead.
+specific standards normally apply through `peer` refs that reader views can
+label `governed by`. Use `child` standard refs only as fallback semantics for
+older trees or when the source intentionally nests a subordinate standard.
+Active standards should not carry deferred or future-only rules; put that work
+in a flag in a later or horizon milestone instead.
 
 ## Services
 

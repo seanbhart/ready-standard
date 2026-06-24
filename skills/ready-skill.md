@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.23
+version: 0.3.24
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -368,8 +368,8 @@ Intents:
   `concept`, `process_proof`, `simulation_baseline`, `fixture_validated`,
   `human_labeled_validated`, or `production_monitored`. Do not use it as
   Completion Proof.
-- Put required services, standards, and intent dependencies in `refs`, not in
-  duplicate `fields`.
+- Put required services, governing standards, and intent dependencies in `refs`,
+  not in duplicate `fields`.
 - Every committed intent should trace to at least one premise unless explicitly
   marked exploratory.
 - Quality-bearing or live-variable intents need an operating envelope.
@@ -379,6 +379,9 @@ Standards:
 - Capture rules for implementation, behavior, measurement, judgment,
   maintenance, safety, privacy, accessibility, and proof.
 - Make standards concrete enough to validate.
+- Prefer `peer` refs when a standard governs a premise, intent, service, flag,
+  or another standard. Use `child` standard refs only as fallback semantics for
+  an older tree or when a record intentionally nests a subordinate standard.
 - Avoid vague standards like "make it clean" or "good UX" unless the rule says
   what that means.
 - Do not put deferred or future-only rules on active standards. Capture that
@@ -573,14 +576,16 @@ Relationship rules:
   `intent --parent--> premise` renders as the intent `serves` the premise and
   as the premise is `served by` the intent; `intent --child--> service` renders
   as `requires` / `required by`; `intent --child--> intent` renders as
-  `fulfilled by` / `fulfills`; `intent --child--> standard` renders as
+  `fulfilled by` / `fulfills`; `intent --peer--> standard` renders as
   `governed by` / `governs`.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
 - Artifact descriptors only own artifact-to-artifact relationships. Product and
   workflow records point to artifacts through `artifacts`.
-- Required services and standards belong in structural `refs`, not duplicated
-  under intent `fields`.
+- Required services and governing standards belong in structural `refs`, not
+  duplicated under intent `fields`. Standards usually govern through `peer`
+  refs; existing `child` standard refs are retained as fallback display
+  semantics.
 
 Lifecycle rules:
 

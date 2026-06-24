@@ -86,6 +86,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Intent lacks input/output sample refs when sample artifacts exist.
 - Intent names a product surface only in prose instead of `required_surfaces`.
 - Intent lacks required service or standard refs when its work depends on them.
+- Standard governance uses a `child` ref where a `peer` ref would represent the
+  same lateral governance more clearly. Child standard refs are still valid
+  fallback semantics.
 - Quality-bearing intent lacks an Operating Envelope.
 - Service `status` is blocked without a blocker, evidence, proof required, or
   off-limits explanation.

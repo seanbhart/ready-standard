@@ -41,6 +41,15 @@ Each semantic display entry must define both `source_to_target` and
 `intent --parent--> premise` renders as the intent `serves` the premise, and as
 the premise is `served by` the intent.
 
+Standards that govern product-logic primitives normally use `peer` refs:
+`intent --peer--> standard`, `premise --peer--> standard`, and
+`service --peer--> standard` render as `governed by` / `governs`.
+Decision/workflow flags that are governed by standards use the same `peer`
+display.
+`standard --peer--> standard` renders as `co-governs with` in both directions.
+The vocabulary keeps child-standard display phrases as fallback semantics for
+older trees and intentionally nested subordinate standards.
+
 ## Extension Rule
 
 If a project extends the vocabulary, the extension should be explicit,
