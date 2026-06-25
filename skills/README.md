@@ -11,7 +11,7 @@ project-agnostic standard resources, not a project's authority policy.
 - [modules/design-artifact-readiness.md](modules/design-artifact-readiness.md) - design,
   mockup, flow, component, snippet, and visual proof readiness.
 - [modules/coding-handoff-readiness.md](modules/coding-handoff-readiness.md) - claimable flag
-  and work-package readiness for coding agents.
+  and resolved target-state handoff readiness for coding agents.
 - [modules/perspective-review.md](modules/perspective-review.md) - psychological, physical,
   logical, evidence, design, and access challenge review.
 - [modules/standard-update.md](modules/standard-update.md) - sync the latest

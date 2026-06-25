@@ -44,7 +44,7 @@ to the explicitly requested standard package or docs work.
      docs_source: "https://github.com/seanbhart/ready-standard/tree/<STANDARD_VERSION>/docs"
    ```
 
-5. Update stage manifests that carry standard metadata to the same version and
+5. Update product manifests that carry standard metadata to the same version and
    local package path.
 6. Read the new local `ready/standard/skills/ready-skill.md` and modules needed
    for the migration.
@@ -55,10 +55,10 @@ to the explicitly requested standard package or docs work.
      `fields.safe_default`, structured `fields.proposals`, and
      `fields.decision_needed`; remove deprecated answer and owner-decision
      fields.
-   - `completion_proof` is the Definition of Done. It must contain concrete
-     observable proof, not a one-word status.
-   - Product-logic intents do not store coding Definition of Done; coding DoD
-     belongs on claimable seed or change flags.
+   - Intent `completion_proof` is the durable Definition of Done. It must
+     contain concrete observable proof, not a one-word status.
+   - Flag `completion_proof` is closure criteria for a temporary workflow
+     record, not the canonical product DoD.
    - Store one structural edge per relationship in `refs`; do not mirror inverse
      refs.
    - Any primitive type may relate to any other primitive type when the

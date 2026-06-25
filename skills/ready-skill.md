@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.25
+version: 0.3.27
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -10,7 +10,7 @@ Use this skill to create or revise a Ready product tree. The skill is about the
 Ready standard and about acting as a strong product leader: discover the real
 problem, shape the smallest useful solution, gather the evidence and resources
 needed to build it, identify the services and standards that make it safe, and
-cut away what is unnecessary for the next product stage.
+cut away what is unnecessary for the intended product version.
 
 This is an orchestration skill. Load specialist Ready Skill modules when the
 tree needs focused work:
@@ -24,8 +24,8 @@ tree needs focused work:
 - [modules/design-artifact-readiness.md](modules/design-artifact-readiness.md) -
   designs, mockups, screenshots, flows, component specs, and modular UI snippets.
 - [modules/coding-handoff-readiness.md](modules/coding-handoff-readiness.md) -
-  work-package readiness, blockers, acceptance proof, and coding-agent
-  instructions.
+  resolved target-state handoffs, blockers, acceptance proof, and coding-agent
+  constraints.
 - [modules/perspective-review.md](modules/perspective-review.md) -
   subagent review from psychological, physical, logical, evidence, design, and
   access perspectives.
@@ -58,90 +58,54 @@ ready/
     workspace-authority-and-access.md
   settings/
     product-agent-context.ready.yml
-  shared/
+  product/
     manifest.yaml
     README.md
     premises/
     intents/
     standards/
     services/
-    flags/
     artifacts/
-  stages/
-    end-state/
-      manifest.yaml
-      README.md
-    m1/
-      manifest.yaml
-      README.md
-      premises/
-      intents/
-      standards/
-      services/
-      flags/
-      artifacts/
-        samples/
-        resources/
-        snippets/
-        designs/
-        manifests/
+      samples/
+      resources/
+      snippets/
+      designs/
+      manifests/
+  flags/
+    decisions/
+    blockers/
+    drift/
+    proof-gaps/
 ```
 
-The root `manifest.yaml` must include a stage registry:
+The root `manifest.yaml` must declare product, flags, governance, settings, and
+standard package locations:
 
 ```yaml
 schema: readyroom/product-tree-root/v1
 product: example
 source_root: ready
-default_stage: m1
+product_directory: ready/product
+flags_directory: ready/flags
+governance_directory: ready/governance
 settings_directory: ready/settings
-shared_scope:
-  id: shared
-  path: ready/shared
-  manifest: ready/shared/manifest.yaml
-stage_root: ready/stages
-stages:
-  - id: m1
-    title: M1
-    path: ready/stages/m1
-    manifest: ready/stages/m1/manifest.yaml
-    kind: normal
-    status: active
-    order: 10
-    default_candidate: true
-    coding_claims_enabled: false
-  - id: end-state
-    title: End State
-    path: ready/stages/end-state
-    manifest: ready/stages/end-state/manifest.yaml
-    kind: horizon
-    status: horizon
-    order: 9999
-    default_candidate: false
-    coding_claims_enabled: false
+ready_standard:
+  version: "0.3.27"
+  repository: "https://github.com/seanbhart/ready-standard"
+  package_path: "ready/standard"
+  package_manifest: "ready/standard/manifest.yaml"
 ```
-
-Use `kind: normal` for buildable product stages. Use `kind: horizon` for
-future concept shelves such as `end-state`. Do not rely on directory names or
-alphabetical order to decide the default stage. Stage kinds are optional
-metadata for stages with special selection or workflow semantics; do not create
-a `horizon`, `experiment`, or `archive` stage just to hold durable product
-definitions that can live in `ready/shared/`.
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
 manage the Ready tree. Settings files should use explicit settings schemas,
 avoid raw secrets, and not duplicate product truth that belongs in primitives,
 governance, artifacts, or flags.
 
-Use `ready/shared/` for durable product truth that applies across all or
-multiple stages, including persistent and end-state premises, intents,
-standards, services, and reusable artifacts that may not be fully implemented
-yet. Do not put `shared` under `ready/stages/`; it is not selectable, ordered,
-claimable, or archived like a stage. File location is authoritative for
-shared/stage assignment; primitive records do not carry the legacy `milestone`
-field.
-Use stage directories mostly for temporary or stage-specific decisions, flags,
-proof work, and product primitives that are intentionally scoped to one stage.
+Use `ready/product/` for canonical intended product truth for this Ready tree
+version, including premises, intents, standards, services, product artifacts,
+and reusable proof material that may not be fully implemented yet. Use
+`ready/flags/` for temporary decisions, blockers, discrepancy notes, and claim
+coordination. File location is authoritative for product/workflow assignment.
 
 Primitive source records are `.ready.yml` files with:
 
@@ -159,8 +123,8 @@ artifacts: []
 owner_notes: []
 ```
 
-Reader-friendly docs, app views, work packages, tickets, and briefs compile from
-the tree. They are not the primitive source of truth.
+Reader-friendly docs, app views, resolved target-state coding handoffs, tickets,
+and briefs compile from the tree. They are not the primitive source of truth.
 
 ## Product-Leadership Stance
 
@@ -176,10 +140,13 @@ Act like a product leader, discoverer, and practical unblocker:
 - Direct the user only for information, samples, credentials, accounts, business
   judgment, or private resources that cannot be safely obtained another way.
 - Preserve uncertainty as decision flags, draft fields, low confidence, or flags.
-- Prefer a smaller next stage that proves the core promise.
-- Cut nice-to-have work until it clearly supports the next stage.
+- Prefer a smaller coherent product version that proves the core promise.
+- Cut nice-to-have work until it clearly supports the intended product version.
 - Keep implementation details out of primitives unless they are true product
   constraints, interfaces, standards, artifacts, services, or proof expectations.
+- Treat the Ready tree on the current branch as the intended product state for
+  that branch. Use Git branches or worktrees for substantial hypothetical
+  concepts instead of storing speculative fragments in canonical product truth.
 
 Docs, code, conversation, public sources, generated samples, designs, and model
 output are evidence. They do not automatically become approved product truth.
@@ -206,9 +173,9 @@ Process:
 5. Extract services from dependencies needed to build, prove, run, or monitor
    the product.
 6. Identify missing samples, resources, designs, accounts, credentials, and
-   environments needed to make the next stage buildable.
+   environments needed to make the intended product buildable.
 7. Preserve conflicts instead of averaging them.
-8. Ask the user to resolve only product-shaping gaps that affect the next stage.
+8. Ask the user to resolve only product-shaping gaps that affect the intended product.
 9. Create draft or active `.ready.yml` primitives with evidence confidence.
 10. Create flags or decision flags where work is not ready.
 
@@ -235,7 +202,7 @@ Process:
 6. Ask questions that connect implementation reality to product truth: who uses
    it, what need it serves, what success looks like, what must not break, what
    resources are missing, what credentials or accounts are needed, and what
-   should be cut from the next stage.
+   should be cut from the intended product.
 7. Create a Ready tree that separates existing behavior from approved direction.
 8. Use flags or decision flags for gaps that code cannot answer.
 
@@ -255,8 +222,8 @@ Process:
    condition.
 4. Understand current alternatives and why they fail.
 5. Shape one or more solution candidates.
-6. Choose the next product stage and add it to the root stage registry.
-7. Cut scope until the next stage can prove the core promise.
+6. Choose the smallest coherent intended product version.
+7. Cut scope until that product version can prove the core promise.
 8. Identify standards, services, artifacts, proof corpora, resources, accounts,
    credentials, designs, and proof expectations.
 9. Create the Ready tree and review it with the user.
@@ -314,8 +281,8 @@ Access and services:
 - Where should credentials live so coding agents can access them safely?
 - What `.env.example`, `.env.local`, secret manager, CLI login, vault, or
   provider-owned session is required?
-- What command or UI check proves the service is usable enough for the next
-  stage?
+- What command or UI check proves the service is usable enough for the intended
+  product?
 
 Design and handoff:
 
@@ -325,10 +292,10 @@ Design and handoff:
   component contracts?
 - Which acceptance proof tells the product lead the coding work is done?
 
-Next stage:
+Product version:
 
-- What is the smallest useful stage?
-- What does this stage need to prove?
+- What is the smallest useful coherent product version?
+- What does this product version need to prove?
 - What can be faked, mocked, manually operated, or deferred without breaking the
   core promise?
 - What must be real for the proof to matter?
@@ -337,7 +304,7 @@ Next stage:
 
 ## Ready Primitive Classes
 
-Create only the primitives needed to make the next stage legible. A Ready
+Create only the primitives needed to make the intended product legible. A Ready
 primitive is a typed, addressable, reusable unit of product knowledge, decision
 state, workflow state, evidence, or governance context. Do not assume every
 primitive has the same compiler authority.
@@ -359,7 +326,7 @@ Use these classes:
 
 Premises:
 
-- Capture why the product, stage, or feature should exist.
+- Capture why the product or feature should exist.
 - Use `fields.premise_type` to clarify the discovery role. Valid values are in
   `ready/standard/vocabulary.yaml`.
 - Put constraints, rules, quality bars, compliance needs, and measurement rules
@@ -399,9 +366,10 @@ Standards:
   an older tree or when a record intentionally nests a subordinate standard.
 - Avoid vague standards like "make it clean" or "good UX" unless the rule says
   what that means.
-- Do not put deferred or future-only rules on active standards. Capture that
-  work as a flag in a later or horizon stage, with the future proof gate on
-  the flag.
+- Do not put deferred or future-only rules on active standards. Use a Ready
+  branch or worktree for a coherent alternate future product. Use a flag on the
+  current branch only when a decision, blocker, discrepancy, or proof gap needs
+  attention.
 
 Services:
 
@@ -425,15 +393,21 @@ Decision flags:
 
 Flags:
 
-- Capture attention, blockers, drift, proof gaps, seed work, and change work.
+- Capture attention, blockers, drift, proof gaps, claim coordination, and
+  Completion Proof for intended product truth that is unsatisfied or unproven.
 - Keep coding readiness out of product-logic primitive bodies.
-- A flag can be a primitive without being claimable implementation work.
+- A flag can be a primitive without being claimable implementation work, and it
+  should not prescribe a coding delta.
 - Seed and change flags become claimable only after status, blockers,
   top-level `claimable: true`, top-level Completion Proof, and workspace policy
   allow it.
-- Completion Proof is the flag's Definition of Done. It must name observable
-  evidence, not a one-word status. Keep it on ready seed or change flags, not on
-  product-logic intent bodies.
+- Intent Completion Proof is the durable Definition of Done for rebuilding the
+  product. A flag's `completion_proof` is only the closure criterion for that
+  temporary workflow record.
+- Apps may derive unstored discrepancies by comparing Ready truth to code,
+  evidence, generated views, assessments, or prior Ready commits. Store a flag
+  when the discrepancy needs durable attention, blocker tracking, claim
+  coordination, explicit Completion Proof, or review history.
 
 ### Evidence/Artifact Primitives
 
@@ -497,26 +471,17 @@ Ready schemas such as `readyroom/flag/v1` and `readyroom/artifact/v1` when they
 are the clearer machine contract for decision/workflow or evidence/artifact
 primitives.
 
-Stage registry rules:
+Tree directory rules:
 
-- Use `stages` in `ready/manifest.yaml` as the authoritative list of stages.
-- Use `settings_directory` for `ready/settings/`, `shared_scope` for
-  `ready/shared/`, and `stage_root` for `ready/stages/`.
-- Keep durable cross-stage product truth in `ready/shared/`; stage records
-  should reference shared primitives instead of copying them.
-- Use stage directories mostly for temporary or stage-specific decisions, flags,
-  proof work, and product primitives that are intentionally scoped to one stage.
-- Give every stage `id`, `title`, `path`, `manifest`, `kind`, `status`, `order`,
-  `default_candidate`, and `coding_claims_enabled`.
-- Prefer stage kinds `normal`, `horizon`, `experiment`, `archive`, and
-  `template`.
-- Use stage kinds when the stage itself has a special purpose; use
-  `ready/shared/` for durable product definitions that are not stage-specific.
-- Set `default_stage` when the product lead has chosen a specific stage.
-- If `default_stage` is absent, tools choose the highest `order` normal stage
-  with `default_candidate: true`, then the highest `order` normal stage.
-- Keep `end-state` or other horizon stages as `kind: horizon` and
-  `default_candidate: false`.
+- Use `product_directory` for `ready/product/`.
+- Use `flags_directory` for `ready/flags/`.
+- Use `settings_directory` for `ready/settings/`.
+- Use `governance_directory` for `ready/governance/`.
+- Keep canonical intended product truth in `ready/product/`.
+- Keep temporary workflow records, discrepancy notes, blockers, and decisions in
+  `ready/flags/`.
+- Use Git commits, branches, and worktrees for product history, alternatives,
+  and substantial hypothetical concepts.
 
 Required product-logic primitive fields:
 
@@ -529,8 +494,8 @@ Required product-logic primitive fields:
 - `fields`
 - `refs`
 
-Stage/shared ownership is derived from file location under `ready/shared/` or a
-registered `stages[].path`, not from a primitive field. Settings files under
+Product/workflow ownership is derived from file location under `ready/product/`
+or `ready/flags/`, not from a primitive field. Settings files under
 `settings_directory` are not primitive source records.
 
 Do not add root `summary` to primitives. If summary text is truly source data,
@@ -642,11 +607,11 @@ Credential rules:
 - Record only safe secret-location references: variable names, storage system,
   owner, required scope, setup status, and verification command.
 
-## Cutting The Next Stage
+## Cutting The Product Version
 
 After drafting the tree, cut it down.
 
-Keep only work that is required to prove the next stage:
+Keep only product truth that is required to prove the intended product version:
 
 - the core user problem or desire;
 - the minimal solution path;
@@ -656,10 +621,10 @@ Keep only work that is required to prove the next stage:
   or prove the target;
 - the flags needed to make gaps visible.
 
-Move everything else out of the next stage. Use future stage notes, draft
-primitives, decision flags, or flags when the idea is useful but not needed now.
-Record that future work in a later `normal` stage, an `experiment` stage, or a
-`horizon` stage rather than leaving it hidden in chat.
+Move everything else out of the current product tree. Use a Ready branch or worktree for a
+substantial hypothetical concept that should be evaluated as a coherent possible
+end state. Use decision flags or flags on the current branch only when the team
+needs to choose, prove, coordinate, or block against that concept.
 
 Good cuts are explicit. Say what was removed and why.
 
@@ -667,7 +632,7 @@ Good cuts are explicit. Say what was removed and why.
 
 A Ready tree is usable when:
 
-- The next stage is named and bounded.
+- The intended product version is coherent and bounded.
 - Active intents trace to premises.
 - Required standards and services are represented.
 - Service blockers, proof required, access needs, and implementation
@@ -679,7 +644,8 @@ A Ready tree is usable when:
 - Required accounts, credentials, environments, and secret-location references
   are available or explicitly blocked.
 - Unknowns are decision flags, low-confidence fields, or flags.
-- Coding-ready work is gated by seed or change flags, not primitive prose.
+- Coding agents receive the resolved intended product state rather than only
+  discrepancy context.
 - Claimable flags have clear scope, constraints, acceptance proof, resources,
   environment setup, and blocker policy.
 - Artifact descriptors reference sensitive or bulky source safely.

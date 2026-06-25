@@ -23,10 +23,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Primitive `type` and primitive class are valid.
 - Product-logic primitive subtypes are valid according to
   `ready/standard/vocabulary.yaml` when present.
-- Shared primitives live under the configured `shared_scope.path` and do not
-  appear in `stages` as selectable stages.
-- Stage-scoped primitives live under a registered `stages[].path`. File
-  location is authoritative for stage assignment.
+- Product-logic primitives live under the configured `product_directory`.
+- Flag records live under the configured `flags_directory` unless a project
+  intentionally embeds workflow records beside related product files.
 - Settings files live under `settings_directory` when present. They use explicit
   settings schemas and are not primitive source records.
 - Constraints, rules, quality bars, compliance needs, measurement rules, and
@@ -39,6 +38,8 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Semantic relationship display lookups in `vocabulary.yaml` define both
   source-to-target and target-to-source phrases for the same stored edge.
 - Generated indexes do not carry independent primitive truth.
+- Committed intents carry concrete `completion_proof` that functions as intent
+  Definition of Done, not a one-word status.
 - Flag records keep `type`, `claimable`, and `completion_proof` at the top level.
 - Decision flags use `type: decision`, stable `XD-*` ids, `fields.question`,
   `fields.safe_default`, structured `fields.proposals`, and concrete top-level
@@ -50,6 +51,8 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Seed and change flags are non-claimable unless they pass the claim gate.
 - Claimable flags carry concrete Completion Proof that functions as the
   Definition of Done, not a one-word status.
+- Claimable coding handoffs resolve to the intended product state; a flag that
+  only describes a delta or implementation edit instruction is not enough.
 - `ready` flags with non-empty `blocked_by` remain non-claimable.
 - Product-logic primitive files do not carry implementation lifecycle state.
 - Decision/workflow primitive files do not become coding claims unless their
@@ -97,14 +100,18 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Service `status` is blocked without a blocker, evidence, proof required, or
   off-limits explanation.
 - Product-shaping ambiguity appears only in prose.
+- A canonical Ready branch contains speculative concept fragments that should be
+  evaluated as an alternate Ready branch or worktree.
 - A local semantic relationship display extension defines a source-to-target
   phrase without the matching target-to-source phrase.
-- Durable product primitives live in stage scope when they appear to apply
-  across stages; prefer shared scope unless the record is temporary,
-  experimental, historical, or explicitly scoped to one stage.
+- A generated or displayed target-state handoff is not traceable to product
+  primitives, intent Completion Proof, relevant flags, standards, services, and
+  artifacts.
 
 ## Importer behavior
 
 Validators should report exact file paths and ids. They should not silently fix
 semantic errors, average conflicting docs, treat evidence/artifact primitives as
-approved product behavior, or promote open flags into coding workflow.
+approved product behavior, promote open flags into coding workflow, or turn
+derived discrepancies into stored flags unless durable attention, blockers,
+Completion Proof, claim coordination, or review history are needed.

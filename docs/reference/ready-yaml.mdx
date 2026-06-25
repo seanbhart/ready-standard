@@ -63,6 +63,8 @@ fields:
   output_samples: Sample artifact ids for representative outputs.
   required_surfaces: User, operator, or internal surfaces required.
   operating_envelope: Quality/runtime limits when behavior can vary.
+completion_proof:
+  - Observable evidence that proves the intent exists.
 refs:
   - role: parent
     id: P-001
@@ -79,6 +81,8 @@ Required fields:
 - `title`: human-readable label
 - `status`: product status, such as `active`, `draft`, or `blocked`
 - `fields`: type-specific structured content
+- `completion_proof`: required for committed intents; recommended for any
+  product-logic primitive that needs proof
 - `refs`: directed structural relationships
 
 Product-logic primitive subtypes live under `fields`, not top-level `type`.
@@ -102,54 +106,31 @@ flags.
 Older v1 records can infer `primitive_class: product_logic` from
 `schema: readyroom/primitive/v1` and the four product-logic types.
 
-Stage or shared-scope ownership is not stored inside primitive records. Tools
-derive scope from the file location declared by `ready/manifest.yaml`:
-`ready/shared/**` for shared records and each registered `stages[].path` for
-stage-scoped records. Extra top-level keys may be ignored by tools, but the
-legacy `milestone` field is not part of the standard primitive contract.
+Directory ownership is not stored inside primitive records. Tools derive record
+authority from the file location declared by `ready/manifest.yaml`, usually
+`ready/product/**` for product truth and `ready/flags/**` for workflow records.
+Extra top-level keys may be ignored by tools.
 
-## Root scope and stage registry
+## Root tree manifest
 
-The root `ready/manifest.yaml` controls settings location, shared-scope
-location, stage grouping, and default selection. Use `settings_directory`,
-`shared_scope`, `stage_root`, and `stages`, not directory sort order, to
-describe tree meaning. Stage ids may be `m1`, `m2`, `alpha`, `client-pilot`,
-or another project-specific id; the examples currently use `m1`.
+The root `ready/manifest.yaml` controls product, flags, governance, settings,
+and local standard package locations. Use explicit manifest fields, not
+directory sort order, to describe tree meaning.
 
 ```yaml
 schema: readyroom/product-tree-root/v1
 product: example
 source_root: ready
-default_stage: m1
+product_directory: ready/product
+flags_directory: ready/flags
+governance_directory: ready/governance
 settings_directory: ready/settings
-shared_scope:
-  id: shared
-  path: ready/shared
-  manifest: ready/shared/manifest.yaml
-stage_root: ready/stages
-stages:
-  - id: m1
-    title: M1
-    path: ready/stages/m1
-    manifest: ready/stages/m1/manifest.yaml
-    kind: normal
-    status: active
-    order: 10
-    default_candidate: true
-    coding_claims_enabled: false
-  - id: end-state
-    title: End State
-    path: ready/stages/end-state
-    manifest: ready/stages/end-state/manifest.yaml
-    kind: horizon
-    status: horizon
-    order: 9999
-    default_candidate: false
-    coding_claims_enabled: false
+ready_standard:
+  version: "0.3.27"
+  repository: "https://github.com/seanbhart/ready-standard"
+  package_path: "ready/standard"
+  package_manifest: "ready/standard/manifest.yaml"
 ```
-
-If `default_stage` is absent, tools choose the latest normal default candidate
-by `order`, then the latest normal stage, and only then non-normal stages.
 
 `settings_directory` is optional but recommended when an app manages the Ready
 tree. Files under `ready/settings/` are git-tracked workspace/app settings, not
@@ -157,24 +138,10 @@ primitive source records. They should use explicit settings schemas, avoid raw
 secrets, and not duplicate product truth from primitives, governance,
 artifacts, or flags.
 
-Shared primitives live under the configured `shared_scope.path`. Durable
-product definitions should usually live in shared scope and be referenced by
-stage records. When useful, describe how they apply with a structured scope:
-
-```yaml
-scope:
-  kind: shared
-  applies_to: all
-```
-
-For a shared primitive that applies only to some stages:
-
-```yaml
-scope:
-  kind: shared
-  applies_to:
-    stages: [m1, m2]
-```
+Product primitives live under the configured `product_directory`. Flags and
+other temporary workflow records live under the configured `flags_directory`.
+Git commits, branches, and worktrees carry product evolution and alternate
+concepts; the standard does not define additional product-state overlays.
 
 ## Primitive Relationships
 
@@ -241,7 +208,8 @@ and `to` so the direction remains unambiguous.
 ## Flag metadata
 
 Flag records use `schema: readyroom/flag/v1` and keep the claim gate at the top
-level:
+level. They point at intended product truth that needs attention, proof, or
+coordination; they do not store implementation deltas.
 
 ```yaml
 schema: readyroom/flag/v1
@@ -265,7 +233,9 @@ owner_notes: []
 ```
 
 `completion_proof` is the Definition of Done for the flag. It must be concrete
-proof content, not a one-word status such as `ready` or `done`.
+proof content, not a one-word status such as `ready` or `done`. Coding handoffs
+compile the resolved intended product state from product primitives, standards,
+services, artifacts, and relevant flags before a coding agent claims work.
 
 ## Specialized Primitive Schemas
 
@@ -279,7 +249,7 @@ artifact primitive.
 Examples:
 
 - `readyroom/flag/v1`: decision/workflow primitive for attention, blockers,
-  drift, proof gaps, seed work, or change work.
+  drift, proof gaps, claim coordination, and proof gates.
 - `readyroom/artifact/v1`: evidence/artifact primitive for a typed artifact
   such as a customer statement, source document, reference resource, access
   reference, review protocol, proof corpus, code snippet, design artifact,
@@ -419,7 +389,7 @@ fields:
   intended_use: Use as the input artifact for AP-010.
   format: jsonl
 files:
-  - path: ready/stages/m1/artifacts/samples/synthetic-proof/inputs.jsonl
+  - path: ready/product/artifacts/samples/synthetic-proof/inputs.jsonl
     role: primary
     purpose: Replay input rows.
 ```

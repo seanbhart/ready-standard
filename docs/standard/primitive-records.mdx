@@ -20,7 +20,7 @@ is optimized for parsing, validation, diffing, and merge review.
 Use primitive class to describe what kind of authority a record carries:
 
 - `product_logic`: premises, intents, standards, and services that define the
-  product behavior or constraints.
+  intended product behavior or constraints for the current Ready branch.
 - `decision_workflow`: decision flags, blockers, drift, proof gaps, and
   other workflow or ambiguity records.
 - `evidence_artifact`: artifact descriptors for resources, proof corpora, snippets,
@@ -29,7 +29,9 @@ Use primitive class to describe what kind of authority a record carries:
 - `governance`: authority, process, agent, skill, and template records that
   constrain how product truth may change.
 
-Compiler role matters as much as class. A proof-corpus primitive may be valid
+Compiler role matters as much as class. A product-logic primitive states what
+should exist; it should not prescribe how to change the current implementation
+unless the implementation detail is itself a product constraint. A proof-corpus primitive may be valid
 process or regression evidence without being approved product behavior. A
 seed-flag primitive may be workflow state without being implementation
 permission until its claim gate passes.
@@ -47,14 +49,14 @@ two-letter class suffix after `A` for well-understood artifact classes, such as
 `AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for snippets, `AD-*`
 for designs, or `AM-*` for manifests. One-off artifacts may use plain `A-*`.
 
-`X` primitives are temporary process interrupts. They exist when normal product
-flow needs to be blocked, altered, routed, reviewed, escalated, approved,
-corrected, or decided. All flag records start with `X`. Projects may add a
+`X` primitives are temporary process interrupts and proof gates. They exist when
+intended product truth needs attention, proof, routing, review, escalation,
+approval, correction, or a decision. All flag records start with `X`. Projects may add a
 one- or two-letter class suffix after `X` for well-understood flag classes,
 such as `XD-*` for decisions, `XS-*` for seed flags, `XC-*` for change flags,
 or `XR-*` for resource/readiness flags. An `X` item should close once the
-required action or decision is complete, leaving the durable result on the
-affected intent, change record, artifact, proof, workflow state, or trace.
+required decision, proof, or coordination is complete, leaving the durable result
+on the affected product primitive, artifact, proof, workflow state, or trace.
 
 ## Common rules
 
@@ -91,6 +93,8 @@ fields:
   output_samples: Sample artifact ids for representative outputs.
   required_surfaces: Surfaces that must exist for the promise to be inspectable.
   operating_envelope: Runtime or quality limits when behavior can vary.
+completion_proof:
+  - Observable evidence that proves the intent exists.
 refs:
   - role: parent
     id: P-001
@@ -118,8 +122,8 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Use the `.ready.yml` extension for product-logic primitive source records.
 - Use specialized Ready schemas for decision/workflow, artifact, or governance
   primitives when a narrower schema preserves a clearer contract.
-- Place records under the configured `ready/shared/` or `stages[].path`
-  directory. File location is authoritative for shared/stage assignment.
+- Place product-logic records under the configured `ready/product/` directory.
+  Place workflow flags under the configured `ready/flags/` directory.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
 - Store relationships in `refs`, not prose.
@@ -203,8 +207,9 @@ in `input_samples`, `output_samples`, and `artifacts`. Quality-bearing or
 live-variable intents must carry an Operating Envelope when behavior can vary
 materially after release.
 
-Completion Proof does not live on persistent intent bodies. It belongs on ready
-seed or change flags.
+Completion Proof lives on committed intents because it defines how to know the
+intended product behavior exists. A flag can carry separate closure criteria
+when a temporary workflow record needs to be removed.
 
 ## Standards
 
@@ -213,8 +218,10 @@ maintenance. Global standards apply through workspace standard refs; primitive
 specific standards normally apply through `peer` refs that reader views can
 label `governed by`. Use `child` standard refs only as fallback semantics for
 older trees or when the source intentionally nests a subordinate standard.
-Active standards should not carry deferred or future-only rules; put that work
-in a flag in a later or horizon stage instead.
+Active standards should not carry deferred or future-only rules. Use a Ready
+branch or worktree for a coherent alternate future product, and use a flag on
+the current branch only when a decision, blocker, discrepancy, or proof gap
+needs attention.
 
 ## Services
 
@@ -241,9 +248,10 @@ belongs in Git, events, assessments, or implementation refs.
 Flags are decision/workflow primitives. They mark attention, blockers, drift,
 proof gaps, and coding-readiness state without putting lifecycle state into
 product-logic primitive bodies. A flag can be a primitive without being a coding
-ticket; claimability still depends on flag type, status, blockers, Completion
-Proof, and workspace policy. Flag records keep `type`, `claimable`, and
-`completion_proof` at the top level.
+ticket or implementation recipe; it identifies intended product truth that is
+unsatisfied, unproven, blocked, or disputed. Claimability still depends on flag
+type, status, blockers, Completion Proof, and workspace policy. Flag records
+keep `type`, `claimable`, and `completion_proof` at the top level.
 
 ## Artifact Records
 

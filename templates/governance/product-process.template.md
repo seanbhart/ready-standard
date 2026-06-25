@@ -24,7 +24,7 @@ decision flags or discovery flags.
 
 Every build-critical intent or service should have proof corpus inputs, expected
 outputs, public resources, user-only asks, or explicit blockers. Store safe
-resources as artifact descriptors under the shared or stage artifact tree and
+resources as artifact descriptors under `ready/product/artifacts/` and
 sensitive material as refs.
 
 ## Access And Services
@@ -44,10 +44,13 @@ external sources can remain attached payloads or safe refs.
 
 ## Coding Handoff
 
-Seed and change flags become claimable only when scope, non-scope, required
-standards, services, artifacts, setup, samples, expected outputs, Completion
-Proof, and blocker policy are clear. Completion Proof is the flag's Definition
-of Done and must name observable evidence, not a one-word status.
+Seed and change flags become claimable only when the resolved target-state
+handoff, scope, non-scope, required standards, services, artifacts, setup,
+samples, expected outputs, intent Completion Proof, and blocker policy are
+clear. A handoff gives coding agents the intended end state plus proof gates,
+not a delta or edit instructions. Intent Completion Proof is the durable
+Definition of Done; flag Completion Proof is only closure criteria for the
+temporary flag.
 
 ## Review
 

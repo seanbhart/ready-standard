@@ -13,7 +13,7 @@ environment files, or other service access.
 ## Responsibilities
 
 - Identify every service, account, credential, environment, permission, and CLI
-  login needed for the next stage.
+  login needed for the intended product.
 - Record service readiness as product truth, not as a private assumption.
 - Create or request `.env.example` entries for variable names and non-secret
   setup hints.
@@ -31,7 +31,7 @@ environment files, or other service access.
 - Do not commit tokens, cookies, private keys, API keys, OAuth secrets, database
   passwords, personal access tokens, or raw credential files.
 - Do not store secrets in primitives, artifacts, samples, logs, screenshots, or
-  generated work packages.
+  generated coding handoffs.
 - If a credential is accidentally exposed, stop and tell the user to rotate it.
 
 ## Account Readiness Checklist

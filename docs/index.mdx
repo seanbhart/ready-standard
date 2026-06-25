@@ -11,13 +11,19 @@ governance records, and generated-view inputs live in ordinary files so teams
 can branch, review, merge, fork, and compare product decisions with the same
 tools they use for code.
 
+A Ready branch represents one coherent intended product state. Git history and
+branches carry evolution and hypothetical alternatives; apps may derive
+discrepancies by comparing Ready truth to code, evidence, generated views, or
+prior commits. Stored flags add durable proof, attention, blocker, and
+coordination gates; they are not change instructions.
+
 The standard separates primitive class from compiler authority:
 
 - Product-logic `.ready.yml` primitives describe why the product exists, what
   it promises, how it must behave, and what it depends on.
-- X primitives describe temporary process interrupts: open Decisions,
-  attention, blockers, routing, review, approval, correction, escalation, and
-  work-readiness state.
+- X primitives describe temporary process interrupts and proof gates: open
+  Decisions, attention, blockers, routing, review, approval, correction,
+  escalation, drift, and claim-readiness state.
 - A primitives describe durable supporting content: proof corpora, documents,
   resources, snippets, designs, manifests, reports, and generated-view inputs.
   Large or sensitive payload files may live beside the primitive record as
@@ -41,33 +47,27 @@ ready/
   manifest.yaml
   governance/
   settings/
-  shared/
+  product/
     manifest.yaml
+    premises/
+    intents/
     standards/
     services/
-  stages/
-    m1/
-      manifest.yaml
-      premises/
-      intents/
-      standards/
-      services/
-      flags/
-        seed/
-        change/
-        discovery/
-      artifacts/
-        samples/
-        resources/
+    artifacts/
+      samples/
+      resources/
+  flags/
+    decisions/
+    blockers/
+    drift/
 ```
 
 The directory names can vary by product, but the standard requires one durable
 record per Ready primitive, stable ids in the record, directed refs where
-relationships matter, explicit compiler roles, and explicit claim gates before
-coding work can start. Persistent product definitions usually live in
-`ready/shared/`; stage directories mostly hold temporary or stage-specific
-workflow, decisions, flags, proof work, and any product primitives intentionally
-scoped to one stage. Git-tracked workspace/app settings may live under
+relationships matter, explicit compiler roles, and explicit proof gates before
+coding work can start. Intended product truth lives in `ready/product/`.
+Temporary workflow records, discrepancy notes, blockers, and decisions may live
+in `ready/flags/`. Git-tracked workspace/app settings may live under
 `ready/settings/`.
 
 Reusable Ready skills and templates live in the portable standard package. A

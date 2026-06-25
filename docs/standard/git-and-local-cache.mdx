@@ -5,9 +5,10 @@ description: "How the product tree uses Git while keeping private local context 
 
 # Git and Local Cache
 
-The product tree is designed for Git. Branches can hold product experiments,
-forks, stage alternatives, or implementation plans. Merges represent accepted
-product truth.
+The product tree is designed for Git. A Ready branch represents one coherent
+intended product state. Branches can hold product experiments, forks, or
+hypothetical concepts without storing speculative fragments in the canonical
+branch. Merges represent accepted product truth.
 
 ## Git responsibilities
 
@@ -17,7 +18,8 @@ Git handles:
 - Reviewing primitive edits.
 - Merging accepted product truth.
 - Forking a product tree for experiments.
-- Comparing product implementation plans.
+- Comparing alternate intended product states.
+- Comparing current Ready truth to prior Ready commits.
 - Keeping an auditable history of accepted decisions.
 
 ## App responsibilities
@@ -25,6 +27,8 @@ Git handles:
 The Ready Room app can layer workflow on top:
 
 - Interpret the tree for PM, developer, designer, and customer views.
+- Derive discrepancies by comparing Ready truth to implementation, evidence,
+  generated views, assessment snapshots, or prior Ready commits.
 - Manage pulls, rebases, commits, and branches.
 - Run local product agents and coding handoff.
 - Display local or remote portal targets.
@@ -45,6 +49,11 @@ Local cache is not committed. When a conversation produces durable product
 truth, the app or product agent promotes that truth into the right primitive
 class: product-logic primitive, decision/workflow flag including a Decision flag, evidence
 summary, artifact descriptor, or safe artifact ref.
+
+If a conversation produces a substantial hypothetical concept, prefer a Ready
+branch or worktree that represents that possible end state. The canonical branch
+should link to the concept only through a decision or flag when the team needs to
+choose, prove, or coordinate.
 
 ## Sensitive and bulky material
 

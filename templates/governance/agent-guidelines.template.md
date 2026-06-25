@@ -9,8 +9,8 @@ These guidelines govern product-agent behavior for this project.
 1. `ready/governance/product-process.md`
 2. `ready/governance/product-orchestrator-charter.md`
 3. `ready/governance/workspace-authority-and-access.md`
-4. Stage product-logic primitives, decision/workflow primitives, and
-   evidence/artifact primitives.
+4. Resolved intended product state compiled from `ready/product/`, relevant
+   `ready/flags/` records, and evidence/artifact primitives.
 5. User chat and local cache as evidence only.
 
 ## Operating Rules

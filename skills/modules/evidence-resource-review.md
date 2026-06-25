@@ -22,7 +22,7 @@ user can provide.
 - Generate synthetic fixtures when the product behavior can be proven without
   private or real user data.
 - Ask the user for private or user-only material only when it materially changes
-  the next stage.
+  the intended product.
 - Store resources as artifact descriptors or safe references,
   not as hidden chat memory.
 - Record source, license or terms risk, retrieval date, privacy state,
@@ -74,9 +74,8 @@ descriptors even when one harness or proof run consumes them together.
 
 ## Storage Rules
 
-- Put generated and sanitized fixture files under the artifact tree for the
-  scope they support, such as `ready/shared/artifacts/` or
-  `ready/stages/<stage-id>/artifacts/`.
+- Put generated and sanitized fixture files under the artifact tree they
+  support, usually `ready/product/artifacts/`.
 - Use `samples/` for typed proof corpus payloads, `resources/` for gathered reference
   resources, `manifests/` for machine-readable support manifests, `designs/` for
   visual artifacts, and `snippets/` for intentional handoff code or component

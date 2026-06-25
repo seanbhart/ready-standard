@@ -17,7 +17,7 @@ must implement faithfully.
 - Gather existing designs, screenshots, mockups, prototypes, brand assets,
   design-system references, copy, and flow diagrams.
 - Create low-fidelity mockups, HTML prototypes, component specs, or generated
-  visual references when no useful design exists and the next stage needs one.
+  visual references when no useful design exists and the intended product needs one.
 - Provide modular snippets or component contracts when they reduce ambiguity for
   coding agents.
 - Mark prototype code as handoff reference unless the user explicitly makes it
@@ -27,8 +27,7 @@ must implement faithfully.
 
 ## Artifact Guidance
 
-Store design-support material as artifact descriptors under stage
-artifacts:
+Store design-support material as artifact descriptors under product artifacts:
 
 - `designs/` for mockups, screenshots, visual references, diagrams, and design
   handoff notes;

@@ -26,6 +26,8 @@ fields:
   output_samples: "{{OUTPUT_SAMPLE_ARTIFACT_IDS_OR_NONE}}"
   required_surfaces: "{{USER_OPERATOR_OR_INTERNAL_SURFACES_REQUIRED}}"
   operating_envelope: "{{QUALITY_OR_LIVE_VARIABLE_OPERATING_LIMITS_OR_NONE}}"
+completion_proof:
+  - "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
 refs: []
 artifacts: []
 owner_notes: []

@@ -1,7 +1,7 @@
 ---
 name: ready-coding-handoff-readiness
 version: 0.1.0
-description: Ensure Ready tree work packages are complete enough for coding agents to claim, build, verify, and return evidence without avoidable blockers.
+description: Ensure Ready target-state handoffs are complete enough for coding agents to claim, build, verify, and return evidence without avoidable blockers.
 ---
 
 # Coding Handoff Readiness
@@ -10,8 +10,8 @@ Use this module before any seed or change flag is made claimable.
 
 ## Responsibilities
 
-- Convert product truth into coding-agent-ready flags and work packages without
-  turning the product agent into the coding agent.
+- Compile product truth into coding-agent-ready resolved target-state handoffs
+  without turning the product agent into the coding agent.
 - Ensure every claimable flag names scope, non-scope, dependencies, required
   standards, required services, required artifacts, setup needs, acceptance
   proof, and blocker policy.
@@ -22,12 +22,14 @@ Use this module before any seed or change flag is made claimable.
 - Allow blocked flags to be ready only when `blocked_by` prevents coding claims.
 - Require concrete top-level Completion Proof before review and closure.
 
-## Work-Package Checklist
+## Target-State Handoff Checklist
 
 A coding agent should receive:
 
-- the decision/workflow flag id and product-logic primitive branch;
-- intended product behavior;
+- the decision/workflow flag id when a stored flag gates the work;
+- the resolved intended product state, not just a delta;
+- the product-logic primitive ids, standards, services, artifacts, and proof
+  gates that define that target state;
 - scope and non-scope;
 - user-facing and system-facing acceptance criteria;
 - required services with status, blockers, access, proof, and instructions;
@@ -47,6 +49,9 @@ A coding agent should receive:
   decision, or user instruction requires it.
 - The coding environment chooses implementation strategy inside the product,
   service, authority, and proof constraints.
+- Do not hand coding agents only a diff or change instruction. Diffs,
+  implementation evidence, and prior commits are context; the claimable target is
+  the resolved intended state.
 - Do not make a flag claimable because the prose sounds clear while access,
   samples, designs, or proof are missing.
 - Do not treat one-word statuses such as `ready`, `done`, or `complete` as
@@ -56,5 +61,6 @@ A coding agent should receive:
 ## Completion Check
 
 The module is complete when a coding agent can claim the work, set up the
-environment, understand the target, implement within constraints, run proof,
-attach evidence, and know when to stop or report a blocker.
+environment, understand the resolved target state, choose a clean implementation
+strategy within constraints, run proof, attach evidence, and know when to stop or
+report a blocker.

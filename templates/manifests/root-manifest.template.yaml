@@ -1,36 +1,13 @@
 schema: "readyroom/product-tree-root/v1"
 product: "{{PRODUCT_ID}}"
 source_root: "ready"
-default_stage: "{{DEFAULT_STAGE_ID}}"
 governance_directory: "ready/governance"
 settings_directory: "ready/settings"
+product_directory: "ready/product"
+flags_directory: "ready/flags"
 ready_standard:
-  version: "0.3.25"
+  version: "0.3.27"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.25/docs"
-shared_scope:
-  id: "shared"
-  path: "ready/shared"
-  manifest: "ready/shared/manifest.yaml"
-stage_root: "ready/stages"
-stages:
-  - id: "{{DEFAULT_STAGE_ID}}"
-    title: "{{DEFAULT_STAGE_TITLE}}"
-    path: "ready/stages/{{DEFAULT_STAGE_ID}}"
-    manifest: "ready/stages/{{DEFAULT_STAGE_ID}}/manifest.yaml"
-    kind: "normal"
-    status: "active"
-    order: 10
-    default_candidate: true
-    coding_claims_enabled: false
-  - id: "end-state"
-    title: "End State"
-    path: "ready/stages/end-state"
-    manifest: "ready/stages/end-state/manifest.yaml"
-    kind: "horizon"
-    status: "horizon"
-    order: 9999
-    default_candidate: false
-    coding_claims_enabled: false
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.27/docs"

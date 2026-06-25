@@ -1,11 +1,7 @@
-schema: "readyroom/product-tree-shared/v1"
+schema: "readyroom/product-tree-product/v1"
 product: "{{PRODUCT_ID}}"
-scope:
-  id: "shared"
-  kind: "shared"
-  applies_to: "all"
 source_model: "file_per_record_ready_yaml"
-source_root: "ready/shared"
+source_root: "ready/product"
 governance_docs:
   root: "../governance/"
   agent_guidelines: "../governance/agent-guidelines.md"
@@ -13,11 +9,11 @@ governance_docs:
   product_process: "../governance/product-process.md"
   workspace_authority_and_access: "../governance/workspace-authority-and-access.md"
 ready_standard:
-  version: "0.3.25"
+  version: "0.3.27"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "../standard"
   package_manifest: "../standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.25/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.27/docs"
 primitive_directories:
   premises: "premises/"
   intents: "intents/"
@@ -30,12 +26,6 @@ primitive_classes:
       intents: "intents/"
       standards: "standards/"
       services: "services/"
-  decision_workflow:
-    directories:
-      decisions: "flags/discovery/"
-      seed_flags: "flags/seed/"
-      change_flags: "flags/change/"
-      discovery_flags: "flags/discovery/"
   evidence_artifact:
     directories:
       samples: "artifacts/samples/"
@@ -46,12 +36,6 @@ primitive_classes:
   governance:
     directories:
       governance: "../governance/"
-flag_directories:
-  seed: "flags/seed/"
-  change: "flags/change/"
-  discovery: "flags/discovery/"
-decision_directories:
-  open: "flags/discovery/"
 artifact_directories:
   index: "artifacts.md"
   manifest: "artifacts/manifest.yaml"

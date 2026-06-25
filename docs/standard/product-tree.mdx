@@ -11,6 +11,11 @@ extension so importers know exactly how to parse it. The tree should behave like
 a healthy codebase: fragmented enough to review, explicit enough to validate,
 and structured enough to compile into different views.
 
+A Ready tree on a branch represents the intended product state for that branch.
+It should say what should exist, not how to change the current implementation.
+Git history records how product truth evolved; Ready primitives describe the
+currently intended state.
+
 ## Source of truth
 
 Each primitive owns its durable truth in one `.ready.yml` file:
@@ -25,79 +30,38 @@ Markdown is still useful for navigation, governance, and generated views, but it
 is not the primitive source format. Top-level index files are allowed for
 navigation, but they must not duplicate record truth.
 
-## Scopes and stages
+Hypothetical ideas and concepts should usually be modeled as alternate Ready
+branches or worktrees rather than speculative fragments inside the canonical
+branch. A decision or flag can point to that branch when the team needs to choose
+or coordinate, but the idea's product shape should remain a coherent intended
+state tree.
 
-The root `ready/manifest.yaml` owns the shared-scope pointer, stage registry,
-and optional settings directory. Durable product definitions usually live in
-`ready/shared/`: persistent premises, intents, standards, services, and reusable
-artifacts that describe the product across stages, whether or not every part is
-implemented yet. Stage directories usually hold temporary or stage-specific
-workflow state such as decisions, seed/change/discovery flags, stage proof, and
-the product primitives that are genuinely scoped to one stage. Stage directories
-may be named `m1`, `m2`, `alpha`, `client-pilot`, or another project-specific
-id, but tools should use manifest metadata instead of inferring meaning from
-directory names or sort order. Current standard examples use `m1`.
+## Tree directories
 
-Use `shared_scope`, `stage_root`, and `stages` in the root manifest:
+The root `ready/manifest.yaml` owns the product, flags, governance, settings,
+and standard package locations. The standard does not define additional
+product-state overlays. A Ready tree version should state one coherent intended product; Git
+commits, branches, and worktrees carry history, alternatives, and hypothetical
+concepts.
+
+Use `product_directory`, `flags_directory`, `governance_directory`, and
+`settings_directory` in the root manifest:
 
 ```yaml
-shared_scope:
-  id: shared
-  path: ready/shared
-  manifest: ready/shared/manifest.yaml
-stage_root: ready/stages
-default_stage: m1
+product_directory: ready/product
+flags_directory: ready/flags
+governance_directory: ready/governance
 settings_directory: ready/settings
-stages:
-  - id: m1
-    title: M1
-    path: ready/stages/m1
-    manifest: ready/stages/m1/manifest.yaml
-    kind: normal
-    status: active
-    order: 10
-    default_candidate: true
-    coding_claims_enabled: false
-  - id: end-state
-    title: End State
-    path: ready/stages/end-state
-    manifest: ready/stages/end-state/manifest.yaml
-    kind: horizon
-    status: horizon
-    order: 9999
-    default_candidate: false
-    coding_claims_enabled: false
 ```
 
-Stage kinds:
+`ready/product/` is the canonical source of intended product truth for the
+current tree version. It holds premises, intents, standards, services, product
+artifacts, proof corpora, and other records that define what should exist.
 
-- `normal`: buildable product stage.
-- `horizon`: future product concept shelf, not claimable implementation work.
-- `experiment`: alternative branch or product plan.
-- `archive`: historical stage, not default-selectable.
-- `template`: reusable starter shape.
-
-Stage kinds are optional metadata for stages with special selection or workflow
-semantics. Do not create a `horizon`, `experiment`, or `archive` stage just to
-hold durable product definitions that can live in `ready/shared/`. Use stage
-kinds when the stage itself has a special purpose.
-
-Default selection is deterministic:
-
-1. Use `default_stage` when it points to a valid stage.
-2. Otherwise choose the highest `order` stage where `kind: normal` and
-   `default_candidate: true`.
-3. Otherwise choose the highest `order` stage where `kind: normal`.
-4. Only fall back to horizon, experiment, archive, or template stages when no
-   normal stage exists.
-
-`end-state` is not special because of its name. It is excluded from the normal
-default path because it is `kind: horizon` and `default_candidate: false`.
-
-`shared` is not a stage. It is not ordered, selectable as a default stage,
-claimable as a release scope, or archived as a historical stage. Shared
-primitives can be referenced by any stage; tools should resolve those refs
-without copying the shared record into the stage.
+`ready/flags/` is a peer workflow directory. It may hold Decision flags,
+blockers, discrepancy notes, version-review notes, and claim-coordination
+records. Flags can point at product truth, but they do not own the product
+truth and they do not replace intent Completion Proof.
 
 `ready/settings/` is not a primitive scope. It holds git-tracked workspace and
 app settings that help tools manage the Ready tree, such as product-agent
@@ -130,7 +94,7 @@ Core classes:
 
 The first product-logic primitive types are:
 
-- `premise`: why the product, stage, or feature should exist.
+- `premise`: why the product or feature should exist.
 - `intent`: what the product promises to do.
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
@@ -153,22 +117,30 @@ Reusable Ready resources, task-skill packages, and templates live in the Ready
 standard package. Together they constrain how product truth is created,
 changed, approved, and handed to agents.
 
-Artifacts live under the scope they support, such as `ready/shared/artifacts/`
-or `ready/stages/m1/artifacts/`. Artifact descriptors are evidence/artifact
-primitives that support product logic and proof with samples, snippets, design
-assets, manifests, screenshots, and handoff notes. Attached payload files can
-use their native formats when they are clearly referenced by a descriptor. Each
-descriptor has one purpose; files with different purposes need different
-descriptors.
+Artifacts that support product truth usually live under `ready/product/artifacts/`.
+Flags may link to those artifacts or keep their own small workflow artifacts
+under `ready/flags/` when the artifact only supports the temporary flag.
+Artifact descriptors are evidence/artifact primitives that support product
+logic and proof with samples, snippets, design assets, manifests, screenshots,
+and handoff notes. Attached payload files can use their native formats when they
+are clearly referenced by a descriptor. Each descriptor has one purpose; files
+with different purposes need different descriptors.
 
 ## Generated views
 
-Compiled docs, work packages, designer briefs, PM summaries, customer-facing
-explanations, and app views are projections of the product tree. They can be
-cached or committed only when marked generated and traceable to source records.
+Compiled docs, resolved coding handoffs, designer briefs, PM summaries,
+customer-facing explanations, and app views are projections of the product tree.
+They can be cached or committed only when marked generated and traceable to
+source records.
 
 A human-authored document may propose a product change, but the accepted change
 must be applied back to the product tree.
+
+Apps may compile a resolved target-state specification from product primitives,
+standards, services, artifacts, and any relevant flags. Human views may
+highlight differences from code, evidence, or prior commits, but coding
+handoffs should provide the resolved intended state plus proof gates, not just
+stored differences.
 
 ## Non-goals
 

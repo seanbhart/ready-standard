@@ -56,7 +56,7 @@ Access/handoff reviewer:
 
 - What account, credential, environment, CLI login, service readiness, setup
   command, or blocker would stop coding?
-- What work-package instruction is ambiguous?
+- What target-state handoff or proof gate is ambiguous?
 - Which flags should stay non-claimable?
 
 ## Review Output
@@ -81,4 +81,4 @@ The review is complete when every material issue becomes one of:
 - a service readiness update;
 - a flag change;
 - a decision flag;
-- an explicit cut from the next stage.
+- an explicit cut from the intended product.
