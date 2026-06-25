@@ -40,6 +40,7 @@ render richer PM, developer, designer, and customer views.
 ready/
   manifest.yaml
   governance/
+  settings/
   shared/
     manifest.yaml
     standards/
@@ -63,7 +64,11 @@ ready/
 The directory names can vary by product, but the standard requires one durable
 record per Ready primitive, stable ids in the record, directed refs where
 relationships matter, explicit compiler roles, and explicit claim gates before
-coding work can start.
+coding work can start. Persistent product definitions usually live in
+`ready/shared/`; stage directories mostly hold temporary or stage-specific
+workflow, decisions, flags, proof work, and any product primitives intentionally
+scoped to one stage. Git-tracked workspace/app settings may live under
+`ready/settings/`.
 
 Reusable Ready skills and templates live in the portable standard package. A
 project that expects agents to edit the tree should vendor that package at

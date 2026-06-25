@@ -1,5 +1,5 @@
 schema: "readyroom/standard-vocabulary/v1"
-version: "0.3.24"
+version: "0.3.25"
 record_kinds:
   - id: "primitive"
     schema: "readyroom/primitive/v1"
@@ -42,7 +42,7 @@ product_logic_types:
   - id: "premise"
     primitive_class: "product_logic"
     id_family: "P-*"
-    description: "Why the product, milestone, feature, or decision should exist."
+    description: "Why the product, stage, feature, or decision should exist."
   - id: "intent"
     primitive_class: "product_logic"
     id_family: "I-*"

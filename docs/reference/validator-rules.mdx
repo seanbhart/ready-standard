@@ -27,6 +27,8 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   appear in `stages` as selectable stages.
 - Stage-scoped primitives live under a registered `stages[].path`. File
   location is authoritative for stage assignment.
+- Settings files live under `settings_directory` when present. They use explicit
+  settings schemas and are not primitive source records.
 - Constraints, rules, quality bars, compliance needs, measurement rules, and
   non-negotiable behavior are modeled as `standard` records, not premise
   subtypes.
@@ -76,6 +78,8 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   `fields.limitations`.
 - Sensitive content, source excerpts, diffs, raw logs, and secrets are absent.
 - Large artifacts use storage paths or external refs instead of inline payloads.
+- Settings files do not contain raw secrets, provider tokens, runtime cache, or
+  product truth that belongs in primitives, governance, artifacts, or flags.
 
 ## Warning checks
 
@@ -95,6 +99,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Product-shaping ambiguity appears only in prose.
 - A local semantic relationship display extension defines a source-to-target
   phrase without the matching target-to-source phrase.
+- Durable product primitives live in stage scope when they appear to apply
+  across stages; prefer shared scope unless the record is temporary,
+  experimental, historical, or explicitly scoped to one stage.
 
 ## Importer behavior
 

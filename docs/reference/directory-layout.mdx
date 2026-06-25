@@ -6,8 +6,8 @@ description: "Recommended filetree layout for a Ready Product Tree."
 # Directory Layout
 
 A product tree should keep records fragmented by scope and type. The root
-manifest declares the shared scope and stage registry; tools should not infer
-stage order or default selection from directory names.
+manifest declares settings, shared scope, and the stage registry; tools should
+not infer stage order or default selection from directory names.
 
 ```text
 ready/
@@ -22,6 +22,8 @@ ready/
     product-orchestrator-charter.md
     product-process.md
     workspace-authority-and-access.md
+  settings/
+    product-agent-context.ready.yml
   shared/
     README.md
     manifest.yaml
@@ -73,10 +75,19 @@ ready/
           am-001-example.ready.yml
 ```
 
+`ready/settings/` is not a primitive scope. It holds git-tracked workspace and
+app settings that help tools manage the Ready tree, such as product-agent
+context preferences, view settings, or local app defaults that should travel
+with the repo. Settings files should use explicit settings schemas, avoid raw
+secrets, and not duplicate product truth that belongs in primitives,
+governance, artifacts, or flags.
+
 `ready/shared/` is not a stage. It holds product truth that applies across all
 or multiple stages: enduring standards, reusable services, durable premises,
-cross-stage intents, reusable artifacts, and other shared records. Stage records
-should reference shared primitives instead of copying them.
+cross-stage intents, reusable artifacts, and other shared records. This is the
+default home for persistent and end-state product definitions, even when some
+of that product truth is not implemented yet. Stage records should reference
+shared primitives instead of copying them.
 
 Stage-specific truth lives under `ready/stages/<stage-id>/`:
 
@@ -117,6 +128,15 @@ ready/stages/m1/
         am-001-example.ready.yml
 ```
 
+Stage directories are best for stage-specific workflow and temporary records:
+decisions, seed/change/discovery flags, proof work, and product primitives that
+are intentionally scoped to that stage. A stage may own product services,
+standards, problems, or solutions when they are temporary, experimental,
+historical, or otherwise not durable cross-stage product truth.
+Stage kinds such as `horizon`, `experiment`, and `archive` are for stages with
+special selection or workflow semantics; they are not needed just to preserve
+durable definitions that fit in shared scope.
+
 Top-level plural Markdown files are navigation indexes. Product-logic primitive
 source records live inside the directories as `.ready.yml` files. Other
 primitive classes can live in their own family directories, such as `flags/`,
@@ -124,11 +144,11 @@ primitive classes can live in their own family directories, such as `flags/`,
 Decision flags are decision/workflow `readyroom/flag/v1` records with
 `type: decision`, use `XD-*` ids, and live under `flags/discovery/`.
 
-`ready/manifest.yaml` should include `shared_scope`, `stage_root`,
-`default_stage`, and a `stages` list with `id`, `title`, `path`, `manifest`,
-`kind`, `status`, `order`, `default_candidate`, and `coding_claims_enabled`.
-Use `kind: normal` for buildable stages and `kind: horizon` for `end-state` or
-other future concept shelves.
+`ready/manifest.yaml` should include `settings_directory`, `shared_scope`,
+`stage_root`, `default_stage`, and a `stages` list with `id`, `title`, `path`,
+`manifest`, `kind`, `status`, `order`, `default_candidate`, and
+`coding_claims_enabled`. Use `kind: normal` for buildable stages and
+`kind: horizon` for `end-state` or other future concept shelves.
 
 Project-specific governance primitives belong under `ready/governance/`.
 Reusable Ready resources, task-skill packages, and templates belong in the Ready

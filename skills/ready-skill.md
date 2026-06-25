@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.24
+version: 0.3.25
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -56,6 +56,8 @@ ready/
     product-orchestrator-charter.md
     product-process.md
     workspace-authority-and-access.md
+  settings/
+    product-agent-context.ready.yml
   shared/
     manifest.yaml
     README.md
@@ -92,6 +94,7 @@ schema: readyroom/product-tree-root/v1
 product: example
 source_root: ready
 default_stage: m1
+settings_directory: ready/settings
 shared_scope:
   id: shared
   path: ready/shared
@@ -120,13 +123,25 @@ stages:
 
 Use `kind: normal` for buildable product stages. Use `kind: horizon` for
 future concept shelves such as `end-state`. Do not rely on directory names or
-alphabetical order to decide the default stage.
+alphabetical order to decide the default stage. Stage kinds are optional
+metadata for stages with special selection or workflow semantics; do not create
+a `horizon`, `experiment`, or `archive` stage just to hold durable product
+definitions that can live in `ready/shared/`.
 
-Use `ready/shared/` for product truth that applies across all or multiple
-stages. Do not put `shared` under `ready/stages/`; it is not selectable,
-ordered, claimable, or archived like a stage. File location is authoritative
-for shared/stage assignment; primitive records do not carry a `milestone`
+Use `ready/settings/` for git-tracked workspace and app settings that help tools
+manage the Ready tree. Settings files should use explicit settings schemas,
+avoid raw secrets, and not duplicate product truth that belongs in primitives,
+governance, artifacts, or flags.
+
+Use `ready/shared/` for durable product truth that applies across all or
+multiple stages, including persistent and end-state premises, intents,
+standards, services, and reusable artifacts that may not be fully implemented
+yet. Do not put `shared` under `ready/stages/`; it is not selectable, ordered,
+claimable, or archived like a stage. File location is authoritative for
+shared/stage assignment; primitive records do not carry the legacy `milestone`
 field.
+Use stage directories mostly for temporary or stage-specific decisions, flags,
+proof work, and product primitives that are intentionally scoped to one stage.
 
 Primitive source records are `.ready.yml` files with:
 
@@ -344,7 +359,7 @@ Use these classes:
 
 Premises:
 
-- Capture why the product, milestone, or feature should exist.
+- Capture why the product, stage, or feature should exist.
 - Use `fields.premise_type` to clarify the discovery role. Valid values are in
   `ready/standard/vocabulary.yaml`.
 - Put constraints, rules, quality bars, compliance needs, and measurement rules
@@ -385,7 +400,7 @@ Standards:
 - Avoid vague standards like "make it clean" or "good UX" unless the rule says
   what that means.
 - Do not put deferred or future-only rules on active standards. Capture that
-  work as a flag in a later or horizon milestone, with the future proof gate on
+  work as a flag in a later or horizon stage, with the future proof gate on
   the flag.
 
 Services:
@@ -485,13 +500,18 @@ primitives.
 Stage registry rules:
 
 - Use `stages` in `ready/manifest.yaml` as the authoritative list of stages.
-- Use `shared_scope` for `ready/shared/` and `stage_root` for `ready/stages/`.
-- Keep cross-stage product truth in `ready/shared/`; stage records should
-  reference shared primitives instead of copying them.
+- Use `settings_directory` for `ready/settings/`, `shared_scope` for
+  `ready/shared/`, and `stage_root` for `ready/stages/`.
+- Keep durable cross-stage product truth in `ready/shared/`; stage records
+  should reference shared primitives instead of copying them.
+- Use stage directories mostly for temporary or stage-specific decisions, flags,
+  proof work, and product primitives that are intentionally scoped to one stage.
 - Give every stage `id`, `title`, `path`, `manifest`, `kind`, `status`, `order`,
   `default_candidate`, and `coding_claims_enabled`.
 - Prefer stage kinds `normal`, `horizon`, `experiment`, `archive`, and
   `template`.
+- Use stage kinds when the stage itself has a special purpose; use
+  `ready/shared/` for durable product definitions that are not stage-specific.
 - Set `default_stage` when the product lead has chosen a specific stage.
 - If `default_stage` is absent, tools choose the highest `order` normal stage
   with `default_candidate: true`, then the highest `order` normal stage.
@@ -510,7 +530,8 @@ Required product-logic primitive fields:
 - `refs`
 
 Stage/shared ownership is derived from file location under `ready/shared/` or a
-registered `stages[].path`, not from a primitive field.
+registered `stages[].path`, not from a primitive field. Settings files under
+`settings_directory` are not primitive source records.
 
 Do not add root `summary` to primitives. If summary text is truly source data,
 it belongs under `fields.summary`; otherwise use the type's primary field.
@@ -635,7 +656,7 @@ Keep only work that is required to prove the next stage:
   or prove the target;
 - the flags needed to make gaps visible.
 
-Move everything else out of the next stage. Use future milestone notes, draft
+Move everything else out of the next stage. Use future stage notes, draft
 primitives, decision flags, or flags when the idea is useful but not needed now.
 Record that future work in a later `normal` stage, an `experiment` stage, or a
 `horizon` stage rather than leaving it hidden in chat.

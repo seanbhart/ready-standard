@@ -105,22 +105,23 @@ Older v1 records can infer `primitive_class: product_logic` from
 Stage or shared-scope ownership is not stored inside primitive records. Tools
 derive scope from the file location declared by `ready/manifest.yaml`:
 `ready/shared/**` for shared records and each registered `stages[].path` for
-stage-scoped records. Extra top-level keys may be ignored by tools, but
-`milestone` is not part of the standard primitive contract.
+stage-scoped records. Extra top-level keys may be ignored by tools, but the
+legacy `milestone` field is not part of the standard primitive contract.
 
 ## Root scope and stage registry
 
-The root `ready/manifest.yaml` controls shared-scope location, stage grouping,
-and default selection. Use `shared_scope`, `stage_root`, and `stages`, not
-directory sort order, to describe tree meaning. Stage ids may be `m1`, `m2`,
-`alpha`, `client-pilot`, or another project-specific id; the examples
-currently use `m1`.
+The root `ready/manifest.yaml` controls settings location, shared-scope
+location, stage grouping, and default selection. Use `settings_directory`,
+`shared_scope`, `stage_root`, and `stages`, not directory sort order, to
+describe tree meaning. Stage ids may be `m1`, `m2`, `alpha`, `client-pilot`,
+or another project-specific id; the examples currently use `m1`.
 
 ```yaml
 schema: readyroom/product-tree-root/v1
 product: example
 source_root: ready
 default_stage: m1
+settings_directory: ready/settings
 shared_scope:
   id: shared
   path: ready/shared
@@ -150,8 +151,15 @@ stages:
 If `default_stage` is absent, tools choose the latest normal default candidate
 by `order`, then the latest normal stage, and only then non-normal stages.
 
-Shared primitives live under the configured `shared_scope.path`. When useful,
-describe how they apply with a structured scope:
+`settings_directory` is optional but recommended when an app manages the Ready
+tree. Files under `ready/settings/` are git-tracked workspace/app settings, not
+primitive source records. They should use explicit settings schemas, avoid raw
+secrets, and not duplicate product truth from primitives, governance,
+artifacts, or flags.
+
+Shared primitives live under the configured `shared_scope.path`. Durable
+product definitions should usually live in shared scope and be referenced by
+stage records. When useful, describe how they apply with a structured scope:
 
 ```yaml
 scope:

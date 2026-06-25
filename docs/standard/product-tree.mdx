@@ -27,12 +27,16 @@ navigation, but they must not duplicate record truth.
 
 ## Scopes and stages
 
-The root `ready/manifest.yaml` owns the shared-scope pointer and stage
-registry. Cross-stage product truth lives in `ready/shared/`; stage-specific
-truth lives in `ready/stages/<stage-id>/`. Stage directories may be named `m1`,
-`m2`, `alpha`, `client-pilot`, or another project-specific id, but tools should
-use manifest metadata instead of inferring meaning from directory names or sort
-order. Current standard examples use `m1`.
+The root `ready/manifest.yaml` owns the shared-scope pointer, stage registry,
+and optional settings directory. Durable product definitions usually live in
+`ready/shared/`: persistent premises, intents, standards, services, and reusable
+artifacts that describe the product across stages, whether or not every part is
+implemented yet. Stage directories usually hold temporary or stage-specific
+workflow state such as decisions, seed/change/discovery flags, stage proof, and
+the product primitives that are genuinely scoped to one stage. Stage directories
+may be named `m1`, `m2`, `alpha`, `client-pilot`, or another project-specific
+id, but tools should use manifest metadata instead of inferring meaning from
+directory names or sort order. Current standard examples use `m1`.
 
 Use `shared_scope`, `stage_root`, and `stages` in the root manifest:
 
@@ -43,6 +47,7 @@ shared_scope:
   manifest: ready/shared/manifest.yaml
 stage_root: ready/stages
 default_stage: m1
+settings_directory: ready/settings
 stages:
   - id: m1
     title: M1
@@ -72,6 +77,11 @@ Stage kinds:
 - `archive`: historical stage, not default-selectable.
 - `template`: reusable starter shape.
 
+Stage kinds are optional metadata for stages with special selection or workflow
+semantics. Do not create a `horizon`, `experiment`, or `archive` stage just to
+hold durable product definitions that can live in `ready/shared/`. Use stage
+kinds when the stage itself has a special purpose.
+
 Default selection is deterministic:
 
 1. Use `default_stage` when it points to a valid stage.
@@ -88,6 +98,14 @@ default path because it is `kind: horizon` and `default_candidate: false`.
 claimable as a release scope, or archived as a historical stage. Shared
 primitives can be referenced by any stage; tools should resolve those refs
 without copying the shared record into the stage.
+
+`ready/settings/` is not a primitive scope. It holds git-tracked workspace and
+app settings that help tools manage the Ready tree, such as product-agent
+context preferences, view settings, or local app defaults that should travel
+with the repo. Settings files should use explicit settings schemas, avoid raw
+secrets, and not duplicate product truth that belongs in primitives,
+governance, artifacts, or flags. Runtime cache, user-private preferences, and
+provider secrets do not belong in `ready/settings/`.
 
 ## Primitive classes
 
@@ -112,7 +130,7 @@ Core classes:
 
 The first product-logic primitive types are:
 
-- `premise`: why the product, milestone, or feature should exist.
+- `premise`: why the product, stage, or feature should exist.
 - `intent`: what the product promises to do.
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.

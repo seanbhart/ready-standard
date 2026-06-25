@@ -27,7 +27,7 @@ must implement faithfully.
 
 ## Artifact Guidance
 
-Store design-support material as artifact descriptors under milestone
+Store design-support material as artifact descriptors under stage
 artifacts:
 
 - `designs/` for mockups, screenshots, visual references, diagrams, and design

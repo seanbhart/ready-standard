@@ -1,5 +1,5 @@
 schema: "readyroom/standard-resources/v1"
-version: "0.3.24"
+version: "0.3.25"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -46,11 +46,12 @@ template_directories:
   primitives: "templates/primitives"
 rules:
   - "Project-specific governance lives in ready/governance."
-  - "Cross-stage product truth lives in ready/shared; stage-specific product truth lives in ready/stages/<stage-id>."
+  - "Git-tracked workspace and app settings live in ready/settings when a product tree needs them."
+  - "Persistent product definitions usually live in ready/shared; ready/stages/<stage-id> is mainly for temporary or stage-specific workflow, flags, proof, and scoped product truth."
   - "Project-agnostic Ready resources and templates live in the Ready standard package."
   - "Product agents read a target project's vendored ready/standard package for normal tree edits."
   - "Fetching this source repo's latest standard is explicit standard-update work, not normal tree-edit behavior."
   - "The vendored package excludes Mintlify docs and Git metadata."
   - "Artifact descriptors support product truth and do not store governance or standard resources."
-  - "Templates must use placeholders for project-specific authority, owners, services, and milestones."
+  - "Templates must use placeholders for project-specific authority, owners, services, and stages."
   - "Valid kinds, types, primitive classes, subtypes, claim levels, and relationship display phrases are centralized in vocabulary.yaml."
