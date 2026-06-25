@@ -136,7 +136,7 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Optional numeric codes are implementation details: `0 = peer`, `1 = parent`,
   and `2 = child`. Source YAML should prefer role strings.
 - Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
-  `contains_premise`, or `questions` as ref roles. Reader views derive those
+  `refines`, or `questions` as ref roles. Reader views derive those
   labels from source type, target type, and structural role.
 - Derived relationship labels must include source-to-target and
   target-to-source phrases for the same stored edge. For example,
@@ -145,7 +145,7 @@ into typed `fields`, `refs`, `artifacts`, or flags.
   as `requires` / `required by`; `intent --child--> intent` renders as
   `fulfilled by` / `fulfills`; `intent --peer--> standard` renders as
   `governed by` / `governs`; `intent --child--> premise` renders as
-  `contains` / `contained by`.
+  `refined by` / `refines`.
 - Standards that govern premises, intents, services, flags, or other standards
   should normally be `peer` refs because governance is lateral product truth,
   not decomposition. Child standard refs remain valid fallback semantics for

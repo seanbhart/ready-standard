@@ -554,7 +554,7 @@ Relationship rules:
 - If an app needs numeric relationship codes, use `0 = peer`, `1 = parent`,
   and `2 = child`. Source YAML should use the strings.
 - Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
-  `contains_premise`, or `questions` as ref roles.
+  `refines`, or `questions` as ref roles.
 - Derive reader phrases from source type, target type, and structural role.
   The semantic relationship display lookup lives in
   `ready/standard/vocabulary.yaml` and must include source-to-target and

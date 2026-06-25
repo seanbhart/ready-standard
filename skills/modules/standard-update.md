@@ -66,8 +66,8 @@ to the explicitly requested standard package or docs work.
    - Approved stored roles are `peer`, `parent`, and `child`. In compact refs,
      the role describes the target primitive's position relative to the current
      primitive.
-   - Semantic verbs such as `serves`, `requires`, `governed_by`,
-     `contains_premise`, and `questions` are derived reader labels, not stored
+   - Semantic verbs such as `serves`, `requires`, `governed_by`, `refines`,
+     and `questions` are derived reader labels, not stored
      ref roles.
    - Valid vocabulary lives in `ready/standard/vocabulary.yaml`.
    - Semantic relationship display lookups in vocabulary.yaml include both
