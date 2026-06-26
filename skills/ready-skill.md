@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.27
+version: 0.3.28
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -90,7 +90,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.27"
+  version: "0.3.28"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -331,6 +331,9 @@ Premises:
   `ready/standard/vocabulary.yaml`.
 - Put constraints, rules, quality bars, compliance needs, and measurement rules
   in `standard` records, not premise records.
+- Do not attach services or standards directly to premises. If a service or
+  standard seems related to a premise, attach it to the intent that serves the
+  premise.
 - Include evidence provenance and confidence.
 - Include product implications: what the premise requires, rules out, or
   prioritizes.
@@ -361,9 +364,11 @@ Standards:
 - Capture rules for implementation, behavior, measurement, judgment,
   maintenance, safety, privacy, accessibility, and proof.
 - Make standards concrete enough to validate.
-- Prefer `peer` refs when a standard governs a premise, intent, service, flag,
-  or another standard. Use `child` standard refs only as fallback semantics for
-  an older tree or when a record intentionally nests a subordinate standard.
+- Prefer `peer` refs when a standard governs an intent, service, flag, or
+  another standard. Do not attach standards directly to premises; route that
+  governance through the serving intent. Use `child` standard refs only as
+  fallback semantics for an older tree or when a record intentionally nests a
+  subordinate standard.
 - Avoid vague standards like "make it clean" or "good UX" unless the rule says
   what that means.
 - Do not put deferred or future-only rules on active standards. Use a Ready
@@ -566,6 +571,9 @@ Relationship rules:
   `governed by` / `governs`.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
+- Premises should not reference services or standards directly. Services and
+  standards apply to implementation-bearing commitments; attach them to the
+  intent that serves the premise.
 - Artifact descriptors only own artifact-to-artifact relationships. Product and
   workflow records point to artifacts through `artifacts`.
 - Required services and governing standards belong in structural `refs`, not

@@ -32,6 +32,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   non-negotiable behavior are modeled as `standard` records, not premise
   subtypes.
 - Structural refs point to existing ids.
+- Premise refs do not target service or standard ids. If a service or standard
+  appears to relate to a premise, the ref belongs on the intent that serves that
+  premise.
 - Ref roles are one of `peer`, `parent`, or `child`; semantic verbs such as
   `serves`, `requires`, `governed_by`, `refines`, and `questions` are derived
   reader labels and are not accepted as stored roles.
@@ -93,9 +96,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Intent lacks input/output sample refs when sample artifacts exist.
 - Intent names a product surface only in prose instead of `required_surfaces`.
 - Intent lacks required service or standard refs when its work depends on them.
-- Standard governance uses a `child` ref where a `peer` ref would represent the
-  same lateral governance more clearly. Child standard refs are still valid
-  fallback semantics.
+- Standard governance uses a `child` ref where a `peer` ref on an
+  implementation-bearing record would represent the same lateral governance more
+  clearly. Child standard refs are still valid fallback semantics.
 - Quality-bearing intent lacks an Operating Envelope.
 - Service `status` is blocked without a blocker, evidence, proof required, or
   off-limits explanation.

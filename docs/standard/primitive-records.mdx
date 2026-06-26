@@ -146,10 +146,11 @@ into typed `fields`, `refs`, `artifacts`, or flags.
   `fulfilled by` / `fulfills`; `intent --peer--> standard` renders as
   `governed by` / `governs`; `intent --child--> premise` renders as
   `refined by` / `refines`.
-- Standards that govern premises, intents, services, flags, or other standards
-  should normally be `peer` refs because governance is lateral product truth,
-  not decomposition. Child standard refs remain valid fallback semantics for
-  older trees or intentionally nested subordinate standards.
+- Standards govern implementation, behavior, measurement, judgment, or
+  maintenance. Attach standards to intents, services, flags, or other standards,
+  not to premises.
+- Services are implementation dependencies. Attach services to intents or other
+  implementation-bearing records, not to premises.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
 - Artifact descriptors only own artifact-to-artifact relationships; product and
@@ -176,6 +177,12 @@ Use `fields.premise_type` to name the discovery role. Valid values live in
 [`vocabulary.yaml`](../../vocabulary.yaml). Do not use premises for
 constraints. Constraints, rules, quality bars, compliance needs, measurement
 rules, and non-negotiable behavior are `standard` records.
+
+Do not attach services or standards directly to premises. Premises are
+conceptual: they explain why the product should exist and what the product
+should respond to. Services and standards apply to implementation-bearing
+product commitments. If a service or standard seems related to a premise, attach
+it to the intent that serves the premise.
 
 ## Intents
 
@@ -215,9 +222,10 @@ when a temporary workflow record needs to be removed.
 
 Standards state rules for implementation, measurement, judgment, behavior, or
 maintenance. Global standards apply through workspace standard refs; primitive
-specific standards normally apply through `peer` refs that reader views can
-label `governed by`. Use `child` standard refs only as fallback semantics for
-older trees or when the source intentionally nests a subordinate standard.
+specific standards normally apply through `peer` refs on implementation-bearing
+records that reader views can label `governed by`. Use `child` standard refs
+only as fallback semantics for older trees or when the source intentionally
+nests a subordinate standard.
 Active standards should not carry deferred or future-only rules. Use a Ready
 branch or worktree for a coherent alternate future product, and use a flag on
 the current branch only when a decision, blocker, discrepancy, or proof gap
