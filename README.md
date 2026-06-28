@@ -1,8 +1,12 @@
 # Ready Standard
 
-Ready is a file-based product tree standard for storing product truth as typed
-records that can be reviewed with Git and compiled by agents into code,
-design, PM, customer, or operations views.
+The Ready Standard defines `.ready` packages: file-based product trees for
+storing product truth as typed records that can be reviewed with Git and
+compiled by agents into code, design, PM, customer, or operations views.
+
+Current source records use `.ready.yml`, the YAML serialization of the `.ready`
+record format. The standard treats `.ready` as the durable package and record
+identity; `.ready.yml` is the current human-readable file extension.
 
 - [docs/](docs/) - Mintlify-compatible documentation source.
 - [skills/](skills/) - portable Ready Product Leader Skill Pack.
@@ -10,7 +14,7 @@ design, PM, customer, or operations views.
 - [manifest.yaml](manifest.yaml) - package index for reusable resources.
 
 This repository is project-agnostic. Ready Room is an app that reads and writes
-Ready product trees; it is not the standard itself.
+`.ready` packages; it is not the standard itself.
 
 ## Portable Package
 

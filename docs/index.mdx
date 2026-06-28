@@ -1,21 +1,22 @@
 ---
 title: "Ready"
-description: "A Git-backed Ready package standard for rebuildable product truth."
+description: "The Ready Standard for .ready packages and rebuildable product truth."
 ---
 
 # Ready
 
-Ready stores product truth as a committed filetree. A Ready package is the
-source package an orchestrator reads to build, prove, operate, or govern the
-intended product.
+The Ready Standard defines `.ready` packages: committed product source trees an
+orchestrator reads to build, prove, operate, or govern the intended product.
+The `.ready` format is the durable package and source-record identity; this
+version uses `.ready.yml` as the YAML serialization for source records.
 
-A Ready branch represents one coherent intended product state. Git history and
-branches carry evolution and hypothetical alternatives; apps may derive
+A `.ready` branch represents one coherent intended product state. Git history
+and branches carry evolution and hypothetical alternatives; apps may derive
 discrepancies by comparing Ready truth to code, evidence, generated views, or
 prior commits. Stored flags add durable proof, attention, blocker, and
 coordination gates; they are not change instructions.
 
-Ready records use object families:
+`.ready` records use object families:
 
 - `primitive` records are durable package inputs: premises, intents, standards,
   services, and artifact descriptors.

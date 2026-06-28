@@ -1,20 +1,22 @@
 ---
-title: "Product Tree Standard"
-description: "The source-of-truth rules for a Git-backed product tree."
+title: ".ready Product Tree Standard"
+description: "The source-of-truth rules for a Git-backed .ready product tree."
 ---
 
-# Product Tree Standard
+# `.ready` Product Tree Standard
 
-A product tree is a committed filetree that stores product truth in typed
-records. Primitive source records use `.ready.yml`: plain YAML with a distinct
-extension so importers know exactly how to parse it. The tree should behave like
-a healthy codebase: fragmented enough to review, explicit enough to validate,
-and structured enough to compile into different views.
+A `.ready` product tree is a committed filetree that stores product truth in
+typed records. Primitive source records currently use `.ready.yml`: plain YAML
+with a distinct extension so importers know exactly how to parse it. The
+standard uses `.ready` as the durable package and record identity; `.ready.yml`
+is the current YAML serialization. The tree should behave like a healthy
+codebase: fragmented enough to review, explicit enough to validate, and
+structured enough to compile into different views.
 
-A Ready tree on a branch represents the intended product state for that branch.
-It should say what should exist, not how to change the current implementation.
-Git history records how product truth evolved; Ready primitives describe the
-currently intended state.
+A `.ready` tree on a branch represents the intended product state for that
+branch. It should say what should exist, not how to change the current
+implementation. Git history records how product truth evolved; Ready primitives
+describe the currently intended state.
 
 A complete Ready package has enough ready product truth, standards, services,
 artifacts, proof, governance, settings, and manifests for an orchestrator to

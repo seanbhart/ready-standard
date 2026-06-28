@@ -1,15 +1,20 @@
 ---
-title: ".ready.yml Reference"
-description: "Required and recommended YAML fields for Ready records."
+title: ".ready Source Records"
+description: "Required and recommended fields for .ready records using the current .ready.yml YAML serialization."
 ---
 
-# `.ready.yml` Reference
+# `.ready` Source Records
 
-`.ready.yml` is the Ready source-record format. It is YAML with a distinct
-extension so tools can separate typed source records from navigation Markdown,
-generated views, manifests, raw payloads, and generic project files.
+The Ready Standard defines `.ready` source records. This version stores those
+records as `.ready.yml`: YAML with a distinct extension so tools can separate
+typed source records from navigation Markdown, generated views, manifests, raw
+payloads, and generic project files.
 
-Ready records use three classification fields:
+Use `.ready.yml` for source records until the standard promotes `.ready` as the
+canonical file extension. Treat `.ready` as the durable format identity and
+`.ready.yml` as the current YAML serialization.
+
+`.ready` records use three classification fields:
 
 - `kind`: the object family, such as `primitive`, `flag`, `governance`,
   `setting`, or `manifest`.
