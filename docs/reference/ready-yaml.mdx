@@ -160,7 +160,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.34"
+  version: "0.3.35"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -170,7 +170,9 @@ ready_standard:
 tree. Files under `ready/settings/` are git-tracked workspace/app settings, not
 primitive source records. They should use explicit settings schemas, avoid raw
 secrets, and not duplicate product truth from primitives, governance,
-artifacts, or flags.
+artifacts, or flags. They must not store runtime artifacts, build outputs,
+uploaded product data, generated product manifests, runtime cache, or other
+implementation artifacts that belong to the product.
 
 Product primitives live under the configured `product_directory`. Flags and
 other temporary package-work records live under the configured
@@ -279,6 +281,12 @@ usage roles, and payload files or safe refs. Raw JSON, JSONL, Markdown, HTML,
 image, CSV, binary, or external payloads are attachments owned by an artifact
 primitive; they are not primitives by themselves unless they also use a
 Ready-defined source-record schema.
+
+Ready artifact payloads are source-of-intent, proof, or handoff material. Some
+payloads may be intended to become persistent implementation artifacts, but the
+implemented product must receive its own copy, transform, or compiled output in
+product-owned code, assets, storage, or build inputs. Runtime product behavior
+must not depend on reading payloads from the Ready tree.
 
 Artifact descriptors may use `schema: ready/artifact/v1` when that narrower
 schema gives tools a clearer contract. The object model is still:
@@ -400,7 +408,8 @@ package management records, not build inputs for the product runtime. Use
 
 Settings records are not primitives. Use `kind: setting` for git-tracked
 workspace or app configuration that tools need to manage the Ready tree. Do not
-store raw secrets, runtime cache, or product truth in settings.
+store raw secrets, runtime cache, product truth, runtime artifacts, generated
+product manifests, build outputs, or uploaded product data in settings.
 
 Manifest records are structural metadata. Use `kind: manifest` for product tree
 manifests, package manifests, artifact-tree manifests, governance manifests, and

@@ -1,7 +1,7 @@
 schema: "ready/standard-resources/v1"
 kind: "manifest"
 class: "package"
-version: "0.3.34"
+version: "0.3.35"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -64,5 +64,6 @@ rules:
   - "Fetching this source repo's latest standard is explicit standard-update work, not normal tree-edit behavior."
   - "The vendored package excludes Mintlify docs and Git metadata; manifests keep docs_source for public reference docs."
   - "Artifact descriptors are primitives with class: artifact; they support product truth and do not store governance or standard resources."
+  - "Ready-carried artifact payloads may be copied, transformed, or compiled into the product, but runtime/build product artifacts belong in product-owned paths or storage, not ready/settings."
   - "Templates must use placeholders for project-specific authority, owners, services, and product directories."
   - "Valid kinds, classes, types, claim levels, and relationship display phrases are centralized in vocabulary.yaml."

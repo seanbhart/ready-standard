@@ -61,6 +61,12 @@ projects, it belongs in the standard package, not in a project artifact tree.
 If a file helps explain, test, prove, or illustrate product logic, it belongs in
 artifacts as an artifact primitive or as a payload referenced by one.
 
+If a file must persist with the implemented product at runtime or build time, it
+may be carried in Ready as source material, but the orchestrator must copy,
+transform, or compile it into product-owned paths or storage. It does not belong
+in `ready/settings/`, and the running product must not depend on a Ready
+directory for that file.
+
 ## Runtime use
 
 Agent context manifests should record the governance documents and standard

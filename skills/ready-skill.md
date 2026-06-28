@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.34
+version: 0.3.35
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -99,7 +99,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.34"
+  version: "0.3.35"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -108,7 +108,9 @@ ready_standard:
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
 manage the Ready tree. Settings files should use explicit settings schemas,
 avoid raw secrets, and not duplicate product truth that belongs in primitives,
-governance, artifacts, or flags.
+governance, artifacts, or flags. Do not store runtime artifacts, build outputs,
+uploaded product data, generated product manifests, runtime cache, or
+product-owned assets in `ready/settings/`.
 
 Use `ready/product/` for canonical intended product truth for this Ready tree
 version, including premises, intents, standards, services, product artifacts,
@@ -452,6 +454,10 @@ Artifact descriptors:
   or proof roles.
 - Store large, binary, private, generated, or licensed payloads as attached
   files or safe refs instead of inline product truth.
+- May carry source artifacts that the product should persist, but the
+  orchestrator must copy, transform, or compile those artifacts into
+  product-owned paths or storage. The product must not depend on the Ready tree
+  for runtime assets.
 
 ### Governance Records
 
@@ -638,6 +644,12 @@ Artifact rules:
 - Store proof corpora, source-shape resources, snippets, screenshots, mockups,
   manifests, and handoff material as artifact descriptors or as payloads
   referenced by those descriptors.
+- If a Ready-carried artifact should persist in the product, copy, transform, or
+  compile it into product-owned code, assets, storage, or build inputs during
+  implementation. Preserve traceability back to the Ready descriptor.
+- Do not use `ready/settings/` for runtime artifacts, build outputs, generated
+  product manifests, uploaded product data, product-owned assets, or any file
+  the product must read at runtime.
 - Store generated or gathered proof data only when privacy, license, size, and
   provenance are acceptable, and state the proof role and authority level.
 - Store sanitized excerpts, summaries, paths, hashes, or evidence refs for

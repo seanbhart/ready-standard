@@ -129,6 +129,11 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Large artifacts use storage paths or external refs instead of inline payloads.
 - Settings files do not contain raw secrets, provider tokens, runtime cache, or
   product truth that belongs in primitives, governance, artifacts, or flags.
+- Settings files do not contain runtime artifacts, build outputs, generated
+  product manifests, uploaded product data, or product-owned assets.
+- Ready-carried artifact payloads that are needed by the implemented product are
+  copied, transformed, or compiled into product-owned paths or storage; product
+  runtime behavior does not read them from the Ready tree.
 
 ## Warning Checks
 

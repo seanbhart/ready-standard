@@ -37,6 +37,12 @@ Store design-support material as artifact descriptors under product artifacts:
   external inspiration refs;
 - `samples/` for UI state fixtures and expected outputs.
 
+When a design artifact contains a product asset, template, snippet, or manifest
+that should persist with the implemented product, the orchestrator must copy,
+transform, or compile it into product-owned paths or storage. Keep the Ready
+artifact as source intent and traceability; do not make runtime behavior read it
+from the Ready tree or from `ready/settings/`.
+
 Record each design artifact's authority: target, reference, evidence,
 prototype, generated concept, stale, or superseded. If a design conflicts with
 primitive truth, create a decision flag or primitive edit proposal instead of

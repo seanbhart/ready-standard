@@ -78,8 +78,9 @@ app settings that help tools manage the Ready tree, such as product-agent
 context preferences, view settings, or local app defaults that should travel
 with the repo. Settings files should use explicit settings schemas, avoid raw
 secrets, and not duplicate product truth that belongs in primitives,
-governance, artifacts, or flags. Runtime cache, user-private preferences, and
-provider secrets do not belong in `ready/settings/`.
+governance, artifacts, or flags. Runtime artifacts, build outputs, uploaded
+product data, generated product manifests, runtime cache, user-private
+preferences, and provider secrets do not belong in `ready/settings/`.
 
 ## Record kinds and primitive classes
 
@@ -129,6 +130,12 @@ product logic and proof with samples, snippets, design assets, manifests,
 screenshots, and handoff notes. Attached payload files can use their native
 formats when they are clearly referenced by a descriptor. Each descriptor has
 one purpose; files with different purposes need different descriptors.
+
+Ready-carried artifact payloads are source material for implementation and
+proof. If a payload is meant to persist in the implemented product, the
+orchestrator must copy, transform, or compile it into product-owned code,
+assets, storage, or build inputs. The product copy is the runtime/build artifact;
+the Ready descriptor remains the source-of-intent and traceability record.
 
 ## Generated views
 

@@ -80,6 +80,12 @@ descriptors even when one harness or proof run consumes them together.
   visual artifacts, and `snippets/` for intentional handoff code or component
   contracts. Each reusable item should have an artifact descriptor
   record when tools need to address, search, link, or validate it directly.
+- If a Ready-carried artifact is intended to persist with the implemented
+  product, the orchestrator must copy, transform, or compile it into
+  product-owned code, assets, storage, or build inputs. Keep the Ready descriptor
+  as source intent and traceability, not as the runtime location.
+- Do not put runtime artifacts, build outputs, uploaded product data, generated
+  product manifests, or product-owned assets under `ready/settings/`.
 - Do not commit raw customer data, private transcripts, provider secrets,
   browser cookies, sensitive raw logs, large binary assets, or copied source
   excerpts.

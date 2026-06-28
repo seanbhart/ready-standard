@@ -58,6 +58,27 @@ A package can be useful before it is complete. Incomplete packages can support
 discovery, review, planning, simulation, partial implementation, and proof work,
 but a complete product should not be expected from an incomplete package.
 
+## Relationship To The Product
+
+The `.ready` tree is the product's source-of-intent package, not the product's
+runtime artifact store. The tree may exist before any implementation exists. A
+fully implemented product must also be able to build and run without reading the
+`.ready` tree at runtime.
+
+The `.ready` tree may carry source artifacts that are intended to become
+persistent product artifacts, such as seed assets, templates, snippets, design
+files, proof fixtures, manifests, or example payloads. During implementation, an
+orchestrator copies, transforms, or compiles those Ready-carried artifacts into
+the product repository or product-owned storage. The implemented product owns
+those runtime/build copies after the build. It must not depend on
+`ready/product/`, `ready/flags/`, or `ready/settings/` as a runtime asset path.
+
+Use Ready artifact descriptors to explain the artifact's provenance, authority,
+intended use, proof role, and expected product destination. Do not use
+`ready/settings/` to store runtime assets, generated runtime files, uploaded
+product data, product-owned manifests, or other implementation artifacts.
+Settings only configure tools that manage the Ready tree.
+
 ## Orchestrator Rules
 
 Before implementation, an orchestrator should inspect package completeness.
@@ -76,6 +97,10 @@ Before implementation, an orchestrator should inspect package completeness.
 - Build from the resolved intended product state, standards, services,
   artifacts, proof, governance, and applicable flag closure criteria. Do not
   build only from diffs or deltas.
+- When Ready-carried artifacts are needed by the implemented product, copy,
+  transform, or compile them into product-owned paths or storage and preserve
+  traceability back to the Ready artifact descriptor. Do not leave runtime
+  product behavior dependent on reading the Ready tree.
 
 ## Status Semantics
 

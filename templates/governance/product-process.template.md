@@ -42,6 +42,11 @@ component snippets, or design refs for coding agents to implement faithfully.
 Record the design metadata as artifact descriptors; large binaries or
 external sources can remain attached payloads or safe refs.
 
+Ready-carried artifacts may become product assets, templates, fixtures, or
+manifests, but implementation must copy, transform, or compile those files into
+product-owned paths or storage. The running product must not depend on
+`ready/settings/` or any Ready directory for runtime artifacts.
+
 ## Coding Handoff
 
 Seed and change flags become claimable only when the resolved target-state

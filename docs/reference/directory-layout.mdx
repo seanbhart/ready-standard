@@ -52,7 +52,9 @@ app settings that help tools manage the Ready tree, such as product-agent
 context preferences, view settings, or local app defaults that should travel
 with the repo. Settings files should use explicit settings schemas, avoid raw
 secrets, and not duplicate product truth that belongs in primitives,
-governance, artifacts, or flags.
+governance, artifacts, or flags. Runtime artifacts, build outputs, uploaded
+product data, generated product manifests, runtime cache, user-private
+preferences, and provider secrets do not belong in `ready/settings/`.
 
 `ready/product/` holds the intended product truth for this Ready tree version:
 durable premises, intents, standards, services, product artifacts, proof
@@ -144,5 +146,8 @@ and Git metadata.
 Artifact descriptors usually live under `ready/product/artifacts/`. A flag may
 own a small workflow-only artifact under `ready/flags/` when it only exists to
 support that temporary record. Large or sensitive payloads may be stored as safe
-refs. Products may add `compiled/` or `views/`, but generated outputs must be
-clearly marked and traceable to source record hashes.
+refs. Ready-carried payloads that become persistent implementation artifacts
+must be copied, transformed, or compiled into product-owned paths or storage.
+The implemented product must not depend on `ready/settings/` or any Ready
+directory for runtime assets. Products may add `compiled/` or `views/`, but
+generated outputs must be clearly marked and traceable to source record hashes.

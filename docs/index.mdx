@@ -66,7 +66,10 @@ roles, and explicit proof gates before coding work can claim completeness.
 Intended product truth lives in `ready/product/`. Temporary package-work records
 for proposed changes, discrepancies, blockers, decisions, readiness gates, and
 proof gaps live in `ready/flags/`.
-Git-tracked workspace/app settings may live under `ready/settings/`.
+Git-tracked workspace/app settings may live under `ready/settings/`, but runtime
+artifacts, build outputs, uploaded product data, and product-owned manifests do
+not. Ready-carried artifacts may seed the product, but implementation copies
+belong in product-owned paths or storage.
 
 Reusable Ready skills and templates live in the portable standard package. A
 project that expects agents to edit the tree should vendor that package at

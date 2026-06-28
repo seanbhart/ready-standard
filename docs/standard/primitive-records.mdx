@@ -268,6 +268,12 @@ JSONL, Markdown, HTML, image, binary, external URL, or safe secret-location
 reference; that attached payload is not a primitive unless it also has a
 Ready-defined schema or pattern.
 
+Artifact payloads may be source material for persistent implementation
+artifacts, but the implemented product must receive its own copy, transform, or
+compiled output in product-owned code, assets, storage, or build inputs. The
+Ready descriptor remains source intent and traceability; runtime product
+behavior must not read the payload from the Ready tree.
+
 Every artifact descriptor must carry `fields.confidence`, `fields.provenance`,
 `fields.purpose`, `fields.content`, `fields.intended_use`, and
 `fields.format`. File-backed descriptors must give every file a `path` and

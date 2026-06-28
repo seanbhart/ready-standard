@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.34
+version: 0.3.35
 description: Entrypoint for the Ready Product Leader Skill Pack.
 ---
 
