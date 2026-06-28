@@ -17,7 +17,7 @@ fields:
   format: "{{yaml|json|jsonl|mixed|external_ref}}"
   proof_role: "{{regression|acceptance|simulation|diagnostic|negative_case}}"
   authority_level: "{{deterministic_fixture|human_labeled_fixture|simulation_baseline|production_sample|owner_supplied_stub}}"
-  lifecycle_state: "{{draft|frozen|replaceable|retired}}"
+  lifecycle_state: "{{frozen|replaceable|retired}}"
   coverage:
     proves: []
     does_not_prove: []
@@ -49,4 +49,5 @@ files:
     role: "{{input|config|expected_output|diagnostic|generated_output|supporting}}"
     purpose: "{{HOW_THIS_FILE_SERVES_THE_PROOF_CORPUS}}"
 usage_policy: []
+refs: []
 owner_notes: []

@@ -25,6 +25,8 @@ and `blocked`.
 - flag classes and flag types by class;
 - governance, setting, and manifest classes;
 - record statuses, status rules, and compile behavior;
+- blocker rules;
+- proof corpus lifecycle states;
 - compiler roles;
 - claim levels;
 - structural relationship roles;
@@ -40,6 +42,17 @@ resolved intended product state.
 Flags omit top-level `status` unless they are blocked. The temporary
 package-work state is implied by `kind: flag`; do not write `status: draft` or
 `status: ready` on flags.
+
+Any record with a non-empty blocker list, such as `blocked_by` or
+`fields.blockers`, uses `status: blocked` and requires explicit override before
+implementation.
+
+Blocker flags also use `status: blocked`, remain non-claimable, and require
+resolution or explicit override before implementation.
+
+Proof corpus lifecycle values are `frozen`, `replaceable`, and `retired`. Draft
+proof corpora use top-level `status: draft`, not `fields.lifecycle_state:
+draft`.
 
 `compiler_role` is a source-record hint for compilers and orchestrators. It does
 not replace `kind`, `class`, or `type`; it clarifies how the record should be

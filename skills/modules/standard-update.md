@@ -1,13 +1,13 @@
 ---
 name: ready-standard-update
 version: 0.1.0
-description: Sync the latest Ready standard package into a product Ready tree and migrate the tree to that version.
+description: Sync the latest Ready Standard package into a product Ready tree and migrate the tree to that version.
 ---
 
 # Ready Standard Update
 
 Use this module when a user asks to update, upgrade, or migrate a product Ready
-tree to the latest Ready standard or to a named Ready standard version.
+tree to the latest Ready Standard or to a named Ready Standard version.
 
 ## Authority
 
@@ -33,7 +33,8 @@ to the explicitly requested standard package or docs work.
    - Include `README.md`, `manifest.yaml`, `vocabulary.yaml`, `skills/`, and
      `templates/`.
    - Exclude `docs/`, `.git/`, `.gitignore`, local cache, raw logs, transcripts,
-     private samples, and secrets.
+     private samples, and secrets. The vendored package is the local runtime
+     contract; `docs_source` points to public reference docs.
 4. Update `ready/manifest.yaml` so `ready_standard` points at the local package:
 
    ```yaml
@@ -54,19 +55,27 @@ to the explicitly requested standard package or docs work.
      top-level `type`; remove `primitive_class`, `fields.premise_type`, and
      `fields.intent_type`.
    - Flag and Decision records use `kind: flag`, flag `class`, class-specific
-     top-level `type`, `claimable`, `blocked_by`, and `completion_proof`.
+     top-level `type`, `compiler_role`, `claimable`, `blocked_by`, and
+     `completion_proof`.
+   - Claimable readiness flags with `type: seed` or `type: change` carry
+     `fields.scope`, `fields.non_scope`, `fields.dependencies`,
+     `fields.required_standards`, `fields.required_services`,
+     `fields.required_artifacts`, `fields.setup`, `fields.acceptance`, and
+     `fields.blocker_policy`.
    - Legacy unresolved-decision records migrate to `class: decision`,
      `type: product_choice`, stable `XD-*` ids, `fields.safe_default`,
      structured `fields.proposals`, and `fields.decision_needed`; remove
      legacy answer and owner-decision fields.
    - Intent `completion_proof` is the durable Definition of Done. It must
      contain concrete observable proof, not a one-word status.
-   - Flag `completion_proof` is closure criteria for a temporary workflow
+   - Flag `completion_proof` is closure criteria for a temporary package-work
      record, not the canonical product DoD.
    - Draft records make a package incomplete. Orchestrators warn
      before implementation and do not imply a complete product from the build.
    - Blocked records stop implementation unless explicit override instructions
      are present.
+   - Records with non-empty `blocked_by` or `fields.blockers` use
+     `status: blocked`.
    - Store one structural edge per relationship in `refs`; do not mirror inverse
      refs.
    - Any record may relate to any other record when the structural relationship
@@ -92,8 +101,9 @@ to the explicitly requested standard package or docs work.
    - every structural ref points to an existing id;
    - no duplicate structural edges;
    - no inverse duplicate edges and no semantic roles left in `refs`;
-   - every flag has top-level `class`, `type`, `claimable`, and non-empty
-     concrete `completion_proof`;
+   - every flag has top-level `class`, `type`, `compiler_role`, `claimable`,
+     and non-empty concrete `completion_proof`;
+   - every claimable seed or change flag has the required handoff fields;
    - the vendored package differs from the source package only by intentionally
      excluded source-repo files.
 10. Report the source version, target package path, migration changes, and

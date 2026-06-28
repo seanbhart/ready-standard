@@ -1,5 +1,5 @@
 schema: "ready/standard-vocabulary/v1"
-version: "0.3.32"
+version: "0.3.33"
 record_kinds:
   - id: "primitive"
     default_schema: "ready/primitive/v1"
@@ -271,6 +271,31 @@ status_rules:
       - "blocked"
     default_status: "temporary_package_work"
     description: "Flags omit top-level status unless blocked; temporary package-work state is implied by kind: flag."
+blocker_rules:
+  - id: "non_empty_blocker_list_blocks_record"
+    applies_to_kinds:
+      - "primitive"
+      - "flag"
+    blocker_fields:
+      - "blocked_by"
+      - "fields.blockers"
+    required_status: "blocked"
+    description: "Any record with a non-empty blocker list must use status: blocked and requires explicit override before implementation."
+  - id: "blocker_flag_blocks_package"
+    applies_to_kinds:
+      - "flag"
+    applies_to_classes:
+      - "blocker"
+    required_status: "blocked"
+    required_claimable: false
+    description: "Blocker flags use status: blocked, remain non-claimable, and require resolution or explicit override before implementation."
+proof_corpus_lifecycle_states:
+  - id: "frozen"
+    description: "Committed proof corpus is stable and can be used as proof within its stated authority."
+  - id: "replaceable"
+    description: "Committed proof corpus is usable but expected to be replaced when better proof exists."
+  - id: "retired"
+    description: "Proof corpus is retained for history or comparison and should not be used as active proof."
 compiler_roles:
   - id: "source_truth"
     description: "Canonical product-package truth used by compilers and orchestrators."

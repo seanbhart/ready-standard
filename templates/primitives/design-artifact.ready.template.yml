@@ -21,4 +21,5 @@ files:
     role: "{{primary|representation|supporting}}"
     purpose: "{{HOW_THIS_FILE_SERVES_THE_DESIGN_ARTIFACT}}"
 usage_policy: []
+refs: []
 owner_notes: []

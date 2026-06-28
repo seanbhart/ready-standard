@@ -25,5 +25,5 @@ documents:
     role: "workspace_authority_policy_seed"
 rules:
   - "Project-specific governance documents are governance records: package-management records that constrain authority, process, and agent behavior."
-  - "Reusable Ready standard resources live in the Ready standard package rather than ready/governance."
+  - "Reusable Ready Standard resources live in the Ready Standard package rather than ready/governance."
   - "Governance documents are not artifacts."

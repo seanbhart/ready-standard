@@ -8,7 +8,7 @@ title: "{{INTENT_TITLE}}"
 status: draft
 fields:
   statement: "{{AS_ACTOR_I_CAN_OUTCOME_SO_VALUE}}"
-  claim_level: "{{CONCEPT_PROCESS_PROOF_SIMULATION_BASELINE_FIXTURE_VALIDATED_HUMAN_LABELED_VALIDATED_PRODUCTION_MONITORED}}"
+  claim_level: "{{concept|process_proof|simulation_baseline|fixture_validated|human_labeled_validated|production_monitored}}"
   actor: "{{PRIMARY_ACTOR}}"
   trigger: "{{WHEN_THIS_PROMISE_STARTS}}"
   action: "{{WHAT_THE_ACTOR_OR_SYSTEM_DOES}}"

@@ -8,8 +8,7 @@ title: "{{SERVICE_TITLE}}"
 status: draft
 fields:
   role: "{{WHAT_THIS_SERVICE_PROVIDES_OR_ENABLES}}"
-  blockers:
-    - "{{CURRENT_SERVICE_BLOCKER_OR_NONE}}"
+  blockers: []
   access_required: "{{ACCOUNT_OR_CREDENTIAL_NEEDS}}"
   credential_location: "{{SAFE_SECRET_LOCATION_REFERENCE_OR_NONE}}"
   required_permissions: "{{SCOPES_ROLES_OR_PERMISSIONS_REQUIRED}}"

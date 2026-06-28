@@ -20,7 +20,7 @@ Use this module before any seed or change flag is made claimable.
 - Keep seed and change flags non-claimable until product leadership
   intentionally starts implementation.
 - Use `status: blocked` for well-specified flags when `blocked_by` prevents
-  coding claims.
+  coding claims, and for records with non-empty blocker lists.
 - Require concrete top-level Completion Proof before review and closure.
 - Warn before implementation when any status-bearing package record is still
   `draft`.
@@ -39,7 +39,8 @@ A coding agent should receive:
 - user-facing and system-facing acceptance criteria;
 - required services with status, blockers, access, proof, and instructions;
 - setup and verification commands;
-- any draft-package warning or blocker override instruction;
+- any draft-package warning or blocker override instruction, including the
+  unresolved blockers and limits of resulting build evidence;
 - required artifacts and sample ids;
 - design, snippet, or component references when applicable;
 - data shapes and expected outputs;
@@ -61,7 +62,8 @@ A coding agent should receive:
 - Do not make a flag claimable because the prose sounds clear while access,
   samples, designs, or proof are missing.
 - Do not implement a blocked package by default. Blockers require resolution or
-  explicit override instructions.
+  explicit override instructions, and the handoff must preserve unresolved
+  blockers and evidence limits.
 - Do not treat one-word statuses such as `ready`, `done`, or `complete` as
   Completion Proof.
 - Do not close flags based on coding-agent self-report.

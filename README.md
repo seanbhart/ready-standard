@@ -29,7 +29,8 @@ is:
 - `templates/`
 
 Do not vendor `docs/` into product repos. Those files are Mintlify source for
-the public standard docs, not the runtime contract agents need to edit a tree.
+the public Ready Standard reference. The local runtime contract for agents is
+the vendored `manifest.yaml`, `vocabulary.yaml`, `skills/`, and `templates/`.
 Do not vendor `.git/` or repo-local metadata.
 
 Agents should read the local `ready/standard/manifest.yaml` for normal product

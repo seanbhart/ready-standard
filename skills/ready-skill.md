@@ -1,13 +1,13 @@
 ---
 name: ready
-version: 0.3.32
+version: 0.3.33
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
 # Ready Skill
 
 Use this skill to create or revise a Ready product tree. The skill is about the
-Ready standard and about acting as a strong product leader: discover the real
+Ready Standard and about acting as a strong product leader: discover the real
 problem, shape the smallest useful solution, gather the evidence and resources
 needed to build it, identify the services and standards that make it safe, and
 cut away what is unnecessary for the intended product version.
@@ -30,7 +30,7 @@ tree needs focused work:
   subagent review from psychological, physical, logical, evidence, design, and
   access perspectives.
 - [modules/standard-update.md](modules/standard-update.md) -
-  sync a newer Ready standard package into a product repo and migrate the tree.
+  sync a newer Ready Standard package into a product repo and migrate the tree.
 
 The portable package manifest is [`../manifest.yaml`](../manifest.yaml). The
 canonical vocabulary file is [vocabulary.yaml](../vocabulary.yaml). Product
@@ -99,7 +99,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.32"
+  version: "0.3.33"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -115,7 +115,9 @@ version, including premises, intents, standards, services, product artifacts,
 and reusable proof material that may not be fully implemented yet. Use
 `ready/flags/` for temporary package-work records: unresolved package decisions,
 proposed changes, blockers, discrepancies, readiness gates, and proof gaps. File
-location is authoritative for product/workflow assignment.
+location is interpreted through the manifest-declared `product_directory` and
+`flags_directory`; tools should not infer ownership from undeclared directory
+names.
 
 A complete Ready package has no flags and no status-bearing records in `draft`
 or `blocked`. An orchestrator may try to build an incomplete package, but it
@@ -131,6 +133,7 @@ kind: primitive
 id: I-001
 class: intent
 type: behavior
+compiler_role: source_truth
 title: Human-readable title
 status: draft
 fields:
@@ -474,7 +477,7 @@ Load modules based on gaps, not ceremony:
 - Load perspective review before implementation handoff, after major
   discovery changes, or when confidence is low.
 - Load standard update when the user asks to update, upgrade, or migrate a
-  product Ready tree to the latest Ready standard.
+  product Ready tree to the latest Ready Standard.
 
 For substantial Ready tree creation, use subagents when available. Assign
 distinct perspectives instead of duplicating the same review:
@@ -495,7 +498,7 @@ the exact primitives, artifacts, services, or flags affected.
 
 ## Writing Rules
 
-Use `.ready.yml` for Ready source records. Primitive records use
+Use `.ready.yml` for `.ready` source records. Primitive records use
 `kind: primitive`, a primitive `class`, and a class-specific top-level `type`.
 Flags use `kind: flag`, a flag `class`, and a class-specific top-level `type`.
 Use specialized Ready schemas such as `ready/artifact/v1` when they are the
@@ -521,14 +524,15 @@ Required primitive fields:
 - `id`
 - `class`
 - `type`
+- `compiler_role`
 - `title`
 - `status`
 - `fields`
 - `refs`
 
-Product/workflow ownership is derived from file location under `ready/product/`
-or `ready/flags/`, plus the record's `kind`. Settings files under
-`settings_directory` are not primitive source records.
+Product/workflow ownership is derived from the record's `kind` and its file
+location under the manifest-declared `product_directory` or `flags_directory`.
+Settings files under `settings_directory` are not primitive source records.
 
 Do not add root `summary` to primitives. If summary text is truly source data,
 it belongs under `fields.summary`; otherwise use the type's primary field.
@@ -617,6 +621,14 @@ Lifecycle rules:
 - Seed and change flags are not claimable by default.
 - A coding agent should only claim work when the relevant flag is unblocked,
   claimable, and has top-level Completion Proof.
+- Claimable seed and change flags must carry scope, non-scope, dependencies,
+  required standards, required services, required artifacts, setup, acceptance,
+  and blocker policy.
+- Any record with a non-empty `blocked_by` or `fields.blockers` list must use
+  `status: blocked`.
+- Blocker flags use `status: blocked` and remain non-claimable.
+- Before handoff, validate stable ids, duplicate ids, ref targets, stored ref
+  roles, status values, required fields, and manifest-declared directories.
 - Warn before implementation when records are still `draft`.
 - Do not implement a package with `blocked` records
   unless explicit override instructions are present.

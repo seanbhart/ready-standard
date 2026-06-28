@@ -1,6 +1,6 @@
 schema: ready/artifact/v1
 kind: primitive
-id: AR-001
+id: "{{AR_ID}}"
 class: artifact
 type: reference_resource
 compiler_role: "{{evidence|build_input|handoff_reference|generated_view_input}}"
@@ -20,4 +20,5 @@ files:
     role: "{{primary|version|partition|representation|supporting}}"
     purpose: "{{HOW_THIS_FILE_SERVES_THE_DESCRIPTOR_PURPOSE}}"
 usage_policy: []
+refs: []
 owner_notes: []

@@ -7,7 +7,7 @@ description: "Where project governance, reusable Ready resources, templates, and
 
 Governance documents are governance records: package-management records that
 constrain authority, process, and agent behavior. They are not primitives or
-artifact primitives by default. Ready standard resources are reusable package
+artifact primitives by default. Ready Standard resources are reusable package
 resources; their own manifests, templates, and skills keep their native record
 kind rather than automatically becoming governance records.
 
@@ -24,7 +24,7 @@ the same authority and process versions. They are package-management context,
 not product runtime implementation truth, but they can stop or constrain package
 edits and implementation handoffs.
 
-Use the Ready standard package for project-agnostic resources:
+Use the Ready Standard package for project-agnostic resources:
 
 - Ready Skill packages.
 - Product task-skill modules.
@@ -37,8 +37,10 @@ of those resources at `ready/standard/`. That local copy is the runtime standard
 package for agents. The source repo's `docs/` directory is Mintlify
 documentation source and is not part of the product-local package.
 
-Use `ready/**/artifacts/` for artifact primitives and attached payload
-material used by product logic, flags, proof, generated views, or handoff:
+Use `ready/product/artifacts/` for durable product artifact primitives and
+attached payload material used by product logic, proof, generated views, or
+handoff. A flag may own workflow-only artifacts under `ready/flags/` when they
+only support temporary package-work:
 
 - Proof corpora.
 - Code snippets.

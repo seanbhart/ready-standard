@@ -37,8 +37,8 @@ optimized for parsing, validation, diffing, and merge review.
   documents, proof corpora, snippets, designs, and manifests.
 
 Flags are not primitives. Governance, settings, and manifest records are also
-not primitives by default. They can be important Ready records, but they do not
-state durable product package inputs in the same way.
+not primitives. They can be important Ready records, but they do not state
+durable product package inputs in the same way.
 
 Compiler role still matters. A premise states product reasoning, an intent
 states product promise, a proof-corpus artifact may be regression evidence, and
@@ -133,7 +133,8 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Use one primitive record per source file.
 - Use the `.ready.yml` extension for primitive source records.
 - Place durable primitives under the configured `ready/product/` directory.
-- Place temporary workflow flags under the configured `ready/flags/` directory.
+- Place temporary package-work flags under the configured `ready/flags/`
+  directory.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
 - Store relationships in `refs`, not prose.
@@ -302,6 +303,7 @@ bodies. A flag identifies intended product truth that is unsatisfied,
 unproven, blocked, or disputed; it is not a coding ticket or an implementation
 recipe.
 
-Flag records keep `class`, `type`, `claimable`, and `completion_proof` at the
-top level. Claimability depends on flag class, flag type, blockers, Completion
-Proof, and workspace policy. Flags omit `status` unless they are blocked.
+Flag records keep `class`, `type`, `compiler_role`, `claimable`, and
+`completion_proof` at the top level. Claimability depends on flag class, flag
+type, blockers, Completion Proof, and workspace policy. Flags omit `status`
+unless they are blocked.

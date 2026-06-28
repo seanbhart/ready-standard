@@ -52,16 +52,27 @@ A coding agent can claim a flag only when all of these are true:
 kind: flag
 class: readiness
 type: seed # or change
+compiler_role: workflow_state
 blocked_by: []
 claimable: true
 completion_proof:
   - "User can complete the target workflow in a clean local run."
   - "The relevant verification command passes and the evidence artifact is linked."
+fields:
+  scope: "The package truth this claim builds or proves."
+  non_scope: "Work explicitly outside this claim."
+  dependencies: []
+  required_standards: []
+  required_services: []
+  required_artifacts: []
+  setup: []
+  acceptance: []
+  blocker_policy: "Claims stop when blockers appear."
 ```
 
-The workspace Coding work switch must also be enabled. Claimable flags omit
-`status`; `claimable: true` means the temporary package-work record can be
-claimed by a coding agent.
+Claimable flags omit `status`; `claimable: true` means the temporary
+package-work record can be claimed by a coding agent under the package's
+governance and authority rules.
 
 Claiming a flag does not mean applying a stored delta. The coding handoff should
 give the coding agent the resolved intended product state from `ready/product/`,
@@ -100,6 +111,7 @@ environment, or upstream flag. Use `status: blocked` and keep it non-claimable:
 kind: flag
 class: readiness
 type: seed
+compiler_role: workflow_state
 status: blocked
 claimable: false
 blocked_by:

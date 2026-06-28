@@ -1,6 +1,6 @@
 schema: ready/artifact/v1
 kind: primitive
-id: AR-001
+id: "{{AR_ID}}"
 class: artifact
 type: source_document
 compiler_role: evidence
@@ -21,4 +21,5 @@ files:
     role: "{{primary|version|supporting}}"
     purpose: "{{HOW_THIS_FILE_SERVES_THE_DOCUMENT}}"
 usage_policy: []
+refs: []
 owner_notes: []

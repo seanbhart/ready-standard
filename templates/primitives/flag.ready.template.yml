@@ -2,6 +2,8 @@ schema: ready/flag/v1
 kind: flag
 id: "{{X_ID_OR_CLASS_ID}}"
 class: "{{decision|blocker|discrepancy|readiness|proof}}"
+# Add `status: blocked` and keep `claimable: false` when class is blocker or
+# blocked_by is non-empty. Other flags omit status.
 # Valid types are class-scoped:
 # decision: product_choice|design_choice|authority_choice
 # blocker: service_access|dependency|authority
@@ -17,6 +19,14 @@ completion_proof:
   - "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
 fields:
   objective: "{{WHAT_NEEDS_TO_BE_RESOLVED_OR_PROVEN}}"
+  scope: "{{PACKAGE_TRUTH_OR_CLAIM_SCOPE}}"
+  non_scope: "{{WHAT_THIS_FLAG_DOES_NOT_COVER}}"
+  dependencies: []
+  required_standards: []
+  required_services: []
+  required_artifacts: []
+  setup: []
+  acceptance: []
   why_it_matters: "{{WHY_THIS_NEEDS_ATTENTION}}"
   blocker_policy: "{{WHEN_CODING_AGENTS_MAY_OR_MAY_NOT_CLAIM_THIS_WORK}}"
 refs: []

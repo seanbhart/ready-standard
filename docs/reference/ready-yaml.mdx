@@ -10,17 +10,19 @@ records as `.ready.yml`: YAML with a distinct extension so tools can separate
 typed source records from navigation Markdown, generated views, manifests, raw
 payloads, and generic project files.
 
-Use `.ready.yml` for source records until the standard promotes `.ready` as the
-canonical file extension. Treat `.ready` as the durable format identity and
-`.ready.yml` as the current YAML serialization.
+Use `.ready.yml` for source records in this version. Treat `.ready` as the
+durable package and record format identity, not as a separate source-file
+extension in this version. Future serializations may use another extension, but
+the current source-record extension is `.ready.yml`.
 
-`.ready` records use three classification fields:
+`.ready` records use classification fields:
 
 - `kind`: the object family, such as `primitive`, `flag`, `governance`,
   `setting`, or `manifest`.
 - `class`: the family-specific class. Primitive classes are `premise`,
   `intent`, `service`, `standard`, and `artifact`.
-- `type`: the narrower subtype under that class.
+- `type`: the narrower subtype under that class for primitive and flag records.
+  Manifest records use `kind` and `class`; they do not require `type`.
 
 The valid values live in [`vocabulary.yaml`](../../vocabulary.yaml). This is a
 breaking contract: do not write `primitive_class`, `fields.premise_type`, or
@@ -59,6 +61,7 @@ kind: primitive
 id: I-001
 class: intent
 type: behavior
+compiler_role: source_truth
 title: Human-readable title
 status: ready
 fields:
@@ -142,18 +145,22 @@ directory sort order, to describe tree meaning.
 Manifest paths are repo-root relative unless a manifest declares a different
 `path_base`.
 
+`source_model: file_per_record_ready_yml` means each addressable source record
+lives in its own `.ready.yml` file.
+
 ```yaml
 schema: ready/product-tree-root/v1
 kind: manifest
 class: product
 product: example
+source_model: file_per_record_ready_yml
 source_root: ready
 product_directory: ready/product
 flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.32"
+  version: "0.3.33"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -227,6 +234,7 @@ kind: flag
 id: XR-001
 class: readiness
 type: seed
+compiler_role: workflow_state
 title: Build the first usable onboarding path
 claimable: true
 blocked_by: []
@@ -235,6 +243,15 @@ completion_proof:
   - The documented verification command passes and the evidence artifact is linked.
 fields:
   objective: What should be resolved or proven.
+  scope: What package truth this flag gates.
+  non_scope: What is excluded from the claim.
+  dependencies: []
+  required_standards: []
+  required_services: []
+  required_artifacts: []
+  setup: []
+  acceptance: []
+  blocker_policy: When coding agents may or may not claim this work.
 refs: []
 artifacts: []
 owner_notes: []
@@ -272,6 +289,7 @@ kind: primitive
 id: AP-010
 class: artifact
 type: proof_corpus
+compiler_role: proof_input
 title: Synthetic replay proof run
 status: ready
 privacy: sanitized_fixture
@@ -328,16 +346,17 @@ artifacts:
   - AP-013
   - AP-014
 usage_policy: []
+refs: []
 owner_notes: []
 ```
 
-Every non-`.ready` file that supports product logic, flags, proof, generated
-views, or handoff should have an artifact primitive. Governance documents and
-vendored Ready standard package resources keep their own record kinds and do not
-need artifact descriptors. Reference the artifact id from primitives and flags
-when the reference is meant to carry semantic meaning. Direct file/path links
-are still useful for source access, but they are not semantic product
-references.
+Every payload file that is not itself a `.ready.yml` source record and supports
+product logic, flags, proof, generated views, or handoff should have an artifact
+primitive. Governance documents and vendored Ready Standard package resources
+keep their own record kinds and do not need artifact descriptors. Reference the
+artifact id from primitives and flags when the reference is meant to carry
+semantic meaning. Direct file/path links are still useful for source access, but
+they are not semantic product references.
 
 One descriptor records one artifact purpose. Do not use a descriptor as a
 folder inventory or test bundle when its files have different purposes. A
@@ -354,6 +373,7 @@ Required artifact fields:
 - `compiler_role`
 - `title`
 - `status`
+- `refs`
 - `fields.purpose`
 - `fields.content`
 - `fields.intended_use`
@@ -373,10 +393,10 @@ different from `kind: manifest`, which is structural Ready package metadata.
 
 ## Governance, Settings, And Manifests
 
-Governance records are not primitives by default. They control who may change
-the Ready package, how product truth is approved, and how agents should behave;
-they are package management records, not build inputs for the product runtime.
-Use `kind: governance` for structured governance source records.
+Governance records are not primitives. They control who may change the Ready
+package, how product truth is approved, and how agents should behave; they are
+package management records, not build inputs for the product runtime. Use
+`kind: governance` for structured governance source records.
 
 Settings records are not primitives. Use `kind: setting` for git-tracked
 workspace or app configuration that tools need to manage the Ready tree. Do not
@@ -385,3 +405,11 @@ store raw secrets, runtime cache, or product truth in settings.
 Manifest records are structural metadata. Use `kind: manifest` for product tree
 manifests, package manifests, artifact-tree manifests, governance manifests, and
 settings manifests.
+
+Manifest schema names indicate scope, but validators should only accept schemas
+listed in `vocabulary.yaml`. Currently defined families include the generic
+`ready/manifest/v1` fallback; tree-layout schemas such as
+`ready/product-tree-root/v1`, `ready/product-tree-product/v1`,
+`ready/artifact-tree/v1`, and `ready/governance-tree/v1`; package schemas such as
+`ready/skill-package/v1`; and source-resource indexes such as
+`ready/standard-resources/v1`.

@@ -18,7 +18,7 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Records with top-level `status` use `ready`, `draft`, or `blocked`.
 - Primitive records have `kind: primitive`, a valid primitive `class`, and a
   `type` valid for that class.
-- Primitive and flag records with `compiler_role` use a value declared in
+- Primitive and flag records carry `compiler_role`, and the value is declared in
   `vocabulary.yaml`.
 - Primitive records do not use `primitive_class`.
 - Primitive records do not use `fields.premise_type` or `fields.intent_type`;
@@ -34,8 +34,7 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Flag records use `X*` ids. Optional class suffixes may identify
   well-understood flag classes, but every flag id must start with `X`.
 - Governance records use `kind: governance` or documented Markdown governance
-  files under the configured governance directory; they are not primitives by
-  default.
+  files under the configured governance directory; they are not primitives.
 - Settings records use `kind: setting`, explicit settings schemas, and the
   configured settings directory; they are not primitive source records.
 - Manifest records use `kind: manifest` or a documented manifest schema; they
@@ -65,10 +64,13 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   `draft`.
 - Orchestrators do not implement packages with blockers unless explicit override
   instructions are present.
+- Records with non-empty blocker lists, such as `blocked_by` or
+  `fields.blockers`, use `status: blocked` and require explicit override before
+  implementation.
 - Committed intents carry concrete `completion_proof` that functions as intent
   Definition of Done, not a one-word status.
-- Flag records keep `class`, `type`, `claimable`, and `completion_proof` at the
-  top level.
+- Flag records keep `class`, `type`, `compiler_role`, `claimable`, and
+  `completion_proof` at the top level.
 - Decision flags use `class: decision`, stable `XD-*` ids, `fields.question`,
   `fields.safe_default`, structured `fields.proposals`, and concrete top-level
   `completion_proof`.
@@ -85,10 +87,15 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   flag closure criteria, not a one-word status or product Definition of Done.
 - Claimable coding handoffs resolve to the intended product state; a flag that
   only describes a delta or implementation edit instruction is not enough.
+- Claimable seed and change flags carry `fields.scope`, `fields.non_scope`,
+  `fields.dependencies`, `fields.required_standards`, `fields.required_services`,
+  `fields.required_artifacts`, `fields.setup`, `fields.acceptance`, and
+  `fields.blocker_policy`.
 - Flag records omit `status` unless they are blocked; they do not use
   `status: ready` or `status: draft`.
 - Flags with non-empty `blocked_by` use `status: blocked` and remain
   non-claimable.
+- Blocker flags use `status: blocked` and remain non-claimable.
 - Overrides for blocked packages preserve the override instruction, unresolved
   blockers, and the limits of resulting build evidence.
 - Primitive files do not carry implementation lifecycle state.
@@ -96,14 +103,14 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Project-specific governance docs are stored under `ready/governance/`, not
   artifact directories.
 - Project-agnostic Ready resources and templates are referenced from the local
-  `ready/standard/` package or the Ready standard source package, not artifact
+  `ready/standard/` package or the Ready Standard source package, not artifact
   directories.
 - Vendored standard packages exclude Mintlify `docs/`, Git metadata, local
   cache, raw logs, transcripts, private samples, and secrets.
 - Artifact descriptor ids are unique within their artifact family and globally
   unique when a project uses global id lookup.
 - Artifact descriptors carry the required top-level fields: `schema`, `kind`,
-  `id`, `class`, `type`, `compiler_role`, `title`, and `status`.
+  `id`, `class`, `type`, `compiler_role`, `title`, `status`, and `refs`.
 - Artifact descriptors carry `fields.purpose`, `fields.content`,
   `fields.intended_use`, `fields.format`, `fields.confidence`, and
   `fields.provenance`.
@@ -114,7 +121,9 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   `fields.proof_role`, `fields.authority_level`, `fields.lifecycle_state`,
   `fields.coverage`, `fields.dataset_contract`, `fields.oracle_policy`,
   `fields.replay`, `fields.acceptance_contract`, and `fields.limitations`.
-- Governance documents and vendored Ready standard package resources are not
+- Ready proof corpus descriptors do not use `fields.lifecycle_state: draft`;
+  draft proof corpora use top-level `status: draft`.
+- Governance documents and vendored Ready Standard package resources are not
   artifact descriptors.
 - Sensitive content, source excerpts, diffs, raw logs, and secrets are absent.
 - Large artifacts use storage paths or external refs instead of inline payloads.

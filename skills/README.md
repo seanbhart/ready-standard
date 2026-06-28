@@ -15,14 +15,14 @@ project-agnostic standard resources, not a project's authority policy.
 - [modules/perspective-review.md](modules/perspective-review.md) - psychological, physical,
   logical, evidence, design, and access challenge review.
 - [modules/standard-update.md](modules/standard-update.md) - sync the latest
-  Ready standard package into a product tree and migrate the tree.
+  Ready Standard package into a product tree and migrate the tree.
 
 The Ready Skill is the entrypoint. Load only the modules that match the current
 gap, and record loaded module ids and hashes in the agent context manifest.
 
 ## Portable Package
 
-[`../manifest.yaml`](../manifest.yaml) describes the portable standard package.
+[`../manifest.yaml`](../manifest.yaml) describes the portable Ready Standard package.
 To pass only the skill pack to another agent or project, copy this whole
 directory or the exact files listed in `portable_files` in
 [`manifest.yaml`](manifest.yaml). Paths are repo-relative so a receiving agent
@@ -33,4 +33,4 @@ project-specific artifacts.
 The receiving project should keep the copied package at `ready/standard/` and
 point `ready/manifest.yaml` at that local package. Treat the copied package as
 source text that can be reviewed and versioned. Agents should update it only
-when asked to migrate the project to a newer Ready standard version.
+when asked to migrate the project to a newer Ready Standard version.

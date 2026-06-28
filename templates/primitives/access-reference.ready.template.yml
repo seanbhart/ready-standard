@@ -1,6 +1,6 @@
 schema: ready/artifact/v1
 kind: primitive
-id: AR-001
+id: "{{AR_ID}}"
 class: artifact
 type: access_reference
 compiler_role: handoff_reference
@@ -21,4 +21,5 @@ files:
     role: "{{primary|supporting}}"
     purpose: "{{HOW_THIS_FILE_SERVES_THE_ACCESS_REFERENCE}}"
 usage_policy: []
+refs: []
 owner_notes: []
