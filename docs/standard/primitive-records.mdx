@@ -161,6 +161,12 @@ into typed `fields`, `refs`, `artifacts`, or flags.
   implementation-bearing records, not to premises.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
+- Subordinate intent-to-intent relationships should be authored by the parent
+  intent with a `child` ref to the subordinate intent. Reader views display this
+  as `fulfilled by` / `fulfills`.
+- Intent-to-intent `peer` refs are valid when two intents are lateral product
+  commitments that coordinate, overlap, or should be considered together without
+  either intent parenting the other.
 - Artifact descriptors only own artifact-to-artifact relationships; product and
   workflow records point to artifacts through `artifacts`.
 - Store bulky samples, mockups, screenshots, snippets, and generated outputs as
@@ -295,6 +301,12 @@ Product and workflow records reference supporting artifacts through their own
 links such as `linked_primitives`; artifact descriptors may relate to other
 artifacts when one artifact depends on, derives from, includes, or carries the
 other.
+
+Artifact-to-artifact refs may be reciprocal when each directed edge is an
+independently meaningful citation, support, derivation, inclusion, or carrier
+assertion. Do not create a reciprocal ref merely so both artifacts know about the
+same relationship; reader views derive incoming `cited by`, `supported by`, and
+similar reverse displays from the single authored edge.
 
 `type: manifest` under `class: artifact` means the artifact primitive describes
 a durable product artifact whose purpose is a manifest or index. It is not the

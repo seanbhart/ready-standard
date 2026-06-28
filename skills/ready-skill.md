@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.35
+version: 0.3.37
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -99,7 +99,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.35"
+  version: "0.3.37"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -384,6 +384,10 @@ Intents:
   Completion Proof.
 - Put required services, governing standards, and intent dependencies in `refs`,
   not in duplicate `fields`.
+- Author subordinate intent-to-intent decomposition from the parent intent with a
+  `child` ref to the subordinate intent. Use `peer` refs for lateral intents that
+  coordinate or should be considered together without either intent parenting the
+  other.
 - Every committed intent should trace to at least one premise unless explicitly
   marked exploratory.
 - Quality-bearing or live-variable intents need an operating envelope.
@@ -585,6 +589,8 @@ Product and workflow records reference supporting artifacts through their own
 `artifacts` lists. Artifact descriptors must not keep reverse product/workflow links
 such as `linked_primitives`; artifact descriptors may relate to other artifacts
 when one artifact depends on, derives from, includes, or carries the other.
+Artifact-to-artifact refs may be reciprocal only when each direction is an
+independent citation, support, derivation, inclusion, or carrier assertion.
 
 Relationship rules:
 
@@ -605,7 +611,8 @@ Relationship rules:
   `intent --parent--> premise` renders as the intent `serves` the premise and
   as the premise is `served by` the intent; `intent --child--> service` renders
   as `requires` / `required by`; `intent --child--> intent` renders as
-  `fulfilled by` / `fulfills`; `intent --peer--> standard` renders as
+  `fulfilled by` / `fulfills`; `intent --peer--> intent` renders as
+  `coordinates with` in both directions; `intent --peer--> standard` renders as
   `governed by` / `governs`.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
@@ -614,6 +621,9 @@ Relationship rules:
   intent that serves the premise.
 - Artifact descriptors only own artifact-to-artifact relationships. Product and
   workflow records point to artifacts through `artifacts`.
+- Reciprocal artifact-to-artifact refs are valid only when both directed edges
+  are independently meaningful artifact assertions. Do not add a reciprocal ref
+  merely so the target artifact knows about the source artifact.
 - Required services and governing standards belong in structural `refs`, not
   duplicated under intent `fields`. Standards usually govern through `peer`
   refs; existing `child` standard refs are retained as fallback display

@@ -51,7 +51,9 @@ silently blending them.
 Do not bury design decisions in chat. Update the affected product primitive,
 service, or flag to reference the artifact through its `artifacts` list. Use
 artifact-to-artifact refs only when one artifact depends on, derives from,
-includes, or carries another artifact.
+includes, cites, or carries another artifact. Reciprocal artifact refs are valid
+only when both directions are independently meaningful artifact assertions, not
+when one direction merely mirrors the other for display.
 
 ## Design Completeness Checklist
 

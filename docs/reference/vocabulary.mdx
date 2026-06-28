@@ -83,9 +83,23 @@ Standards that govern implementation-bearing records normally use `peer` refs:
 directly; if a standard or service appears related to a premise, attach it to
 the intent that serves the premise. Flags that are governed by standards use the
 same `peer` display.
+
+Subordinate intent-to-intent relationships are authored by the parent intent:
+`intent --child--> intent` renders as `fulfilled by` / `fulfills`. Lateral
+intent-to-intent relationships may use `peer` refs and render as
+`coordinates with` in both directions. Do not store an inverse parent ref on the
+subordinate intent for the same assertion.
+
 `standard --peer--> standard` renders as `co-governs with` in both directions.
 The vocabulary keeps child-standard display phrases as fallback semantics for
 older trees and intentionally nested subordinate standards.
+
+Artifact-to-artifact refs may be reciprocal when both edges are independently
+meaningful artifact assertions. For example, two artifacts may cite each other
+for different evidence, context, or source-material reasons. Do not store a
+reciprocal artifact ref merely to mirror the inverse display for one assertion;
+reader views derive incoming labels such as `cited by` or `supported by` from the
+single authored edge.
 
 ## Extension Rule
 

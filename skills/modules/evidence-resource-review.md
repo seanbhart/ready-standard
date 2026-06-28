@@ -70,6 +70,10 @@ One artifact descriptor records one purpose. A descriptor may list multiple
 files only when those files are interchangeable versions or representations of
 the same purpose. Files with different purposes need separate
 descriptors even when one harness or proof run consumes them together.
+Artifact-to-artifact refs may be reciprocal when both directions are
+independently meaningful citations, support claims, derivations, inclusions, or
+carrier relationships. Do not add reciprocal refs merely to mirror inverse
+display labels.
 
 ## Storage Rules
 

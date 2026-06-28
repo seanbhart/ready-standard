@@ -1,7 +1,7 @@
 schema: "ready/standard-resources/v1"
 kind: "manifest"
 class: "package"
-version: "0.3.35"
+version: "0.3.37"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -65,5 +65,7 @@ rules:
   - "The vendored package excludes Mintlify docs and Git metadata; manifests keep docs_source for public reference docs."
   - "Artifact descriptors are primitives with class: artifact; they support product truth and do not store governance or standard resources."
   - "Ready-carried artifact payloads may be copied, transformed, or compiled into the product, but runtime/build product artifacts belong in product-owned paths or storage, not ready/settings."
+  - "Subordinate intent-to-intent relationships are authored by the parent intent with child refs; lateral intent-to-intent relationships may use peer refs."
+  - "Artifact-to-artifact refs may be reciprocal only when each directed edge is an independent artifact assertion, not when one edge merely mirrors another for display."
   - "Templates must use placeholders for project-specific authority, owners, services, and product directories."
   - "Valid kinds, classes, types, claim levels, and relationship display phrases are centralized in vocabulary.yaml."

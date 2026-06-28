@@ -160,7 +160,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.35"
+  version: "0.3.37"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -208,13 +208,29 @@ Store one directed edge for each relationship. This reduces merge conflicts and
 prevents source and inverse refs from drifting; views derive both forward and
 reverse labels from the same stored edge.
 
+Artifact-to-artifact refs can behave like citations. Two artifact descriptors
+may point at each other when each directed edge is an independently meaningful
+artifact assertion, such as separate citation, support, derivation, inclusion, or
+carrier claims. Do not add a reciprocal artifact ref merely to mirror an inverse
+display; views derive incoming labels such as `cited by` or `supported by` from
+the authored edge.
+
+For subordinate intent-to-intent decomposition, store the edge on the parent
+intent as a `child` ref to the subordinate intent. Reader views display that
+edge as `fulfilled by` from the parent and `fulfills` from the child. Use
+intent-to-intent `peer` refs for lateral product commitments that coordinate,
+overlap, or should be considered together without a parent-child relationship.
+
 The semantic display lookup lives in `vocabulary.yaml`. The source-to-target
 phrase renders from the record that stores or owns the ref. The
 target-to-source phrase renders when a view shows the same edge from the target
 side. For example, `intent --parent--> premise` renders as the intent `serves`
 the premise, and as the premise is `served by` the intent. A
-`flag --peer--> standard` edge can render as `governed by` / `governs` without
-making the flag a primitive.
+`intent --child--> intent` edge renders as `fulfilled by` / `fulfills`, and an
+`intent --peer--> intent` edge renders as `coordinates with` in both directions.
+An `artifact --peer--> artifact` edge renders as `cites` / `cited by`.
+A `flag --peer--> standard` edge can render as `governed by` / `governs`
+without making the flag a primitive.
 
 Standards govern implementation, behavior, measurement, judgment, or
 maintenance. Attach standards to intents, services, flags, or other standards,

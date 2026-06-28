@@ -56,6 +56,17 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   source-to-target and target-to-source phrases for the same stored edge.
 - Relationship display wildcard class tokens must be declared in
   `relationship_display_wildcards`.
+- Subordinate intent-to-intent relationships are stored on the parent intent with
+  a `child` ref to the subordinate intent; do not also store the inverse parent
+  ref on the subordinate intent.
+- Intent-to-intent `peer` refs are valid for lateral product commitments that
+  coordinate, overlap, or should be considered together without either intent
+  parenting the other.
+- Artifact-to-artifact refs may be reciprocal only when each edge is an
+  independently meaningful artifact citation, support, derivation, inclusion, or
+  carrier assertion.
+- Reciprocal artifact refs that only mirror the inverse display for the same
+  assertion should be rejected or warned on as duplicate relationship state.
 - Generated indexes do not carry independent primitive truth.
 - A complete package has no flags and no status-bearing records in `draft` or
   `blocked`.
@@ -117,6 +128,8 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - File-backed artifact descriptors give every file a `path` and `role`.
 - Artifact descriptors have one purpose; files with different purposes are split
   into separate descriptors.
+- Artifact descriptors only keep artifact-to-artifact refs; product and workflow
+  records point to artifacts through `artifacts`.
 - Proof corpus descriptors use `type: proof_corpus` and carry
   `fields.proof_role`, `fields.authority_level`, `fields.lifecycle_state`,
   `fields.coverage`, `fields.dataset_contract`, `fields.oracle_policy`,
