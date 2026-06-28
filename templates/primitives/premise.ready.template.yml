@@ -1,15 +1,17 @@
-schema: readyroom/primitive/v1
+schema: ready/primitive/v1
 kind: primitive
 id: P-001
-type: premise
-primitive_class: product_logic
+class: premise
+type: "{{observation|belief|assumption|need|problem|motivation|risk|opportunity}}"
 compiler_role: source_truth
 title: "{{PREMISE_TITLE}}"
 status: draft
 fields:
-  premise_type: "{{PREMISE_TYPE_FROM_READY_VOCABULARY}}"
   statement: "{{WHAT_IS_TRUE_OR_BELIEVED}}"
+  provenance: "{{WHERE_THIS_PREMISE_CAME_FROM}}"
   product_implication: "{{WHAT_THIS_REQUIRES_OR_RULES_OUT}}"
+  evidence_needed: []
 refs: []
-artifacts: []
+artifacts:
+  - "{{EVIDENCE_ARTIFACT_ID}}"
 owner_notes: []

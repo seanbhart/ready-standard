@@ -1,46 +1,48 @@
-schema: "readyroom/product-tree-product/v1"
+schema: "ready/product-tree-product/v1"
+kind: "manifest"
+class: "product"
 product: "{{PRODUCT_ID}}"
 source_model: "file_per_record_ready_yaml"
+path_base: "repo_root"
 source_root: "ready/product"
 governance_docs:
-  root: "../governance/"
-  agent_guidelines: "../governance/agent-guidelines.md"
-  product_orchestrator_charter: "../governance/product-orchestrator-charter.md"
-  product_process: "../governance/product-process.md"
-  workspace_authority_and_access: "../governance/workspace-authority-and-access.md"
+  root: "ready/governance"
+  agent_guidelines: "ready/governance/agent-guidelines.md"
+  product_orchestrator_charter: "ready/governance/product-orchestrator-charter.md"
+  product_process: "ready/governance/product-process.md"
+  workspace_authority_and_access: "ready/governance/workspace-authority-and-access.md"
 ready_standard:
-  version: "0.3.28"
+  version: "0.3.32"
   repository: "https://github.com/seanbhart/ready-standard"
-  package_path: "../standard"
-  package_manifest: "../standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.28/docs"
+  package_path: "ready/standard"
+  package_manifest: "ready/standard/manifest.yaml"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.32/docs"
 primitive_directories:
-  premises: "premises/"
-  intents: "intents/"
-  standards: "standards/"
-  services: "services/"
+  premises: "ready/product/premises/"
+  intents: "ready/product/intents/"
+  standards: "ready/product/standards/"
+  services: "ready/product/services/"
 primitive_classes:
-  product_logic:
+  premise:
+    directory: "ready/product/premises/"
+  intent:
+    directory: "ready/product/intents/"
+  standard:
+    directory: "ready/product/standards/"
+  service:
+    directory: "ready/product/services/"
+  artifact:
     directories:
-      premises: "premises/"
-      intents: "intents/"
-      standards: "standards/"
-      services: "services/"
-  evidence_artifact:
-    directories:
-      samples: "artifacts/samples/"
-      resources: "artifacts/resources/"
-      snippets: "artifacts/snippets/"
-      designs: "artifacts/designs/"
-      manifests: "artifacts/manifests/"
-  governance:
-    directories:
-      governance: "../governance/"
+      samples: "ready/product/artifacts/samples/"
+      resources: "ready/product/artifacts/resources/"
+      snippets: "ready/product/artifacts/snippets/"
+      designs: "ready/product/artifacts/designs/"
+      manifests: "ready/product/artifacts/manifests/"
 artifact_directories:
-  index: "artifacts.md"
-  manifest: "artifacts/manifest.yaml"
-  samples: "artifacts/samples/"
-  resources: "artifacts/resources/"
-  snippets: "artifacts/snippets/"
-  designs: "artifacts/designs/"
-  manifests: "artifacts/manifests/"
+  index: "ready/product/artifacts.md"
+  manifest: "ready/product/artifacts/manifest.yaml"
+  samples: "ready/product/artifacts/samples/"
+  resources: "ready/product/artifacts/resources/"
+  snippets: "ready/product/artifacts/snippets/"
+  designs: "ready/product/artifacts/designs/"
+  manifests: "ready/product/artifacts/manifests/"

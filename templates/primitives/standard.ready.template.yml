@@ -1,8 +1,8 @@
-schema: readyroom/primitive/v1
+schema: ready/primitive/v1
 kind: primitive
 id: ST-001
-type: standard
-primitive_class: product_logic
+class: standard
+type: "{{rule|constraint|quality_bar|compliance|measurement|safety|accessibility|proof|implementation_constraint}}"
 compiler_role: constraint
 title: "{{STANDARD_TITLE}}"
 status: draft

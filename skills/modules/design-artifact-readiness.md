@@ -12,8 +12,8 @@ must implement faithfully.
 
 ## Responsibilities
 
-- Identify every product-logic primitive and decision/workflow primitive that
-  depends on a visual or interaction decision.
+- Identify every primitive or flag that depends on a visual or interaction
+  decision.
 - Gather existing designs, screenshots, mockups, prototypes, brand assets,
   design-system references, copy, and flow diagrams.
 - Create low-fidelity mockups, HTML prototypes, component specs, or generated
@@ -42,8 +42,8 @@ prototype, generated concept, stale, or superseded. If a design conflicts with
 primitive truth, create a decision flag or primitive edit proposal instead of
 silently blending them.
 
-Do not bury design decisions in chat. Link the artifact descriptor to the
-affected product-logic primitive, service, or flag.
+Do not bury design decisions in chat. Link the artifact primitive to the
+affected product primitive, service, or flag.
 
 ## Design Completeness Checklist
 

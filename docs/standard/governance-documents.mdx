@@ -5,9 +5,11 @@ description: "Where project governance, reusable Ready resources, templates, and
 
 # Governance And Standard Resources
 
-Governance documents and Ready standard resources are governance primitives:
-first-class product-tree records that constrain authority, process, and agent
-behavior. They are not evidence/artifact primitives.
+Governance documents are governance records: package-management records that
+constrain authority, process, and agent behavior. They are not primitives or
+artifact primitives by default. Ready standard resources are reusable package
+resources; their own manifests, templates, and skills keep their native record
+kind rather than automatically becoming governance records.
 
 Use `ready/governance/` for project-specific files that constrain how product
 work is allowed to happen for that project:
@@ -16,6 +18,11 @@ work is allowed to happen for that project:
 - Product-orchestrator charters.
 - Product process docs.
 - Workspace authority and access policies.
+
+These files travel with the Ready package so every contributor and agent uses
+the same authority and process versions. They are package-management context,
+not product runtime implementation truth, but they can stop or constrain package
+edits and implementation handoffs.
 
 Use the Ready standard package for project-agnostic resources:
 
@@ -30,7 +37,7 @@ of those resources at `ready/standard/`. That local copy is the runtime standard
 package for agents. The source repo's `docs/` directory is Mintlify
 documentation source and is not part of the product-local package.
 
-Use `ready/**/artifacts/` for artifact descriptors and attached payload
+Use `ready/**/artifacts/` for artifact primitives and attached payload
 material used by product logic, flags, proof, generated views, or handoff:
 
 - Proof corpora.
@@ -50,8 +57,7 @@ If a file defines reusable Ready procedure or a starter template for other
 projects, it belongs in the standard package, not in a project artifact tree.
 
 If a file helps explain, test, prove, or illustrate product logic, it belongs in
-artifacts as an artifact descriptor or as a payload referenced by
-one.
+artifacts as an artifact primitive or as a payload referenced by one.
 
 ## Runtime use
 

@@ -1,8 +1,8 @@
-schema: readyroom/primitive/v1
+schema: ready/primitive/v1
 kind: primitive
 id: SV-001
-type: service
-primitive_class: product_logic
+class: service
+type: "{{platform|api|data_store|model_provider|package|runtime|worker|deployment|external_system}}"
 compiler_role: dependency
 title: "{{SERVICE_TITLE}}"
 status: draft
@@ -12,13 +12,21 @@ fields:
     - "{{CURRENT_SERVICE_BLOCKER_OR_NONE}}"
   access_required: "{{ACCOUNT_OR_CREDENTIAL_NEEDS}}"
   credential_location: "{{SAFE_SECRET_LOCATION_REFERENCE_OR_NONE}}"
+  required_permissions: "{{SCOPES_ROLES_OR_PERMISSIONS_REQUIRED}}"
   evidence: "{{CURRENT_EVIDENCE_FOR_SERVICE_STATE}}"
   proof_required: "{{HOW_TO_VERIFY_SERVICE_IS_USABLE}}"
+  setup_steps:
+    user_required: []
+    agent_allowed: []
+  verification:
+    command: "{{COMMAND_TO_VERIFY_SERVICE_OR_NONE}}"
+    ui_check: "{{UI_CHECK_TO_VERIFY_SERVICE_OR_NONE}}"
   input_types: "{{WHAT_THE_SERVICE_READS_OR_RECEIVES}}"
   input_samples: "{{SAMPLE_INPUT_ARTIFACT_REFS_OR_NONE}}"
   output_types: "{{WHAT_THE_SERVICE_PRODUCES_OR_CHANGES}}"
   output_samples: "{{SAMPLE_OUTPUT_ARTIFACT_REFS_OR_NONE}}"
   instructions: "{{IMPLEMENTATION_DOC_ARTIFACT_REFS_OR_EXTERNAL_DOC_LINKS}}"
+  simulation_policy: "{{WHEN_THIS_SERVICE_MAY_BE_STUBBED_OR_MOCKED}}"
   off_limits: "{{WHAT_THIS_SERVICE_MUST_NOT_DO_OR_IS_NOT_CLAIMABLE_NOW}}"
   failure_modes: "{{EXPECTED_FAILURES_AND_DEGRADATION}}"
 refs: []

@@ -1,0 +1,52 @@
+schema: ready/artifact/v1
+kind: primitive
+id: AP-001
+class: artifact
+type: proof_corpus
+compiler_role: proof_input
+title: "{{PROOF_CORPUS_TITLE}}"
+status: ready
+privacy: "{{sanitized_fixture|explicit_user_stub|private_ref}}"
+retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
+fields:
+  confidence: "{{low|medium|high}}"
+  provenance: "{{HOW_THIS_CORPUS_WAS_OBTAINED_OR_AUTHORED}}"
+  purpose: "{{ONE_PROOF_PURPOSE_THIS_CORPUS_SERVES}}"
+  content: "{{WHAT_INPUTS_CONFIGS_EXPECTED_OUTPUTS_AND_DIAGNOSTICS_THIS_CORPUS_CONTAINS}}"
+  intended_use: "{{HOW_AGENTS_OR_VALIDATORS_SHOULD_USE_THIS_CORPUS}}"
+  format: "{{yaml|json|jsonl|mixed|external_ref}}"
+  proof_role: "{{regression|acceptance|simulation|diagnostic|negative_case}}"
+  authority_level: "{{deterministic_fixture|human_labeled_fixture|simulation_baseline|production_sample|owner_supplied_stub}}"
+  lifecycle_state: "{{draft|frozen|replaceable|retired}}"
+  coverage:
+    proves: []
+    does_not_prove: []
+    forbidden_uses: []
+  dataset_contract:
+    input_sets: []
+    config: []
+    expected_outputs: []
+    diagnostic_outputs: []
+    generated_outputs: []
+  oracle_policy:
+    oracle_type: "{{exact_match|invariant|human_review|snapshot|none}}"
+    oracle_authority: "{{COMMITTED_EXPECTED_OUTPUTS_OR_REVIEW_POLICY}}"
+    comparison_mode: "{{HOW_OUTPUTS_ARE_COMPARED}}"
+    ignored_fields: []
+    invariants: []
+    update_policy: "{{OWNER_APPROVAL_OR_REGENERATION_POLICY}}"
+  replay:
+    verify_command: "{{COMMAND_TO_VERIFY_OR_NONE}}"
+    regenerate_command: "{{COMMAND_TO_REGENERATE_OR_NONE}}"
+    regenerate_policy: "{{OWNER_APPROVAL_REQUIRED_OR_OTHER_POLICY}}"
+  acceptance_contract:
+    accepted_when: []
+    fails_when: []
+    evidence_required: []
+  limitations: []
+files:
+  - path: "{{READY_RELATIVE_OR_EXTERNAL_SAFE_REF}}"
+    role: "{{input|config|expected_output|diagnostic|generated_output|supporting}}"
+    purpose: "{{HOW_THIS_FILE_SERVES_THE_PROOF_CORPUS}}"
+usage_policy: []
+owner_notes: []

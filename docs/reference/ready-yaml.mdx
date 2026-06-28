@@ -1,51 +1,63 @@
 ---
 title: ".ready.yml Reference"
-description: "Required and recommended YAML fields for Ready product-logic records."
+description: "Required and recommended YAML fields for Ready records."
 ---
 
 # `.ready.yml` Reference
 
-`.ready.yml` is the product-logic primitive source format. It is YAML with a
-Ready-specific extension so tools can distinguish source records from navigation
-Markdown, generated docs, manifests, and generic payload files.
+`.ready.yml` is the Ready source-record format. It is YAML with a distinct
+extension so tools can separate typed source records from navigation Markdown,
+generated views, manifests, raw payloads, and generic project files.
 
-Ready has a broader primitive model than this one schema. Flags, Decision flags,
-artifact descriptors, and governance records are also Ready primitives when they are
-typed, addressable, reusable records. They may use specialized schemas such as
-`readyroom/flag/v1` or `readyroom/artifact/v1` when those schemas carry a more
-precise machine contract.
+Ready records use three classification fields:
 
-## ID families
+- `kind`: the object family, such as `primitive`, `flag`, `governance`,
+  `setting`, or `manifest`.
+- `class`: the family-specific class. Primitive classes are `premise`,
+  `intent`, `service`, `standard`, and `artifact`.
+- `type`: the narrower subtype under that class.
 
-Product-logic ids keep their existing product prefixes, such as `P-*`, `I-*`,
-`ST-*`, and `SV-*`.
+The valid values live in [`vocabulary.yaml`](../../vocabulary.yaml). This is a
+breaking contract: do not write `primitive_class`, `fields.premise_type`, or
+`fields.intent_type` in new records.
 
-All artifacts start with `A`. They may optionally use one or two additional
-letters after `A` for a well-understood artifact class. For example, projects
-may use `AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for snippets,
-`AD-*` for designs, and `AM-*` for manifests. Arbitrary or one-off artifacts
-may use plain `A-*`.
+## ID Families
 
-All flags start with `X`. They may optionally use one or two additional letters
-after `X` for a well-understood flag class. For example, projects may use
-`XD-*` for decisions, `XS-*` for seed flags, `XC-*` for change flags, and
-`XR-*` for resource/readiness flags. Arbitrary or one-off process interrupts
-may use plain `X-*`.
+Product primitive ids use the class prefix:
 
-## Product-Logic Primitive Record
+- `P-*` for premises.
+- `I-*` for intents.
+- `ST-*` for standards.
+- `SV-*` for services.
+- `A*` for artifact primitives.
+
+Artifacts may optionally use one or two additional letters after `A` for a
+well-understood artifact type, such as `AR-*` for resources, `AP-*` for proof
+corpora, `ASN-*` for snippets, `AD-*` for designs, and `AM-*` for manifests.
+Plain `A-*` is valid for one-off artifacts.
+
+Flags use `X*` ids. They may optionally use one or two letters after `X` for a
+well-understood flag class, such as `XD-*` for decisions, `XB-*` for blockers,
+`XDR-*` for discrepancies, `XR-*` for readiness, and `XP-*` for proof gaps.
+
+## Primitive Records
+
+Primitive records are durable Ready package inputs required to build, prove,
+operate, or govern the intended product package. They are the source of intended
+product truth, implementation constraints, dependencies, proof inputs, or
+supporting product artifacts. Most primitives live under the configured
+`product_directory`, usually `ready/product/`.
 
 ```yaml
-schema: readyroom/primitive/v1
+schema: ready/primitive/v1
 kind: primitive
 id: I-001
-type: intent
-primitive_class: product_logic
-compiler_role: source_truth
+class: intent
+type: behavior
 title: Human-readable title
-status: active
+status: ready
 fields:
   statement: The concise product-promise statement.
-  intent_type: behavior
   claim_level: process_proof
   actor: The user, operator, system, or agent this promise serves.
   trigger: The event or state that starts the promise.
@@ -72,53 +84,63 @@ artifacts: []
 owner_notes: []
 ```
 
-Required fields:
+Required primitive fields:
 
-- `schema`: `readyroom/primitive/v1`
-- `kind`: `primitive`
-- `id`: stable primitive id, such as `P-001`, `I-001`, `ST-001`, or `SV-001`
-- `type`: `premise`, `intent`, `standard`, or `service`
-- `title`: human-readable label
-- `status`: product status, such as `active`, `draft`, or `blocked`
-- `fields`: type-specific structured content
-- `completion_proof`: required for committed intents; recommended for any
-  product-logic primitive that needs proof
-- `refs`: directed structural relationships
+- `schema`: usually `ready/primitive/v1`; specialized primitive schemas may
+  be used when they preserve a narrower machine contract.
+- `kind`: `primitive`.
+- `id`: stable primitive id.
+- `class`: `premise`, `intent`, `standard`, `service`, or `artifact`.
+- `type`: a valid subtype for the class.
+- `compiler_role`: how compilers and orchestrators should treat the record.
+- `title`: human-readable label.
+- `status`: record state: `ready`, `draft`, or `blocked`.
+- `fields`: class-specific structured content.
+- `refs`: directed structural relationships.
 
-Product-logic primitive subtypes live under `fields`, not top-level `type`.
-Valid subtype values live in [`vocabulary.yaml`](../../vocabulary.yaml).
-Constraints are `standard` records, not premise subtypes.
+Committed intents should carry `completion_proof`. Other primitives should add
+Completion Proof when the record needs explicit proof to rebuild, validate, or
+operate the product.
 
-Recommended fields:
-
-- `primitive_class`: `product_logic`
-- `compiler_role`: one of `source_truth`, `constraint`, `dependency`,
-  `evidence`, `workflow_state`, `generated_view_input`, or another documented
-  project role
-
-`owner_notes` is an optional product-owner annotation area. It exists for
-human notes that should travel with the record but are not product truth,
+`owner_notes` is an optional product-owner annotation area. It exists for human
+notes that should travel with the record but are not product truth,
 requirements, evidence, Completion Proof, or agent instructions. Agents and
 compilers must not satisfy, enforce, or cite `owner_notes` as source authority;
 promote anything authoritative into typed `fields`, `refs`, `artifacts`, or
 flags.
 
-Older v1 records can infer `primitive_class: product_logic` from
-`schema: readyroom/primitive/v1` and the four product-logic types.
-
 Directory ownership is not stored inside primitive records. Tools derive record
-authority from the file location declared by `ready/manifest.yaml`, usually
-`ready/product/**` for product truth and `ready/flags/**` for workflow records.
-Extra top-level keys may be ignored by tools.
+authority from the file location declared by `ready/manifest.yaml`.
 
-## Root tree manifest
+## Status
+
+Ready records use top-level `status` to communicate record state and
+kind-aware orchestrator behavior.
+
+- `ready`: resolved for its record kind. Product primitives compile as current
+  intended truth. Flags do not use `ready` status.
+- `draft`: incomplete or not yet approved for its record kind. An orchestrator
+  may attempt implementation, but it must warn before doing so and the build
+  should not be expected to produce a complete product.
+- `blocked`: cannot be built, proven, operated, or claimed without resolving
+  the blocker or receiving explicit override instructions.
+
+Use these statuses consistently wherever a Ready source record carries
+top-level `status`.
+
+## Root Tree Manifest
 
 The root `ready/manifest.yaml` controls product, flags, governance, settings,
 and local standard package locations. Use explicit manifest fields, not
 directory sort order, to describe tree meaning.
 
+Manifest paths are repo-root relative unless a manifest declares a different
+`path_base`.
+
 ```yaml
-schema: readyroom/product-tree-root/v1
+schema: ready/product-tree-root/v1
+kind: manifest
+class: product
 product: example
 source_root: ready
 product_directory: ready/product
@@ -126,7 +148,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.28"
+  version: "0.3.32"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -139,33 +161,34 @@ secrets, and not duplicate product truth from primitives, governance,
 artifacts, or flags.
 
 Product primitives live under the configured `product_directory`. Flags and
-other temporary workflow records live under the configured `flags_directory`.
+other temporary package-work records live under the configured
+`flags_directory`.
 Git commits, branches, and worktrees carry product evolution and alternate
 concepts; the standard does not define additional product-state overlays.
 
-## Primitive Relationships
+## Relationships
 
-Primitive refs store structural position only. Do not store semantic relationship
-verbs such as `serves`, `requires`, `governed_by`, `refines`, or `questions` in
-source records. Those words are reader labels derived from the
-source primitive type, target primitive type, and structural role.
+Refs store structural position only. Do not store semantic
+relationship verbs such as `serves`, `requires`, `governed by`, `refines`, or
+`interrupts` in source records. Those words are reader labels derived from the
+source kind and class, target kind and class, and structural role.
 
-Approved primitive ref roles:
+Approved ref roles:
 
 | Role | Optional code | Meaning for compact refs |
 | --- | ---: | --- |
-| `peer` | `0` | Target is lateral to the current primitive. |
-| `parent` | `1` | Target is a parent of the current primitive. |
-| `child` | `2` | Target is a child of the current primitive. |
+| `peer` | `0` | Target is lateral to the current record. |
+| `parent` | `1` | Target is a parent of the current record. |
+| `child` | `2` | Target is a child of the current record. |
 
 The numeric codes are an implementation convention for applications that want a
 compact internal enum. Source YAML should prefer the readable role strings.
 
-A ref may connect any primitive type to any other primitive type when the
-structural relationship is true. Validators should validate role names and
-target ids. They may warn on type pairs that are not listed in the display
-lookup table, but the stored relationship remains only `peer`, `parent`, or
-`child`.
+A ref may connect records across Ready kinds when the structural relationship
+is true. Validators should validate role names, target ids, and whether the
+kind/class pairing is allowed by project policy. They may warn on pairs that
+are not listed in the display lookup table, but the stored relationship remains
+only `peer`, `parent`, or `child`.
 
 Store one directed edge for each relationship. This reduces merge conflicts and
 prevents source and inverse refs from drifting; views derive both forward and
@@ -175,10 +198,9 @@ The semantic display lookup lives in `vocabulary.yaml`. The source-to-target
 phrase renders from the record that stores or owns the ref. The
 target-to-source phrase renders when a view shows the same edge from the target
 side. For example, `intent --parent--> premise` renders as the intent `serves`
-the premise, and as the premise is `served by` the intent. Projects may extend
-the display lookup table for local primitive classes, but every extension should
-define both directions and must not add new stored relationship roles when a
-display phrase will do.
+the premise, and as the premise is `served by` the intent. A
+`flag --peer--> standard` edge can render as `governed by` / `governs` without
+making the flag a primitive.
 
 Standards govern implementation, behavior, measurement, judgment, or
 maintenance. Attach standards to intents, services, flags, or other standards,
@@ -187,41 +209,20 @@ intents or other implementation-bearing records, not to premises. If a service
 or standard appears to relate to a premise, attach it to the intent that serves
 the premise.
 
-Reader tree nesting is a projection of the graph. A compact ref with
-`role: parent` means the target should be treated as the current primitive's
-parent for relationship display; a compact ref with `role: child` means the
-target should be treated as the current primitive's child. Views may render
-incoming refs by inverting those two roles.
+## Flags
 
-Compact refs infer `from` as the current primitive id:
-
-```yaml
-refs:
-  - role: child
-    id: SV-001
-  - role: peer
-    id: ST-001
-```
-
-Use compact refs for relationships owned by the current primitive. If a record
-must store an edge whose source is another primitive, include explicit `from`
-and `to` so the direction remains unambiguous.
-
-## Flag metadata
-
-Flag records use `schema: readyroom/flag/v1` and keep the claim gate at the top
-level. They point at intended product truth that needs attention, proof, or
-coordination; they do not store implementation deltas.
+Flags are not primitives. They are temporary package-work records for unresolved
+Ready-package decisions, proposed changes, version divergence, blockers,
+discrepancies, readiness gates, and proof gaps. A complete, stable Ready package
+has no flags.
 
 ```yaml
-schema: readyroom/flag/v1
+schema: ready/flag/v1
 kind: flag
-id: X-001
+id: XR-001
+class: readiness
 type: seed
-primitive_class: decision_workflow
-compiler_role: workflow_state
 title: Build the first usable onboarding path
-status: ready
 claimable: true
 blocked_by: []
 completion_proof:
@@ -234,89 +235,40 @@ artifacts: []
 owner_notes: []
 ```
 
-`completion_proof` is the Definition of Done for the flag. It must be concrete
-proof content, not a one-word status such as `ready` or `done`. Coding handoffs
-compile the resolved intended product state from product primitives, standards,
-services, artifacts, and relevant flags before a coding agent claims work.
+`completion_proof` is closure criteria for the flag. It must be concrete proof
+content, not a one-word status such as `ready` or `done`. Coding handoffs
+compile the resolved intended product state from primitives, standards,
+services, artifacts, and relevant flag closure criteria before a coding agent
+claims work.
 
-## Specialized Primitive Schemas
+Decision flags use `class: decision` and a decision subtype such as
+`type: product_choice`. Keep the unresolved prompt in `fields.question`, the
+conservative interim behavior in `fields.safe_default`, candidate answers in
+structured `fields.proposals`, and the decision closure criteria in top-level
+`completion_proof`. Nested proposal entries should use
+`recommendation_state`, not `status`; top-level `status` is reserved for Ready
+record state.
 
-Decision/workflow and evidence/artifact primitives can use specialized schemas
-instead of `readyroom/primitive/v1`. A Ready-defined `.ready.yml` record using
-one of these schemas is a primitive. A raw JSON, HTML, image, CSV, or other
-payload file under `artifacts/` is not itself a primitive unless it has a
-Ready-defined schema/pattern; it is an attachment or safe ref owned by an
-artifact primitive.
+## Artifact Primitives
 
-Examples:
+Artifact descriptors are primitives with `class: artifact`. They describe one
+durable supporting artifact purpose with stable ids, provenance, privacy state,
+usage roles, and payload files or safe refs. Raw JSON, JSONL, Markdown, HTML,
+image, CSV, binary, or external payloads are attachments owned by an artifact
+primitive; they are not primitives by themselves unless they also use a
+Ready-defined source-record schema.
 
-- `readyroom/flag/v1`: decision/workflow primitive for attention, blockers,
-  drift, proof gaps, claim coordination, and proof gates.
-- `readyroom/artifact/v1`: evidence/artifact primitive for a typed artifact
-  such as a customer statement, source document, reference resource, access
-  reference, review protocol, proof corpus, code snippet, design artifact,
-  or manifest. Artifact descriptors can support generated views and handoff
-  material without making those support roles separate artifact types.
-- `readyroom/governance/v1`: governance primitive for authority, process, skill,
-  or template records when a project uses structured governance records.
-
-Specialized primitive schemas still need stable ids, titles or labels,
-provenance when relevant, privacy handling when relevant, and enough structured
-metadata for search, graph traversal, validation, and compiled views. They do
-not use a root `summary`; short explanatory text belongs in type-specific
-`fields` only when it is real product data.
-
-## Artifact descriptors
-
-Artifact descriptors use artifact descriptor `.ready.yml` files. Typed manifests and
-Markdown index rows can summarize or group artifacts, but they are
-generated/navigation material, not the primitive source record. The descriptor
-is the semantic Ready reference; raw JSON, JSONL, Markdown, HTML, image, CSV, or
-other payload files are attachments or safe refs owned by a descriptor.
-
-Every non-`.ready` file that is referenced by product, workflow, proof, or agent
-work should have an artifact descriptor. Reference the descriptor id from
-primitives, not the raw payload path, when the reference is meant to carry
-meaning. Direct file/path links are still useful for source access, but they are
-not semantic product references.
-
-One descriptor records one artifact purpose. Do not use a descriptor as a folder
-inventory or test bundle when its files have different purposes. A descriptor
-may list multiple files only when those files are interchangeable versions or
-representations of the same artifact purpose.
-
-Required descriptor fields:
-
-- `schema`
-- `kind`
-- `id`
-- `type`
-- `title`
-- `status`
-- `fields.purpose`
-- `fields.content`
-- `fields.intended_use`
-- `fields.format`
-
-Evidence and proof descriptors must also carry `fields.confidence` and
-`fields.provenance`. File-backed descriptors must include `files[].path` and
-`files[].role`.
-
-Use `type` for the specific artifact subtype, not only a storage bucket. Common
-types include `customer_statement`, `source_document`, `reference_resource`,
-`access_reference`, `review_protocol`, `proof_corpus`, `code_snippet`,
-`design_artifact`, and `manifest`. Put subtype data under `fields`; do not
-duplicate it in sibling payload blocks with local-only ids.
+Artifact descriptors may use `schema: ready/artifact/v1` when that narrower
+schema gives tools a clearer contract. The object model is still:
 
 ```yaml
-schema: readyroom/artifact/v1
-kind: artifact
+schema: ready/artifact/v1
+kind: primitive
 id: AP-010
+class: artifact
 type: proof_corpus
-primitive_class: evidence_artifact
-compiler_role: evidence
 title: Synthetic replay proof run
-status: active
+status: ready
 privacy: sanitized_fixture
 fields:
   confidence: medium
@@ -374,66 +326,57 @@ usage_policy: []
 owner_notes: []
 ```
 
-Each non-interchangeable payload purpose gets its own descriptor:
+Every non-`.ready` file that supports product logic, flags, proof, generated
+views, or handoff should have an artifact primitive. Governance documents and
+vendored Ready standard package resources keep their own record kinds and do not
+need artifact descriptors. Reference the artifact id from primitives and flags
+when the reference is meant to carry semantic meaning. Direct file/path links
+are still useful for source access, but they are not semantic product
+references.
 
-```yaml
-schema: readyroom/artifact/v1
-kind: artifact
-id: AP-011
-type: proof_corpus
-title: Synthetic replay input corpus
-status: active
-fields:
-  confidence: medium
-  provenance: Generated from local deterministic fixture data.
-  purpose: Provide the replay input rows.
-  content: Input rows consumed by the replay harness.
-  intended_use: Use as the input artifact for AP-010.
-  format: jsonl
-files:
-  - path: ready/product/artifacts/samples/synthetic-proof/inputs.jsonl
-    role: primary
-    purpose: Replay input rows.
-```
+One descriptor records one artifact purpose. Do not use a descriptor as a
+folder inventory or test bundle when its files have different purposes. A
+descriptor may list multiple files only when those files are interchangeable
+versions or representations of the same artifact purpose.
 
-Do not use artifact descriptors as reverse indexes for product primitives. Product
-and workflow records point to artifacts through their own `artifacts` field.
-Artifact descriptors may point to other artifacts through `artifacts` or `refs` when
-the artifact depends on, derives from, includes, or carries another artifact.
-When a proof run uses several non-interchangeable inputs, configs, expected
-outputs, and diagnostics, give each purpose its own descriptor and have the run
-or harness descriptor reference them by id.
+Required artifact fields:
 
-```yaml
-schema: readyroom/artifact/v1
-kind: artifact
-id: AR-011
-type: customer_statement
-primitive_class: evidence_artifact
-compiler_role: evidence
-title: Customer statement - buyer-specific pitch proof
-status: active
-privacy: user_provided_customer_statement
-retrieved_at: '2026-06-19'
-fields:
-  confidence: high
-  provenance: User-provided customer statement, 2026-06-19.
-  purpose: Preserve one customer statement as direct evidence.
-  content: A verbatim customer statement about buyer-specific pitch proof.
-  intended_use: Use as evidence for premises or decisions that cite buyer-specific pitch needs.
-  format: text
-  statement: "I need to pitch my product in a way that shows how their existing customers will want to buy them."
-  speaker_type: customer
-  supports:
-    - pitch strength
-    - buyer-specific relevance
-usage_policy: []
-owner_notes: []
-```
+- `schema`
+- `kind`
+- `id`
+- `class`
+- `type`
+- `compiler_role`
+- `title`
+- `status`
+- `fields.purpose`
+- `fields.content`
+- `fields.intended_use`
+- `fields.format`
 
-The premise that uses this statement owns the artifact link:
+Artifact descriptors must also carry `fields.confidence` and
+`fields.provenance`. File-backed descriptors must include `files[].path` and
+`files[].role`.
 
-```yaml
-artifacts:
-  - AR-011
-```
+Artifact-tree manifests may declare `artifact_type_directory_base:
+"artifact_root"` to make `artifact_types.*.directory` values relative to
+`artifact_root`.
+
+`type: manifest` under `class: artifact` means the artifact primitive describes
+a durable product artifact whose purpose is a manifest or index. This is
+different from `kind: manifest`, which is structural Ready package metadata.
+
+## Governance, Settings, And Manifests
+
+Governance records are not primitives by default. They control who may change
+the Ready package, how product truth is approved, and how agents should behave;
+they are package management records, not build inputs for the product runtime.
+Use `kind: governance` for structured governance source records.
+
+Settings records are not primitives. Use `kind: setting` for git-tracked
+workspace or app configuration that tools need to manage the Ready tree. Do not
+store raw secrets, runtime cache, or product truth in settings.
+
+Manifest records are structural metadata. Use `kind: manifest` for product tree
+manifests, package manifests, artifact-tree manifests, governance manifests, and
+settings manifests.

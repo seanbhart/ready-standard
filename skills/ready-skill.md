@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.28
+version: 0.3.32
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -32,11 +32,12 @@ tree needs focused work:
 - [modules/standard-update.md](modules/standard-update.md) -
   sync a newer Ready standard package into a product repo and migrate the tree.
 
-The portable package manifest is [manifest.yaml](manifest.yaml). The canonical
-vocabulary file is [vocabulary.yaml](../vocabulary.yaml). Product repos that
-need deterministic agent edits should keep the portable standard package at
-`ready/standard/`. Normal product agents read that local package. Pulling from
-the source standard repo happens only for explicit standard-update work.
+The portable package manifest is [`../manifest.yaml`](../manifest.yaml). The
+canonical vocabulary file is [vocabulary.yaml](../vocabulary.yaml). Product
+repos that need deterministic agent edits should keep the portable standard
+package at `ready/standard/`. Normal product agents read that local package.
+Pulling from the source standard repo happens only for explicit standard-update
+work.
 
 The Ready Skill does not prescribe internal code files, functions, components,
 migrations, or implementation strategy unless those choices are product
@@ -51,6 +52,11 @@ The primary output is a `ready/` tree:
 ```text
 ready/
   manifest.yaml
+  standard/
+    manifest.yaml
+    vocabulary.yaml
+    skills/
+    templates/
   governance/
     agent-guidelines.md
     product-orchestrator-charter.md
@@ -74,15 +80,18 @@ ready/
   flags/
     decisions/
     blockers/
-    drift/
-    proof-gaps/
+    discrepancies/
+    readiness/
+    proof/
 ```
 
 The root `manifest.yaml` must declare product, flags, governance, settings, and
 standard package locations:
 
 ```yaml
-schema: readyroom/product-tree-root/v1
+schema: ready/product-tree-root/v1
+kind: manifest
+class: product
 product: example
 source_root: ready
 product_directory: ready/product
@@ -90,7 +99,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.28"
+  version: "0.3.32"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -104,16 +113,24 @@ governance, artifacts, or flags.
 Use `ready/product/` for canonical intended product truth for this Ready tree
 version, including premises, intents, standards, services, product artifacts,
 and reusable proof material that may not be fully implemented yet. Use
-`ready/flags/` for temporary decisions, blockers, discrepancy notes, and claim
-coordination. File location is authoritative for product/workflow assignment.
+`ready/flags/` for temporary package-work records: unresolved package decisions,
+proposed changes, blockers, discrepancies, readiness gates, and proof gaps. File
+location is authoritative for product/workflow assignment.
+
+A complete Ready package has no flags and no status-bearing records in `draft`
+or `blocked`. An orchestrator may try to build an incomplete package, but it
+must warn first when records are still draft and a complete product should not
+be expected. It must not implement a package with blockers unless the user or
+governing process gives explicit override instructions.
 
 Primitive source records are `.ready.yml` files with:
 
 ```yaml
-schema: readyroom/primitive/v1
+schema: ready/primitive/v1
 kind: primitive
 id: I-001
-type: intent
+class: intent
+type: behavior
 title: Human-readable title
 status: draft
 fields:
@@ -166,8 +183,8 @@ Process:
 2. Extract premise candidates from observations, beliefs, assumptions, needs,
    problems, motivations, risks, opportunities, and success claims.
 3. Extract intent candidates from product promises, observable product
-   behaviors, workflows, outcomes, capabilities, experiences, safety behavior,
-   failure behavior, and requirements.
+   behaviors, workflows, modules, outcomes, capabilities, experiences, safety
+   behavior, failure behavior, and requirements.
 4. Extract standards from constraints, explicit rules, quality bars, compliance
    needs, measurement rules, and non-negotiable behavior.
 5. Extract services from dependencies needed to build, prove, run, or monitor
@@ -176,7 +193,7 @@ Process:
    environments needed to make the intended product buildable.
 7. Preserve conflicts instead of averaging them.
 8. Ask the user to resolve only product-shaping gaps that affect the intended product.
-9. Create draft or active `.ready.yml` primitives with evidence confidence.
+9. Create draft or ready `.ready.yml` primitives with evidence confidence.
 10. Create flags or decision flags where work is not ready.
 
 Documentation-only trees should be explicit about whether a fact is user-stated,
@@ -302,32 +319,39 @@ Product version:
 - What should be removed from scope because it only serves later scale, polish,
   or automation?
 
-## Ready Primitive Classes
+## Ready Object Model
 
 Create only the primitives needed to make the intended product legible. A Ready
-primitive is a typed, addressable, reusable unit of product knowledge, decision
-state, workflow state, evidence, or governance context. Do not assume every
-primitive has the same compiler authority.
+primitive is a typed, addressable, durable package input required to build,
+prove, operate, or govern the intended product package.
 
-Use these classes:
+Use `kind` to distinguish Ready object families:
 
-- `product_logic`: premises, intents, standards, and services that define the
-  product behavior, constraints, or dependencies.
-- `decision_workflow`: decision flags, blockers, drift, proof gaps, and
-  readiness records. These use X-family ids because they are temporary process
-  interrupts.
-- `evidence_artifact`: resources, samples, snippets, designs, manifests,
-  screenshots, and handoff records. These use A-family ids because they are
-  durable supporting content. The artifact descriptor is the primitive; bulky or
-  sensitive payload files are attachments or safe refs.
-- `governance`: authority, process, agent, skill, and template records.
+- `primitive`: durable product package input.
+- `flag`: temporary package-work record for unresolved Ready-package decisions,
+  proposed changes, blockers, discrepancies, readiness gates, and proof gaps.
+- `governance`: authority, process, policy, and agent guidance.
+- `setting`: git-tracked workspace or app configuration.
+- `manifest`: structural package metadata.
 
-### Product-Logic Primitives
+Primitive records use these classes:
+
+- `premise`: why the product or feature should exist.
+- `intent`: what the product promises to do.
+- `standard`: how the product must be built, measured, judged, or maintained.
+- `service`: what the product depends on to build, prove, run, or monitor.
+- `artifact`: durable supporting content. The artifact descriptor is the
+  primitive; bulky or sensitive payload files are attachments or safe refs.
+
+Use top-level `type` for the subtype valid under that class. Do not write
+`primitive_class`, `fields.premise_type`, or `fields.intent_type`.
+
+### Product Primitives
 
 Premises:
 
 - Capture why the product or feature should exist.
-- Use `fields.premise_type` to clarify the discovery role. Valid values are in
+- Use top-level `type` to clarify the discovery role. Valid values are in
   `ready/standard/vocabulary.yaml`.
 - Put constraints, rules, quality bars, compliance needs, and measurement rules
   in `standard` records, not premise records.
@@ -343,7 +367,7 @@ Premises:
 Intents:
 
 - Capture product promises.
-- Use `fields.intent_type` to clarify the commitment shape. Valid values are in
+- Use top-level `type` to clarify the commitment shape. Valid values are in
   `ready/standard/vocabulary.yaml`.
 - Keep `statement` concise, then decompose the promise into actor, trigger,
   action, expected end state, value, scope, non-scope, failure behavior,
@@ -371,7 +395,7 @@ Standards:
   subordinate standard.
 - Avoid vague standards like "make it clean" or "good UX" unless the rule says
   what that means.
-- Do not put deferred or future-only rules on active standards. Use a Ready
+- Do not put deferred or future-only rules on ready standards. Use a Ready
   branch or worktree for a coherent alternate future product. Use a flag on the
   current branch only when a decision, blocker, discrepancy, or proof gap needs
   attention.
@@ -382,10 +406,11 @@ Services:
 - Put `role` first in service fields and use top-level `status` for readiness
   state.
 - Capture blockers, access requirements, credential location, evidence,
-  proof required, input/output types and samples, implementation instructions,
+  proof required, permissions, setup steps, verification commands, simulation
+  policy, input/output types and samples, implementation instructions,
   off-limits work, and failure modes when relevant.
 
-### Decision/Workflow Primitives
+### Flags
 
 Decision flags:
 
@@ -393,28 +418,28 @@ Decision flags:
 - Use them when a decision blocks product truth, proof, service readiness,
   resource readiness, access readiness, design readiness, or coding claim
   readiness.
-- When decided, apply the resulting primitive or flag edits and remove the
-  active decision flag.
+- When decided, update the affected product records or explicitly defer the
+  decision, then remove the unresolved decision flag.
 
 Flags:
 
-- Capture attention, blockers, drift, proof gaps, claim coordination, and
-  Completion Proof for intended product truth that is unsatisfied or unproven.
-- Keep coding readiness out of product-logic primitive bodies.
-- A flag can be a primitive without being claimable implementation work, and it
-  should not prescribe a coding delta.
-- Seed and change flags become claimable only after status, blockers,
+- Capture unresolved Ready-package decisions, proposed changes, version
+  divergence, blockers, drift, proof gaps, claim coordination, and closure
+  criteria for package truth that is unsatisfied, unproven, or not yet accepted.
+- Keep coding readiness out of primitive bodies.
+- A flag is not a primitive, not a ticket, and not a coding delta.
+- Seed and change flags become claimable only after blockers are absent,
   top-level `claimable: true`, top-level Completion Proof, and workspace policy
-  allow it.
+  allow it. Flags omit `status` unless they are blocked.
 - Intent Completion Proof is the durable Definition of Done for rebuilding the
   product. A flag's `completion_proof` is only the closure criterion for that
-  temporary workflow record.
+  temporary package-work record.
 - Apps may derive unstored discrepancies by comparing Ready truth to code,
   evidence, generated views, assessments, or prior Ready commits. Store a flag
   when the discrepancy needs durable attention, blocker tracking, claim
   coordination, explicit Completion Proof, or review history.
 
-### Evidence/Artifact Primitives
+### Artifact Primitives
 
 Artifact descriptors:
 
@@ -425,14 +450,13 @@ Artifact descriptors:
 - Store large, binary, private, generated, or licensed payloads as attached
   files or safe refs instead of inline product truth.
 
-### Governance Primitives
+### Governance Records
 
 Governance records:
 
-- Capture project authority, product process, agent behavior, skills, and
-  templates.
-- Constrain how other primitives may be edited, approved, claimed, or handed to
-  coding agents.
+- Capture project authority, product process, and agent behavior.
+- Constrain how primitives and flags may be edited, approved, claimed, or
+  handed to coding agents.
 - Do not store governance in artifact directories.
 
 ## Specialist Module Loading
@@ -471,10 +495,11 @@ the exact primitives, artifacts, services, or flags affected.
 
 ## Writing Rules
 
-Use `.ready.yml` for product-logic primitive source records. Use specialized
-Ready schemas such as `readyroom/flag/v1` and `readyroom/artifact/v1` when they
-are the clearer machine contract for decision/workflow or evidence/artifact
-primitives.
+Use `.ready.yml` for Ready source records. Primitive records use
+`kind: primitive`, a primitive `class`, and a class-specific top-level `type`.
+Flags use `kind: flag`, a flag `class`, and a class-specific top-level `type`.
+Use specialized Ready schemas such as `ready/artifact/v1` when they are the
+clearer machine contract for artifact primitives.
 
 Tree directory rules:
 
@@ -483,16 +508,18 @@ Tree directory rules:
 - Use `settings_directory` for `ready/settings/`.
 - Use `governance_directory` for `ready/governance/`.
 - Keep canonical intended product truth in `ready/product/`.
-- Keep temporary workflow records, discrepancy notes, blockers, and decisions in
-  `ready/flags/`.
+- Keep temporary package-work records for proposed changes, discrepancies,
+  blockers, decisions, readiness gates, and proof gaps in `ready/flags/`.
 - Use Git commits, branches, and worktrees for product history, alternatives,
   and substantial hypothetical concepts.
 
-Required product-logic primitive fields:
+Required primitive fields:
 
-- `schema: readyroom/primitive/v1`
+- `schema` (`ready/primitive/v1` by default;
+  `ready/artifact/v1` is allowed for artifact primitives)
 - `kind: primitive`
 - `id`
+- `class`
 - `type`
 - `title`
 - `status`
@@ -500,7 +527,7 @@ Required product-logic primitive fields:
 - `refs`
 
 Product/workflow ownership is derived from file location under `ready/product/`
-or `ready/flags/`, not from a primitive field. Settings files under
+or `ready/flags/`, plus the record's `kind`. Settings files under
 `settings_directory` are not primitive source records.
 
 Do not add root `summary` to primitives. If summary text is truly source data,
@@ -518,17 +545,18 @@ records. Every evidence artifact must carry `fields.confidence`; until weighted
 evidence is defined, compiled premise confidence is the equal-weight average of
 linked evidence artifact confidence values.
 
-Artifact descriptors use `type` for the specific artifact subtype, not only a broad
-storage bucket. Common artifact types include `customer_statement`,
+Artifact descriptors use `kind: primitive`, `class: artifact`, and `type` for
+the specific artifact subtype, not only a broad storage bucket. Common artifact
+types include `customer_statement`,
 `source_document`, `reference_resource`, `access_reference`, `review_protocol`,
 `proof_corpus`, `code_snippet`, `design_artifact`, and `manifest`. Subtype data
 belongs under `fields`; do not duplicate it in sibling blocks with local-only
 ids.
 
-Every artifact descriptor must carry `fields.purpose`, `fields.content`,
-`fields.intended_use`, and `fields.format`. Evidence and proof descriptors must
-also carry `fields.confidence` and `fields.provenance`. File-backed descriptors
-must give every file a `path` and `role`.
+Every artifact descriptor must carry `fields.confidence`, `fields.provenance`,
+`fields.purpose`, `fields.content`, `fields.intended_use`, and
+`fields.format`. File-backed descriptors must give every file a `path` and
+`role`.
 
 One descriptor records one artifact purpose. A descriptor may list multiple
 files only when those files are interchangeable versions or representations of
@@ -552,15 +580,15 @@ Relationship rules:
 
 - Store relationships in `refs`.
 - Store structural roles only: `peer`, `parent`, and `child`.
-- In compact refs, the role describes the target primitive's position relative
-  to the current primitive. `parent` means the target parents the current
-  record; `child` means the target is a child of the current record; `peer`
-  means the target is lateral.
+- In compact refs, the role describes the target record's position relative to
+  the current record. `parent` means the target parents the current record;
+  `child` means the target is a child of the current record; `peer` means the
+  target is lateral.
 - If an app needs numeric relationship codes, use `0 = peer`, `1 = parent`,
   and `2 = child`. Source YAML should use the strings.
-- Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
-  `refines`, or `questions` as ref roles.
-- Derive reader phrases from source type, target type, and structural role.
+- Do not store semantic verbs such as `serves`, `requires`, `governed by`,
+  `refines`, or `interrupts` as ref roles.
+- Derive reader phrases from source kind and class, target kind and class, and structural role.
   The semantic relationship display lookup lives in
   `ready/standard/vocabulary.yaml` and must include source-to-target and
   target-to-source phrases for the same stored edge. For example,
@@ -583,12 +611,15 @@ Relationship rules:
 
 Lifecycle rules:
 
-- Do not store coding lifecycle state on product-logic primitives.
-- Use decision/workflow primitives for discovery, seed, change, blocker, drift,
-  proof gap, and question attention.
-- Open seed and change flags are not coding-ready by default.
-- A coding agent should only claim work when the relevant flag is ready,
-  unblocked, claimable, and has top-level Completion Proof.
+- Do not store coding lifecycle state on primitives.
+- Use flags for discovery, seed, change, blocker, discrepancy, proof gap, and
+  question attention.
+- Seed and change flags are not claimable by default.
+- A coding agent should only claim work when the relevant flag is unblocked,
+  claimable, and has top-level Completion Proof.
+- Warn before implementation when records are still `draft`.
+- Do not implement a package with `blocked` records
+  unless explicit override instructions are present.
 
 Artifact rules:
 
@@ -601,7 +632,7 @@ Artifact rules:
   logs/traces when proof needs them; do not commit sensitive raw logs.
 - Store references to bulky or sensitive materials, not copied source,
   transcripts, provider secrets, raw customer data, or diffs.
-- Link artifacts to product-logic primitives, services, flags, or proof by
+- Link artifacts to primitives, services, flags, or proof by
   descriptor id. Use raw paths only for direct source/file access.
 
 Credential rules:
@@ -641,7 +672,10 @@ Good cuts are explicit. Say what was removed and why.
 A Ready tree is usable when:
 
 - The intended product version is coherent and bounded.
-- Active intents trace to premises.
+- Package completeness is known: complete packages have no flags and no
+  status-bearing records in `draft` or `blocked`; incomplete packages are labeled
+  before implementation.
+- Ready intents trace to premises.
 - Required standards and services are represented.
 - Service blockers, proof required, access needs, and implementation
   instructions are visible.

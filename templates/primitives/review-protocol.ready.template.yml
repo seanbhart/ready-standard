@@ -1,0 +1,24 @@
+schema: ready/artifact/v1
+kind: primitive
+id: AR-001
+class: artifact
+type: review_protocol
+compiler_role: review_protocol
+title: "{{REVIEW_PROTOCOL_TITLE}}"
+status: ready
+privacy: "{{safe_ref_or_public_resource|private_ref}}"
+retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
+fields:
+  confidence: "{{low|medium|high}}"
+  provenance: "{{WHO_AUTHORED_OR_APPROVED_THIS_PROTOCOL}}"
+  purpose: "{{ONE_PURPOSE_THIS_PROTOCOL_SERVES}}"
+  content: "{{WHAT_THIS_PROTOCOL_CHECKS}}"
+  intended_use: "{{HOW_REVIEWERS_OR_AGENTS_SHOULD_USE_THIS_PROTOCOL}}"
+  format: "{{markdown|yaml|json|external_ref}}"
+  protocol_scope: "{{PRODUCT_AREA_OR_CLAIM_THIS_PROTOCOL_REVIEWS}}"
+files:
+  - path: "{{READY_RELATIVE_OR_EXTERNAL_SAFE_REF}}"
+    role: "{{primary|supporting}}"
+    purpose: "{{HOW_THIS_FILE_SERVES_THE_PROTOCOL}}"
+usage_policy: []
+owner_notes: []

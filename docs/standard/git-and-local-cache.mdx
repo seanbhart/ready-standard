@@ -24,7 +24,7 @@ Git handles:
 
 ## App responsibilities
 
-The Ready Room app can layer workflow on top:
+A consuming app can layer workflow on top:
 
 - Interpret the tree for PM, developer, designer, and customer views.
 - Derive discrepancies by comparing Ready truth to implementation, evidence,
@@ -46,9 +46,10 @@ Local cache stores useful private or transient material:
 - Temporary evidence bundles.
 
 Local cache is not committed. When a conversation produces durable product
-truth, the app or product agent promotes that truth into the right primitive
-class: product-logic primitive, decision/workflow flag including a Decision flag, evidence
-summary, artifact descriptor, or safe artifact ref.
+truth, the app or product agent promotes that truth into the right Ready object:
+primitive, flag, artifact primitive, governance record, setting, or manifest.
+When the durable truth points at bulky, private, or external material, store the
+safe ref as payload metadata owned by an artifact primitive.
 
 If a conversation produces a substantial hypothetical concept, prefer a Ready
 branch or worktree that represents that possible end state. The canonical branch

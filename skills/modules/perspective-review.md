@@ -34,8 +34,8 @@ Logic reviewer:
 
 - What rules, data shapes, state transitions, permissions, edge cases, or
   failure modes are underspecified?
-- What contradictions exist between product-logic primitives,
-  evidence/artifact primitives, and decision/workflow primitives?
+- What contradictions exist between product primitives, artifact primitives,
+  and flags?
 - What proof would catch a false-green implementation?
 
 Evidence/resources reviewer:
@@ -69,15 +69,16 @@ Each reviewer returns:
 - suggested cuts;
 - user-only asks;
 - safe agent-gatherable resources;
-- affected product-logic, evidence/artifact, or decision/workflow primitives;
-- readiness recommendation: ready, draft, blocked, or cut.
+- affected product primitives, artifact primitives, or flags;
+- readiness recommendation: `ready`, `draft`, or `blocked`;
+- cut recommendation when the record should be removed from the current package.
 
 ## Completion Check
 
 The review is complete when every material issue becomes one of:
 
-- a product-logic primitive edit;
-- an evidence/artifact primitive or resource task;
+- a product primitive edit;
+- an artifact primitive or resource task;
 - a service readiness update;
 - a flag change;
 - a decision flag;

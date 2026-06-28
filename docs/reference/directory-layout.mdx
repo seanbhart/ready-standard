@@ -15,6 +15,7 @@ ready/
   manifest.yaml
   standard/
     manifest.yaml
+    vocabulary.yaml
     skills/
     templates/
   governance/
@@ -41,8 +42,9 @@ ready/
     decisions/
       xd-001-example.ready.yml
     blockers/
-    drift/
-    proof-gaps/
+    discrepancies/
+    readiness/
+    proof/
 ```
 
 `ready/settings/` is not a primitive scope. It holds git-tracked workspace and
@@ -91,7 +93,7 @@ ready/product/
         am-001-example.ready.yml
 ```
 
-`ready/flags/` holds optional peer workflow records:
+`ready/flags/` holds temporary package-work records:
 
 ```text
 ready/flags/
@@ -99,24 +101,28 @@ ready/flags/
       xd-001-example.ready.yml
     blockers/
       xb-001-example.ready.yml
-    drift/
+    discrepancies/
       xdr-001-example.ready.yml
-    proof-gaps/
+    readiness/
+      xr-001-example.ready.yml
+    proof/
       xp-001-example.ready.yml
 ```
 
-Flags are for temporary attention, blockers, discrepancy notes, claim
-coordination, and decisions. Durable product results belong back in
-`ready/product/`. Substantial hypothetical concepts usually belong in alternate
-Ready branches or worktrees until accepted into the current branch's intended
-product state.
+Flags are for unresolved Ready-package decisions, proposed changes,
+version-divergence notes, blockers, discrepancies, readiness gates, and proof
+gaps that prevent the package from being complete, accepted, or safely claimed.
+Durable product results belong back in `ready/product/`. A completed package has
+no flags. Substantial hypothetical concepts usually belong in alternate Ready
+branches or worktrees until accepted into the current branch's intended product
+state.
 
-Top-level plural Markdown files are navigation indexes. Product-logic primitive
-source records live inside the directories as `.ready.yml` files. Other
-primitive classes can live in their own family directories, such as `flags/`,
-`artifacts/`, or `governance/`, with schemas that match their machine contract.
-Decision flags are decision/workflow `readyroom/flag/v1` records with
-`type: decision`, use `XD-*` ids, and usually live under
+Top-level plural Markdown files are navigation indexes. Primitive source
+records live inside `ready/product/` directories as `.ready.yml` files. Flags,
+governance records, settings records, and manifests are separate Ready object
+kinds with schemas that match their machine contract. Decision flags are
+`ready/flag/v1` records with `kind: flag`, `class: decision`, an
+appropriate decision `type`, `XD-*` ids, and usually live under
 `ready/flags/decisions/`.
 
 `ready/manifest.yaml` should include `product_directory`, `flags_directory`,
@@ -124,12 +130,16 @@ Decision flags are decision/workflow `readyroom/flag/v1` records with
 not infer product truth, workflow state, or settings from directory names when
 the manifest declares explicit paths.
 
-Project-specific governance primitives belong under `ready/governance/`.
+Project-specific governance records belong under `ready/governance/`.
+They travel with the Ready package so authority and process versions are shared,
+but they are package-management context rather than product runtime
+implementation truth.
 Reusable Ready resources, task-skill packages, and templates belong in the Ready
 standard package. Projects that expect agents to edit the tree should vendor the
 portable package at `ready/standard/` and point `ready/manifest.yaml` at it.
-That vendored package contains `README.md`, `manifest.yaml`, `skills/`, and
-`templates/`; it excludes Mintlify `docs/` and Git metadata.
+That vendored package contains `README.md`, `manifest.yaml`,
+`vocabulary.yaml`, `skills/`, and `templates/`; it excludes Mintlify `docs/`
+and Git metadata.
 
 Artifact descriptors usually live under `ready/product/artifacts/`. A flag may
 own a small workflow-only artifact under `ready/flags/` when it only exists to

@@ -17,23 +17,29 @@ Use this module before any seed or change flag is made claimable.
   proof, and blocker policy.
 - Ensure every required sample, resource, design, snippet, manifest, credential
   location, or environment setup reference is visible to the coding agent.
-- Keep non-blocked seed flags non-ready until product leadership intentionally
-  starts implementation.
-- Allow blocked flags to be ready only when `blocked_by` prevents coding claims.
+- Keep seed and change flags non-claimable until product leadership
+  intentionally starts implementation.
+- Use `status: blocked` for well-specified flags when `blocked_by` prevents
+  coding claims.
 - Require concrete top-level Completion Proof before review and closure.
+- Warn before implementation when any status-bearing package record is still
+  `draft`.
+- Do not hand off implementation for a package with blockers unless explicit
+  override instructions are present.
 
 ## Target-State Handoff Checklist
 
 A coding agent should receive:
 
-- the decision/workflow flag id when a stored flag gates the work;
+- the flag id when a stored flag gates the work;
 - the resolved intended product state, not just a delta;
-- the product-logic primitive ids, standards, services, artifacts, and proof
+- the primitive ids, standards, services, artifacts, and proof
   gates that define that target state;
 - scope and non-scope;
 - user-facing and system-facing acceptance criteria;
 - required services with status, blockers, access, proof, and instructions;
 - setup and verification commands;
+- any draft-package warning or blocker override instruction;
 - required artifacts and sample ids;
 - design, snippet, or component references when applicable;
 - data shapes and expected outputs;
@@ -54,6 +60,8 @@ A coding agent should receive:
   the resolved intended state.
 - Do not make a flag claimable because the prose sounds clear while access,
   samples, designs, or proof are missing.
+- Do not implement a blocked package by default. Blockers require resolution or
+  explicit override instructions.
 - Do not treat one-word statuses such as `ready`, `done`, or `complete` as
   Completion Proof.
 - Do not close flags based on coding-agent self-report.

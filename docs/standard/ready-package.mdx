@@ -1,0 +1,92 @@
+---
+title: "Ready Package"
+description: "What a Ready package must contain for orchestrators to build from it."
+---
+
+# Ready Package
+
+A Ready package is the committed source package an orchestrator reads to build,
+prove, operate, or govern the intended product. A package should be complete
+enough that a coding orchestrator can rebuild the product cleanly from the Ready
+tree, without depending on unstated tickets, chat memory, or current code
+structure.
+
+Git branches and worktrees carry alternate package versions. A branch should
+state one coherent intended product state.
+
+## Package Contents
+
+A Ready package includes:
+
+- product primitives under `ready/product/`;
+- artifact primitives and payload refs needed to understand, build, prove, or
+  review the product;
+- project governance records under `ready/governance/`;
+- tracked settings under `ready/settings/` when tools need them;
+- manifests that describe package structure;
+- the vendored Ready standard package under `ready/standard/`;
+- flags under `ready/flags/` only while unresolved package decisions, proposed
+  changes, blockers, discrepancies, readiness gates, or proof gaps keep the
+  package incomplete, disputed, divergent, or not safely claimable.
+
+Governance travels with the package so humans and agents share the same
+authority, access, and process versions. It constrains who may change the Ready
+files and how package work is approved; it is not product runtime
+implementation truth.
+
+Flags are not package truth. They are temporary package-work records that
+explain why the package is not yet complete, why a version diverges, or what
+potential package change is being discussed. A completed package has no flags.
+
+## Completeness
+
+A complete Ready package has:
+
+- one coherent intended product state;
+- no flags;
+- no status-bearing records in `draft`;
+- no status-bearing records in `blocked`;
+- ready intents with concrete Completion Proof;
+- standards, services, artifacts, proof corpora, design artifacts,
+  service access, setup references, and verification commands represented;
+- sensitive, private, bulky, or external materials represented by safe refs
+  owned by artifact or service records;
+- package manifests and governance records sufficient for an orchestrator to
+  know what to read and what authority rules apply.
+
+A package can be useful before it is complete. Incomplete packages can support
+discovery, review, planning, simulation, partial implementation, and proof work,
+but a complete product should not be expected from an incomplete package.
+
+## Orchestrator Rules
+
+Before implementation, an orchestrator should inspect package completeness.
+
+- If any status-bearing record is `draft`, warn that the build is from an
+  incomplete package and should not be expected to produce a complete product.
+- If any status-bearing record is `blocked`, do not
+  implement unless the user or governing process gives explicit override
+  instructions.
+- If flags exist, treat the package as incomplete or intentionally divergent.
+  Flags can hold proposed package-change discussion, version-divergence logic,
+  blockers, decisions, discrepancies, readiness gates, or proof gaps, not edit
+  instructions.
+- If an override is granted, preserve the override, the unresolved gaps, and the
+  limits of the resulting build evidence.
+- Build from the resolved intended product state, standards, services,
+  artifacts, proof, governance, and applicable flag closure criteria. Do not
+  build only from diffs or deltas.
+
+## Status Semantics
+
+Use simple status values consistently:
+
+- `ready`: resolved for its record kind. Product primitives compile as current
+  intended truth. Flags do not use `ready` status.
+- `draft`: incomplete or not yet approved for its record kind; compile only
+  with warning.
+- `blocked`: cannot be built, proven, operated, or claimed without resolving
+  the blocker or receiving explicit override instructions.
+
+Use these statuses consistently wherever a Ready source record carries
+top-level `status`.

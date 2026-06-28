@@ -5,47 +5,53 @@ description: "How flags hold proof gates without turning product truth into tick
 
 # Flags and Claims
 
-Flags are decision/workflow primitives. They are not product-logic primitives,
-not tickets, and not implementation instructions. They are attention,
-coordination, and proof-gate records attached to intended product truth.
+Flags are `kind: flag` records. They are not primitives, not tickets, and not
+implementation instructions. They are temporary package-work records for
+unresolved Ready-package decisions, proposed changes, blockers, discrepancies,
+readiness gates, and proof gaps. A completed package has no flags.
 
-The intended product state belongs in product-logic primitives. A flag should
-not restate the whole target spec or prescribe how to change the implementation.
-It should identify the unsatisfied or unproven intended state, name blockers or
-claim policy, and define the observable evidence that closes the gap.
+The intended product state belongs in primitives. A flag should not restate the
+whole target spec or prescribe how to change the implementation. It should
+identify the unsatisfied or unproven intended state, proposed package change,
+version divergence, blocker, discrepancy, or proof gap that is keeping the
+package from being complete, accepted, or safely claimable. It may name blockers
+or claim policy and define the observable evidence that removes the flag.
 
 Every flag id starts with `X`. A flag may use a one- or two-letter class suffix
 after `X` when the class is well understood: for example `XD-*` for decisions,
-`XS-*` for seed flags, `XC-*` for change flags, or `XR-*` for
-resource/readiness flags. Plain `X-*` is valid for arbitrary or one-off process
-interrupts. An X primitive should close once the required process action or
-decision is complete; durable results belong on the affected product primitive,
-artifact, proof, workflow state, or trace.
+`XB-*` for blockers, `XDR-*` for discrepancies, `XR-*` for readiness, or
+`XP-*` for proof gaps. Plain `X-*` is valid for arbitrary or one-off workflow
+records. Remove a flag once the required process action or decision is
+complete; durable results belong on primitives, artifacts, proof, or Git
+history.
 
-## Flag types
+## Flag Classes
 
-- `discovery`: premise or product discovery before intent work is ready.
-- `seed`: proof/attention gate for intended product truth that is not yet
-  satisfied by implementation.
-- `change`: proof/attention gate for intended product truth that changed and is
-  not yet satisfied by implementation.
-- `coverage_gap`: missing primitive coverage.
-- `blocker`: claim, proof, service, authority, or environment blocker.
-- `drift`: detected divergence between product truth, implementation, evidence,
-  generated views, or prior Ready commits.
-- `proof_gap`: missing proof detail.
-- `decision`: product-shaping ambiguity that needs a Decision flag. Use the
-  dedicated Decision template with an `XD-*` id, `fields.question`,
-  `fields.safe_default`, structured `fields.proposals`, and top-level
-  `completion_proof`.
+Flags use both `class` and `type`.
 
-## Claim gate
+- `decision`: product, design, or authority ambiguity affecting package truth.
+- `blocker`: service, dependency, or authority condition preventing package
+  completion, proof, or claimability.
+- `discrepancy`: implementation, evidence, or view drift from package truth.
+- `readiness`: seed, change, or discovery gate for package claimability.
+- `proof`: proof, coverage, or fixture gap in the package.
+
+Common types:
+
+- `decision`: `product_choice`, `design_choice`, `authority_choice`.
+- `blocker`: `service_access`, `dependency`, `authority`.
+- `discrepancy`: `implementation_drift`, `evidence_drift`, `view_drift`.
+- `readiness`: `seed`, `change`, `discovery`.
+- `proof`: `proof_gap`, `coverage_gap`, `fixture_gap`.
+
+## Claim Gate
 
 A coding agent can claim a flag only when all of these are true:
 
 ```yaml
+kind: flag
+class: readiness
 type: seed # or change
-status: ready
 blocked_by: []
 claimable: true
 completion_proof:
@@ -53,7 +59,9 @@ completion_proof:
   - "The relevant verification command passes and the evidence artifact is linked."
 ```
 
-The workspace Coding work switch must also be enabled.
+The workspace Coding work switch must also be enabled. Claimable flags omit
+`status`; `claimable: true` means the temporary package-work record can be
+claimed by a coding agent.
 
 Claiming a flag does not mean applying a stored delta. The coding handoff should
 give the coding agent the resolved intended product state from `ready/product/`,
@@ -62,20 +70,37 @@ flag closure criteria. The coding agent may choose the clean implementation
 strategy, including replacement or refactor, inside those product and proof
 constraints.
 
-## Open flags
+## Decision Flags
 
-An open discovery, seed, or change flag may be sparse. It only needs to point to
-the intended product truth that needs attention and preserve the trigger context.
-Open seed and change flags are product/design responsibility, not coding
-workflow.
+Decision flags use `class: decision`. They hold product-shaping ambiguity as
+work that must be resolved, not as loose questions. Keep the unresolved prompt
+in `fields.question`, the conservative interim behavior in
+`fields.safe_default`, candidate answers in structured `fields.proposals`, and
+the decision closure criteria in top-level `completion_proof`.
 
-## Ready but blocked
+When resolved, record the accepted proposal or explicit deferral, update the
+resulting product records, and remove the unresolved decision flag from the
+current flag set. History belongs in Git, events, assessments, or
+implementation refs; do not preserve desired state as a stored edit list.
 
-A seed or change flag may be `ready` while still blocked, but it must be
-non-claimable:
+## Current Flags
+
+A discovery, seed, or change flag may be sparse. It only needs to point to the
+Ready-package truth, proposed package change, or proof gap that needs attention
+and preserve the trigger context. Readiness flags are product/design
+responsibility, not coding workflow, until they become claimable.
+
+## Blocked Flags
+
+A seed or change flag may have enough package truth and Completion Proof to be
+well specified, but still be blocked by a service, authority decision,
+environment, or upstream flag. Use `status: blocked` and keep it non-claimable:
 
 ```yaml
-status: ready
+kind: flag
+class: readiness
+type: seed
+status: blocked
 claimable: false
 blocked_by:
   - SV-003
@@ -83,20 +108,19 @@ completion_proof:
   - "The target workflow is implemented and verified with the linked service stub."
 ```
 
-This is useful when the intended product state and Completion Proof are well
-specified, but a service, authority decision, environment, or upstream flag still
+This separates the intended product state from the workflow condition that
 prevents implementation.
 
 ## Completion Proof
 
 Intents carry the durable Completion Proof needed to rebuild the product from
-the Ready tree. Ready seed and change flags may also carry top-level
+the Ready tree. Readiness and proof flags may also carry top-level
 `completion_proof` as closure criteria for the temporary flag: the observable
-outcomes and evidence that remove the flag. It must be real proof content, not
-a one-word status such as `ready`, `done`, or `complete`, and it does not
-prescribe file edits.
+outcomes and evidence that remove the flag. It must be real proof content, not a
+one-word status such as `ready`, `done`, or `complete`, and it does not prescribe
+file edits.
 
-## Derived discrepancies
+## Derived Discrepancies
 
 Apps may derive unstored discrepancies by comparing the current Ready tree to
 the codebase, proof artifacts, generated views, assessment snapshots, or prior

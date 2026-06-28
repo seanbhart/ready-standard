@@ -22,12 +22,13 @@ gap, and record loaded module ids and hashes in the agent context manifest.
 
 ## Portable Package
 
-[manifest.yaml](manifest.yaml) describes the portable package. To pass the
-skills to another agent or project, copy this whole directory or the exact files
-listed in `portable_files`. Paths are repo-relative so a receiving agent can copy
-the package without resolving working-directory assumptions. Do not include
-local cache, raw transcripts, private samples, secrets, or project-specific
-artifacts.
+[`../manifest.yaml`](../manifest.yaml) describes the portable standard package.
+To pass only the skill pack to another agent or project, copy this whole
+directory or the exact files listed in `portable_files` in
+[`manifest.yaml`](manifest.yaml). Paths are repo-relative so a receiving agent
+can copy the package without resolving working-directory assumptions. Do not
+include local cache, raw transcripts, private samples, secrets, or
+project-specific artifacts.
 
 The receiving project should keep the copied package at `ready/standard/` and
 point `ready/manifest.yaml` at that local package. Treat the copied package as

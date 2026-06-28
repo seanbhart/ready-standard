@@ -1,0 +1,24 @@
+schema: ready/artifact/v1
+kind: primitive
+id: AR-001
+class: artifact
+type: source_document
+compiler_role: evidence
+title: "{{SOURCE_DOCUMENT_TITLE}}"
+status: ready
+privacy: "{{safe_ref_or_public_resource|private_ref}}"
+retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
+fields:
+  confidence: "{{low|medium|high}}"
+  provenance: "{{HOW_THIS_DOCUMENT_WAS_OBTAINED_OR_AUTHORED}}"
+  purpose: "{{ONE_PURPOSE_THIS_DOCUMENT_SERVES}}"
+  content: "{{WHAT_THIS_DOCUMENT_CONTAINS}}"
+  intended_use: "{{HOW_PRIMITIVES_OR_AGENTS_SHOULD_USE_THIS_DOCUMENT}}"
+  format: "{{markdown|yaml|json|pdf|external_ref|mixed}}"
+  source_kind: "{{prd|mrd|research_note|spec|brief|meeting_note|support_summary|other}}"
+files:
+  - path: "{{READY_RELATIVE_OR_EXTERNAL_SAFE_REF}}"
+    role: "{{primary|version|supporting}}"
+    purpose: "{{HOW_THIS_FILE_SERVES_THE_DOCUMENT}}"
+usage_policy: []
+owner_notes: []

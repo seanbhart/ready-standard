@@ -7,11 +7,11 @@ handed to coding agents for this project.
 
 ## Source Of Truth
 
-- Durable product truth lives in `ready/`.
-- Ready primitives are typed, addressable records. Product-logic primitives use
-  `.ready.yml`; flags and artifact descriptors may use specialized Ready schemas.
-- Generated views compile from product-logic, decision/workflow,
-  evidence/artifact, and governance primitives.
+- Durable product truth lives in `ready/product/`.
+- Ready primitives are typed, addressable durable product-package inputs.
+  Flags, governance records, settings, and manifests use their own Ready kinds.
+- Generated views compile from primitives, flags, artifact primitives,
+  governance records, settings, and manifests.
 - Chat and local cache are evidence until promoted into the tree.
 
 ## Discovery

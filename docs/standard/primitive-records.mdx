@@ -1,81 +1,92 @@
 ---
 title: "Primitive Records"
-description: "How to write typed, addressable Ready records."
+description: "How to write typed, addressable Ready primitives."
 ---
 
 # Primitive Records
 
-Primitive records are typed, addressable Ready records. Product-logic
-primitives use `.ready.yml` files with `schema: readyroom/primitive/v1`.
-Decision/workflow primitives, evidence/artifact primitives, and governance
-primitives may use specialized schemas such as `readyroom/flag/v1` or
-`readyroom/artifact/v1` when those schemas are the honest contract for the
-record.
+Primitive records are durable Ready package inputs. They are the units a
+product orchestrator needs to build, prove, operate, or govern the intended
+product package from the Ready tree.
 
-Humans normally read compiled views in the Ready Room app or docs; the raw file
-is optimized for parsing, validation, diffing, and merge review.
+Primitive records use:
 
-## Primitive classes
+```yaml
+kind: primitive
+class: premise # premise | intent | standard | service | artifact
+type: belief  # subtype valid for the class
+compiler_role: source_truth
+```
 
-Use primitive class to describe what kind of authority a record carries:
+`class` names the primitive family. `type` names the narrower subtype inside
+that family. `compiler_role` tells compilers and orchestrators how to treat the
+record. The valid values live in
+[`vocabulary.yaml`](../../vocabulary.yaml). Do not use `primitive_class`,
+`fields.premise_type`, or `fields.intent_type`.
 
-- `product_logic`: premises, intents, standards, and services that define the
-  intended product behavior or constraints for the current Ready branch.
-- `decision_workflow`: decision flags, blockers, drift, proof gaps, and
-  other workflow or ambiguity records.
-- `evidence_artifact`: artifact descriptors for resources, proof corpora, snippets,
-  designs, manifests, and handoff material. The record is the primitive; large
-  or binary payload files are attachments or safe refs.
-- `governance`: authority, process, agent, skill, and template records that
-  constrain how product truth may change.
+Humans normally read compiled views in a consuming app or docs; the raw file is
+optimized for parsing, validation, diffing, and merge review.
 
-Compiler role matters as much as class. A product-logic primitive states what
-should exist; it should not prescribe how to change the current implementation
-unless the implementation detail is itself a product constraint. A proof-corpus primitive may be valid
-process or regression evidence without being approved product behavior. A
-seed-flag primitive may be workflow state without being implementation
-permission until its claim gate passes.
+## Primitive Classes
 
-## ID families
+- `premise`: why the product or feature should exist.
+- `intent`: what the product promises to do.
+- `standard`: how the product must be built, measured, judged, or maintained.
+- `service`: what the product depends on to build, prove, run, or monitor.
+- `artifact`: durable supporting content such as customer statements, source
+  documents, proof corpora, snippets, designs, and manifests.
+
+Flags are not primitives. Governance, settings, and manifest records are also
+not primitives by default. They can be important Ready records, but they do not
+state durable product package inputs in the same way.
+
+Compiler role still matters. A premise states product reasoning, an intent
+states product promise, a proof-corpus artifact may be regression evidence, and
+a service may be a build or runtime dependency. Tools should read `kind`,
+`class`, `type`, refs, path, and schema before deciding how a record compiles.
+
+Status controls package compilation:
+
+- `ready` primitive records are included in normal package compilation as
+  current intended product truth.
+- `draft` records make the package incomplete. Orchestrators may attempt
+  implementation only after warning that a complete product should not be
+  expected.
+- `blocked` records stop implementation unless explicit override instructions
+  are present.
+
+## ID Families
 
 Ready ids encode the broad authority family first.
 
-`A` primitives are durable supporting content. They include documents, proof
-corpora, references, diagrams, reports, snippets, designs, manifests, and other
-content that supports product work. They may inform, verify, or explain the
-product, but they are not the canonical product intent and they are not active
-process state. All artifact descriptors start with `A`. Projects may add a one- or
-two-letter class suffix after `A` for well-understood artifact classes, such as
-`AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for snippets, `AD-*`
-for designs, or `AM-*` for manifests. One-off artifacts may use plain `A-*`.
+`P-*`, `I-*`, `ST-*`, and `SV-*` identify premise, intent, standard, and service
+primitives.
 
-`X` primitives are temporary process interrupts and proof gates. They exist when
-intended product truth needs attention, proof, routing, review, escalation,
-approval, correction, or a decision. All flag records start with `X`. Projects may add a
-one- or two-letter class suffix after `X` for well-understood flag classes,
-such as `XD-*` for decisions, `XS-*` for seed flags, `XC-*` for change flags,
-or `XR-*` for resource/readiness flags. An `X` item should close once the
-required decision, proof, or coordination is complete, leaving the durable result
-on the affected product primitive, artifact, proof, workflow state, or trace.
+`A*` primitives are durable supporting artifacts. They may inform, verify, or
+explain the product, but they are not the canonical product promise. Projects
+may add a one- or two-letter suffix after `A` for well-understood artifact
+types, such as `AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for
+snippets, `AD-*` for designs, or `AM-*` for manifests.
 
-## Common rules
+`X*` records are flags. They are temporary package-work records, not primitives.
+They should close once the required decision, proof, or coordination is
+complete, leaving durable results on primitives, artifacts, proof, or history.
 
-Every product-logic primitive record should keep metadata at the top level and
-type-specific product truth under `fields`. For example, an intent record
-normally includes:
+## Common Rules
+
+Every primitive record should keep metadata at the top level and type-specific
+truth under `fields`. For example, an intent record normally includes:
 
 ```yaml
-schema: readyroom/primitive/v1
+schema: ready/primitive/v1
 kind: primitive
 id: I-001
-type: intent
-primitive_class: product_logic
-compiler_role: source_truth
+class: intent
+type: behavior
 title: Browse and edit the primitive-backed product spine
-status: active
+status: ready
 fields:
   statement: The product promise.
-  intent_type: behavior
   claim_level: process_proof
   actor: The user, operator, system, or agent this promise serves.
   trigger: The event or state that starts the promise.
@@ -105,6 +116,7 @@ owner_notes: []
 Put every value an app, compiler, validator, search index, or agent must read in
 structured fields. Reader-friendly Markdown, PM summaries, developer briefs,
 designer views, and customer-facing docs are compiled from these records.
+
 Do not add a root `summary` field to primitives. If a short summary is genuinely
 part of a type's source data, store it under `fields.summary`; otherwise prefer
 the type's primary field such as `statement`, `rule`, `role`, `objective`, or
@@ -116,39 +128,34 @@ evidence, Completion Proof, or agent instructions. Agents and compilers must
 ignore them for satisfaction and enforcement; promote anything authoritative
 into typed `fields`, `refs`, `artifacts`, or flags.
 
-## File rules
+## File Rules
 
 - Use one primitive record per source file.
-- Use the `.ready.yml` extension for product-logic primitive source records.
-- Use specialized Ready schemas for decision/workflow, artifact, or governance
-  primitives when a narrower schema preserves a clearer contract.
-- Place product-logic records under the configured `ready/product/` directory.
-  Place workflow flags under the configured `ready/flags/` directory.
+- Use the `.ready.yml` extension for primitive source records.
+- Place durable primitives under the configured `ready/product/` directory.
+- Place temporary workflow flags under the configured `ready/flags/` directory.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
 - Store relationships in `refs`, not prose.
 - Store structural relationships only. Approved stored roles are `peer`,
   `parent`, and `child`.
-- In compact refs, the role describes the target primitive's position relative
-  to the current primitive: `parent` means the target parents the current
+- In compact refs, the role describes the target record's position relative
+  to the current record: `parent` means the target parents the current
   record; `child` means the target is a child of the current record; `peer`
   means the target is lateral.
 - Optional numeric codes are implementation details: `0 = peer`, `1 = parent`,
   and `2 = child`. Source YAML should prefer role strings.
-- Do not store semantic verbs such as `serves`, `requires`, `governed_by`,
-  `refines`, or `questions` as ref roles. Reader views derive those
-  labels from source type, target type, and structural role.
+- Do not store semantic verbs such as `serves`, `requires`, `governed by`,
+  `refines`, or `interrupts` as ref roles. Reader views derive those labels from
+  source kind and class, target kind and class, and structural role.
 - Derived relationship labels must include source-to-target and
-  target-to-source phrases for the same stored edge. For example,
-  `intent --parent--> premise` renders as the intent `serves` the premise and
-  as the premise is `served by` the intent; `intent --child--> service` renders
-  as `requires` / `required by`; `intent --child--> intent` renders as
-  `fulfilled by` / `fulfills`; `intent --peer--> standard` renders as
-  `governed by` / `governs`; `intent --child--> premise` renders as
-  `refined by` / `refines`.
+  target-to-source phrases for the same stored edge.
 - Standards govern implementation, behavior, measurement, judgment, or
   maintenance. Attach standards to intents, services, flags, or other standards,
   not to premises.
+- Refs may cross Ready kinds when the relationship is valid. For example, a
+  flag can use a `peer` ref to a governing standard without becoming a
+  primitive.
 - Services are implementation dependencies. Attach services to intents or other
   implementation-bearing records, not to premises.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
@@ -160,23 +167,25 @@ into typed `fields`, `refs`, `artifacts`, or flags.
   direct source/file access, not semantic product references.
 - Do not store local chat logs, raw provider transcripts, source diffs, secrets,
   or unreviewed scratch content in primitive records.
-- Do not store coding lifecycle state on product-logic primitives. Seed and
-  change flags are decision/workflow primitives that gate coding claims.
+- Do not store coding lifecycle state on primitives. Use flags for temporary
+  readiness, decisions, blockers, discrepancies, and proof gaps.
 
 ## Premises
 
 Premises explain why the product should exist. They need a clear statement,
-provenance, and linked evidence artifacts. Do not store
-`fields.evidence_confidence` on a premise. Premise confidence is compiled from
-linked evidence artifacts, and each evidence artifact must carry
+provenance, and linked evidence artifacts. Use top-level `type` to name the
+premise role, such as `belief`, `assumption`, `need`, `problem`, `risk`, or
+`opportunity`.
+
+Do not store `fields.evidence_confidence` on a premise. Premise confidence is
+compiled from linked evidence artifacts, and each evidence artifact must carry
 `fields.confidence`. Until the standard defines weighted evidence, calculate
 premise confidence as the equal-weight average of linked evidence artifact
 confidence values.
 
-Use `fields.premise_type` to name the discovery role. Valid values live in
-[`vocabulary.yaml`](../../vocabulary.yaml). Do not use premises for
-constraints. Constraints, rules, quality bars, compliance needs, measurement
-rules, and non-negotiable behavior are `standard` records.
+Do not use premises for constraints. Constraints, rules, quality bars,
+compliance needs, measurement rules, and non-negotiable behavior are `standard`
+records.
 
 Do not attach services or standards directly to premises. Premises are
 conceptual: they explain why the product should exist and what the product
@@ -186,12 +195,15 @@ it to the intent that serves the premise.
 
 ## Intents
 
-Intents are product promises. Keep `statement` as the concise title-card
-promise, then decompose the promise into fields that coding agents can build
-from: `intent_type`, `claim_level`, `actor`, `trigger`, `action`,
-`expected_end_state`, `value`, `scope`, `non_scope`, `failure_behavior`,
-`process_decision`, `validation_boundary`, `input_types`, `input_samples`,
-`output_types`, `output_samples`, `required_surfaces`, and
+Intents are product promises. Use top-level `type` to name the commitment shape,
+such as `promise`, `behavior`, `workflow`, `module`, `component`,
+`capability`, `experience`, `quality`, `safety`, or `failure`.
+
+Keep `statement` as the concise title-card promise, then decompose the promise
+into fields that coding agents can build from: `claim_level`, `actor`,
+`trigger`, `action`, `expected_end_state`, `value`, `scope`, `non_scope`,
+`failure_behavior`, `process_decision`, `validation_boundary`, `input_types`,
+`input_samples`, `output_types`, `output_samples`, `required_surfaces`, and
 `operating_envelope`.
 
 Use the decomposition to separate the promise, behavior boundary, data
@@ -204,10 +216,6 @@ Use simple values such as `concept`, `process_proof`, `simulation_baseline`,
 This is not Completion Proof. It prevents an intent from implying stronger
 validation than the evidence supports.
 
-`intent_type` should name the main promise shape. Valid values live in
-`vocabulary.yaml`. Use conservative values and rely on `validation_boundary`
-when an intent could be mistaken for a stronger claim.
-
 Required services, governing standards, and intent dependencies belong in
 directed `refs`, not duplicate `fields`. Supporting examples and outputs belong
 in `input_samples`, `output_samples`, and `artifacts`. Quality-bearing or
@@ -216,16 +224,21 @@ materially after release.
 
 Completion Proof lives on committed intents because it defines how to know the
 intended product behavior exists. A flag can carry separate closure criteria
-when a temporary workflow record needs to be removed.
+when a temporary package-work record needs to be removed.
 
 ## Standards
 
 Standards state rules for implementation, measurement, judgment, behavior, or
-maintenance. Global standards apply through workspace standard refs; primitive
-specific standards normally apply through `peer` refs on implementation-bearing
-records that reader views can label `governed by`. Use `child` standard refs
-only as fallback semantics for older trees or when the source intentionally
-nests a subordinate standard.
+maintenance. Use top-level `type` for the standard subtype, such as `rule`,
+`constraint`, `quality_bar`, `compliance`, `measurement`, `safety`,
+`accessibility`, `proof`, or `implementation_constraint`.
+
+Global standards apply through workspace standard refs; primitive-specific
+standards normally apply through `peer` refs on implementation-bearing records
+that reader views can label `governed by`. Use `child` standard refs only as
+fallback semantics for older trees or when the source intentionally nests a
+subordinate standard.
+
 Active standards should not carry deferred or future-only rules. Use a Ready
 branch or worktree for a coherent alternate future product, and use a flag on
 the current branch only when a decision, blocker, discrepancy, or proof gap
@@ -234,65 +247,61 @@ needs attention.
 ## Services
 
 Services capture dependencies required to build, prove, run, or monitor the
-product. A service should put `role` first, use top-level `status` for service
-state, and capture blockers, access expectations, safe credential
-location, evidence, proof required, input/output types and samples,
-implementation instructions, off-limits work, and failure modes.
+product. Use top-level `type` for the service subtype, such as `platform`,
+`api`, `data_store`, `model_provider`, `package`, `runtime`, `worker`,
+`deployment`, or `external_system`.
 
-## Decision Flags
+A service should put `role` first, use top-level `status` for service state,
+and capture blockers, access expectations, safe credential location, evidence,
+proof required, input/output types and samples, implementation instructions,
+off-limits work, and failure modes.
 
-Decision flags are `readyroom/flag/v1` records with `type: decision`. They hold
-product-shaping ambiguity as work that must be resolved, not as loose questions.
-Keep the unresolved prompt in `fields.question`, the conservative interim
-behavior in `fields.safe_default`, candidate answers in structured
-`fields.proposals`, and the decision Definition of Done in top-level
-`completion_proof`. When resolved, record the accepted proposal or explicit
-deferral, apply or list the resulting primitive edits, flags, actions, or
-artifacts, and remove the active decision flag from the open set. History
-belongs in Git, events, assessments, or implementation refs.
+## Artifact Primitives
 
-## Flags
-
-Flags are decision/workflow primitives. They mark attention, blockers, drift,
-proof gaps, and coding-readiness state without putting lifecycle state into
-product-logic primitive bodies. A flag can be a primitive without being a coding
-ticket or implementation recipe; it identifies intended product truth that is
-unsatisfied, unproven, blocked, or disputed. Claimability still depends on flag
-type, status, blockers, Completion Proof, and workspace policy. Flag records
-keep `type`, `claimable`, and `completion_proof` at the top level.
-
-## Artifact Records
-
-Artifact descriptors are evidence/artifact primitives. They describe one
+Artifact descriptors are primitives with `class: artifact`. They describe one
 artifact purpose with stable ids, provenance, privacy state, usage roles, and
-the payload files or safe refs that satisfy that purpose. The `.ready.yml`
-record is primitive source. The attached file may be JSON, JSONL, Markdown,
-HTML, image, binary, external URL, or safe secret-location reference; that
-attached payload is not a primitive unless it also has a Ready-defined
-schema/pattern.
+the payload files or safe refs that satisfy that purpose.
 
-Every artifact descriptor must carry `fields.purpose`, `fields.content`,
-`fields.intended_use`, and `fields.format`. Evidence and proof descriptors must
-also carry `fields.confidence` and `fields.provenance`. File-backed descriptors
-must give every file a `path` and `role`.
+The `.ready.yml` record is primitive source. The attached file may be JSON,
+JSONL, Markdown, HTML, image, binary, external URL, or safe secret-location
+reference; that attached payload is not a primitive unless it also has a
+Ready-defined schema or pattern.
+
+Every artifact descriptor must carry `fields.confidence`, `fields.provenance`,
+`fields.purpose`, `fields.content`, `fields.intended_use`, and
+`fields.format`. File-backed descriptors must give every file a `path` and
+`role`.
 
 One descriptor records one artifact purpose. It may list multiple files only
-when those files are interchangeable versions or representations of
-that same purpose. Files with different purposes, such as buyer inputs, seller
-inputs, scoring config, expected scoring outputs, and diagnostics, need separate
+when those files are interchangeable versions or representations of that same
+purpose. Files with different purposes, such as buyer inputs, seller inputs,
+scoring config, expected scoring outputs, and diagnostics, need separate
 descriptors.
 
 `proof_corpus` is the artifact subtype for replayable proof material. Use
 `fields` for proof-corpus-specific structure, including `proof_role`,
 `authority_level`, `lifecycle_state`, `coverage`, `dataset_contract`,
-`oracle_policy`, `replay`, `acceptance_contract`, and `limitations`. The core
-contract is explicit about which descriptor ids are inputs, configs, expected
-outputs, diagnostics, generated outputs, and harnesses. A proof corpus can prove
-process behavior, fixture conformance, or regression stability; it must not be
-cited as human-labeled quality truth, live production validity, or customer
-evidence unless those authorities are explicitly present in its fields.
+`oracle_policy`, `replay`, `acceptance_contract`, and `limitations`.
 
 Product and workflow records reference supporting artifacts through their own
-`artifacts` lists. Artifact descriptors must not keep reverse product/workflow links
-such as `linked_primitives`; artifact descriptors may relate to other artifacts
-when one artifact depends on, derives from, includes, or carries the other.
+`artifacts` lists. Artifact descriptors must not keep reverse product/workflow
+links such as `linked_primitives`; artifact descriptors may relate to other
+artifacts when one artifact depends on, derives from, includes, or carries the
+other.
+
+`type: manifest` under `class: artifact` means the artifact primitive describes
+a durable product artifact whose purpose is a manifest or index. It is not the
+same as `kind: manifest`, which is structural Ready package metadata.
+
+## Flags
+
+Flags are `kind: flag` records, not primitives. They mark proposed changes,
+version divergence, discussion, attention, decisions, blockers, discrepancies,
+readiness, and proof gaps without putting lifecycle state into primitive
+bodies. A flag identifies intended product truth that is unsatisfied,
+unproven, blocked, or disputed; it is not a coding ticket or an implementation
+recipe.
+
+Flag records keep `class`, `type`, `claimable`, and `completion_proof` at the
+top level. Claimability depends on flag class, flag type, blockers, Completion
+Proof, and workspace policy. Flags omit `status` unless they are blocked.

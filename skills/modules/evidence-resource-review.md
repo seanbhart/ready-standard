@@ -12,8 +12,7 @@ user can provide.
 
 ## Responsibilities
 
-- Inventory every product-logic primitive, service, decision/workflow primitive,
-  and artifact descriptor that depends on a
+- Inventory every primitive, service, flag, and artifact primitive that depends on a
   sample, resource, data source, screenshot, export, document, benchmark,
   external API shape, or expected output.
 - Gather safe public resources when they can answer the gap. Prefer official
@@ -82,7 +81,7 @@ descriptors even when one harness or proof run consumes them together.
   contracts. Each reusable item should have an artifact descriptor
   record when tools need to address, search, link, or validate it directly.
 - Do not commit raw customer data, private transcripts, provider secrets,
-- browser cookies, sensitive raw logs, large binary assets, or copied source
+  browser cookies, sensitive raw logs, large binary assets, or copied source
   excerpts.
 - Use sanitized excerpts, generated summaries, hashes, paths, or evidence refs
   when proof needs log or trace evidence.
@@ -99,7 +98,7 @@ result as evidence with lower confidence instead of product truth.
 
 The module is complete when every build-critical primitive or flag has one of:
 
-- attached sample/resource artifact descriptors;
+- attached sample/resource artifact primitives;
 - generated fixtures with expected outputs;
 - public-source references with provenance;
 - a precise user-only ask;

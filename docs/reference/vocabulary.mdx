@@ -1,6 +1,6 @@
 ---
 title: "Ready Vocabulary"
-description: "Where valid Ready kinds, types, primitive classes, subtypes, and relationship phrases are defined."
+description: "Where valid Ready kinds, classes, types, and relationship phrases are defined."
 ---
 
 # Ready Vocabulary
@@ -10,8 +10,9 @@ It is part of the portable `ready/standard/` package and is the source of truth
 for tools, validators, app views, and agents.
 
 Project teams may add local display labels, but stored Ready source records
-should use the values from `vocabulary.yaml` unless a project standard
-explicitly extends them.
+should use the values from `vocabulary.yaml`. Extensions must be explicit,
+reviewable, and local to that project; status values remain `ready`, `draft`,
+and `blocked`.
 
 ## What It Defines
 
@@ -20,18 +21,29 @@ explicitly extends them.
 - record kinds and their schemas;
 - standard tree directories;
 - primitive classes;
-- product-logic types;
-- product-logic subtypes such as `fields.premise_type` and
-  `fields.intent_type`;
-- flag types;
-- artifact descriptor types;
+- primitive types by class;
+- flag classes and flag types by class;
+- governance, setting, and manifest classes;
+- record statuses, status rules, and compile behavior;
+- compiler roles;
 - claim levels;
 - structural relationship roles;
 - semantic relationship display phrases in both directions.
 
-Flag vocabulary names attention, discrepancy, blocker, and proof-gate states. It
-does not create stored implementation instructions; apps and agents derive
-reader phrases and coding handoffs from the resolved intended product state.
+Primitive vocabulary defines durable package inputs: premises, intents,
+standards, services, and artifacts. Flag vocabulary names temporary package-work
+records: unresolved decisions, proposed changes, blockers, discrepancies,
+readiness gates, and proof gaps. It does not create stored implementation
+instructions; apps and agents derive reader phrases and coding handoffs from the
+resolved intended product state.
+
+Flags omit top-level `status` unless they are blocked. The temporary
+package-work state is implied by `kind: flag`; do not write `status: draft` or
+`status: ready` on flags.
+
+`compiler_role` is a source-record hint for compilers and orchestrators. It does
+not replace `kind`, `class`, or `type`; it clarifies how the record should be
+used in compiled product, proof, governance, handoff, or workflow views.
 
 ## Relationship Display
 
@@ -42,14 +54,22 @@ entries in `vocabulary.yaml`.
 Each semantic display entry must define both `source_to_target` and
 `target_to_source` for the same stored edge. For example,
 `intent --parent--> premise` renders as the intent `serves` the premise, and as
-the premise is `served by` the intent.
+the premise is `served by` the intent. The lookup keys are based on source
+kind, optional source class, target kind, optional target class, and stored
+structural role. The kind keys matter for cross-kind refs such as
+flag-to-standard relationships because flags are not primitives.
+
+Display entries may use documented wildcard class tokens from
+`relationship_display_wildcards`. `any` matches any class for the specified
+kind. `same_or_related` matches the same class or a project-approved related
+class.
 
 Standards that govern implementation-bearing records normally use `peer` refs:
 `intent --peer--> standard` and `service --peer--> standard` render as
 `governed by` / `governs`. Premises should not attach standards or services
 directly; if a standard or service appears related to a premise, attach it to
-the intent that serves the premise. Decision/workflow flags that are governed by
-standards use the same `peer` display.
+the intent that serves the premise. Flags that are governed by standards use the
+same `peer` display.
 `standard --peer--> standard` renders as `co-governs with` in both directions.
 The vocabulary keeps child-standard display phrases as fallback semantics for
 older trees and intentionally nested subordinate standards.

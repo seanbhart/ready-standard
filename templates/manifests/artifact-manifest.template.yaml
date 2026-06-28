@@ -1,24 +1,29 @@
-schema: "readyroom/artifact-tree/v1"
+schema: "ready/artifact-tree/v1"
+kind: "manifest"
+class: "artifact"
 artifact_root: "{{SCOPE_PATH}}/artifacts"
 artifact_index: "{{SCOPE_PATH}}/artifacts.md"
+artifact_type_directory_base: "artifact_root"
 descriptor_required_top_level:
   - schema
   - kind
   - id
+  - class
   - type
+  - compiler_role
   - title
   - status
 descriptor_required_fields:
+  - confidence
+  - provenance
   - purpose
   - content
   - intended_use
   - format
-evidence_or_proof_required_fields:
-  - confidence
-  - provenance
 file_backed_required_file_fields:
   - path
   - role
+artifact_class: "artifact"
 artifact_types:
   customer_statement:
     id_prefix: "AR"
@@ -34,7 +39,6 @@ artifact_types:
       - format
       - statement
       - speaker_type
-      - supports
   source_document:
     id_prefix: "AR"
     directory: "resources/"
@@ -89,7 +93,7 @@ artifact_types:
   proof_corpus:
     id_prefix: "AP"
     directory: "samples/"
-    validation: "json_parse"
+    validation: "yaml_json_jsonl_or_external_ref"
     privacy: "sanitized_fixture_or_explicit_user_stub"
     required_fields:
       - confidence
@@ -100,10 +104,13 @@ artifact_types:
       - format
       - proof_role
       - authority_level
+      - lifecycle_state
+      - coverage
       - dataset_contract
       - oracle_policy
       - replay
       - acceptance_contract
+      - limitations
   code_snippet:
     id_prefix: "ASN"
     directory: "snippets/"
@@ -141,9 +148,11 @@ artifact_types:
       - format
       - manifest_scope
 rules:
-  - "Artifact descriptors are evidence/artifact primitives that support product logic, flags, proof, or generated views."
+  - "Artifact descriptors are primitives with kind: primitive and class: artifact."
+  - "Artifact descriptors support product logic, flags, proof, or generated views."
   - "One descriptor records one artifact purpose; do not bundle files with different purposes into the same descriptor."
   - "A descriptor may list multiple files only when those files are interchangeable versions or representations of the same purpose."
-  - "Every referenced non-.ready payload file should be represented by a descriptor."
+  - "Every referenced non-.ready payload file that supports product logic, flags, proof, generated views, or handoff should be represented by a descriptor."
   - "Large, binary, private, or generated payload files are attachments or safe refs, not primitive records themselves."
-  - "Governing docs and standard resources do not live under artifacts."
+  - "Governance documents and vendored standard package resources do not live under artifacts and do not require artifact descriptors."
+  - "Artifact type manifest describes a durable artifact manifest; kind: manifest describes structural Ready metadata."

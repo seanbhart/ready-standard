@@ -1,0 +1,24 @@
+schema: ready/artifact/v1
+kind: primitive
+id: ASN-001
+class: artifact
+type: code_snippet
+compiler_role: handoff_reference
+title: "{{CODE_SNIPPET_TITLE}}"
+status: ready
+privacy: "{{safe_ref_or_public_resource|private_ref}}"
+retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
+fields:
+  confidence: "{{low|medium|high}}"
+  provenance: "{{WHO_AUTHORED_OR_VERIFIED_THIS_SNIPPET}}"
+  purpose: "{{ONE_PURPOSE_THIS_SNIPPET_SERVES}}"
+  content: "{{WHAT_THIS_SNIPPET_CONTAINS}}"
+  intended_use: "{{HOW_AGENTS_SHOULD_USE_THIS_SNIPPET}}"
+  format: "{{markdown|text|typescript|tsx|swift|python|yaml|json|external_ref}}"
+  snippet_scope: "{{COMPONENT_CONTRACT_STATE_MAP_COPY_BLOCK_OR_EXAMPLE_SCOPE}}"
+files:
+  - path: "{{READY_RELATIVE_OR_EXTERNAL_SAFE_REF}}"
+    role: "{{primary|version|supporting}}"
+    purpose: "{{HOW_THIS_FILE_SERVES_THE_SNIPPET}}"
+usage_policy: []
+owner_notes: []

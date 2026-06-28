@@ -1,15 +1,13 @@
 ---
 title: "Ready"
-description: "A Git-backed product tree standard for storing product truth as typed YAML records."
+description: "A Git-backed Ready package standard for rebuildable product truth."
 ---
 
 # Ready
 
-The Ready Product Tree stores product truth as a filetree. Ready primitives are
-typed, addressable records: product logic, Decision flags, artifact descriptors,
-governance records, and generated-view inputs live in ordinary files so teams
-can branch, review, merge, fork, and compare product decisions with the same
-tools they use for code.
+Ready stores product truth as a committed filetree. A Ready package is the
+source package an orchestrator reads to build, prove, operate, or govern the
+intended product.
 
 A Ready branch represents one coherent intended product state. Git history and
 branches carry evolution and hypothetical alternatives; apps may derive
@@ -17,34 +15,31 @@ discrepancies by comparing Ready truth to code, evidence, generated views, or
 prior commits. Stored flags add durable proof, attention, blocker, and
 coordination gates; they are not change instructions.
 
-The standard separates primitive class from compiler authority:
+Ready records use object families:
 
-- Product-logic `.ready.yml` primitives describe why the product exists, what
-  it promises, how it must behave, and what it depends on.
-- X primitives describe temporary process interrupts and proof gates: open
-  Decisions, attention, blockers, routing, review, approval, correction,
-  escalation, drift, and claim-readiness state.
-- A primitives describe durable supporting content: proof corpora, documents,
-  resources, snippets, designs, manifests, reports, and generated-view inputs.
-  Large or sensitive payload files may live beside the primitive record as
-  attachments or safe refs.
-- Governance primitives constrain authority, process, and agent behavior.
-- Generated views compile from the tree for different audiences.
-- Local chats, scratchpads, search indexes, raw logs, and transcripts stay in
-  local cache unless intentionally promoted into product records.
+- `primitive` records are durable package inputs: premises, intents, standards,
+  services, and artifact descriptors.
+- `flag` records are temporary package-work records for unresolved
+  Ready-package decisions, proposed changes, discrepancies, readiness gates, and
+  proof gaps.
+- `governance` records constrain authority, process, policy, and agent
+  behavior.
+- `setting` records hold git-tracked workspace or app configuration.
+- `manifest` records describe package structure.
 
 ## Why this exists
 
-Product direction often drifts because requirements, decisions, tickets, mockups,
-chat, and implementation proof live in separate systems. A filetree product model
-keeps the durable part small, reviewable, and portable while still letting apps
-render richer PM, developer, designer, and customer views.
+Product direction often drifts because requirements, decisions, tickets,
+mockups, chat, implementation proof, and code live in separate systems. A Ready
+package keeps the durable part small, reviewable, and portable while still
+letting apps render richer PM, developer, designer, and customer views.
 
-## Minimum conforming tree
+## Minimum Conforming Tree
 
 ```text
 ready/
   manifest.yaml
+  standard/
   governance/
   settings/
   product/
@@ -59,16 +54,18 @@ ready/
   flags/
     decisions/
     blockers/
-    drift/
+    discrepancies/
+    readiness/
+    proof/
 ```
 
-The directory names can vary by product, but the standard requires one durable
-record per Ready primitive, stable ids in the record, directed refs where
-relationships matter, explicit compiler roles, and explicit proof gates before
-coding work can start. Intended product truth lives in `ready/product/`.
-Temporary workflow records, discrepancy notes, blockers, and decisions may live
-in `ready/flags/`. Git-tracked workspace/app settings may live under
-`ready/settings/`.
+The directory names can vary by product, but the standard requires stable ids,
+typed records, directed refs where relationships matter, explicit compiler
+roles, and explicit proof gates before coding work can claim completeness.
+Intended product truth lives in `ready/product/`. Temporary package-work records
+for proposed changes, discrepancies, blockers, decisions, readiness gates, and
+proof gaps live in `ready/flags/`.
+Git-tracked workspace/app settings may live under `ready/settings/`.
 
 Reusable Ready skills and templates live in the portable standard package. A
 project that expects agents to edit the tree should vendor that package at

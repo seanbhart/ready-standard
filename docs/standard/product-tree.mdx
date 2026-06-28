@@ -16,6 +16,12 @@ It should say what should exist, not how to change the current implementation.
 Git history records how product truth evolved; Ready primitives describe the
 currently intended state.
 
+A complete Ready package has enough ready product truth, standards, services,
+artifacts, proof, governance, settings, and manifests for an orchestrator to
+build from the package without relying on unstated tickets, chat memory, or the
+current code structure. Incomplete packages are still useful, but an
+implementation attempt from an incomplete package should be labeled as such.
+
 ## Source of truth
 
 Each primitive owns its durable truth in one `.ready.yml` file:
@@ -58,10 +64,12 @@ settings_directory: ready/settings
 current tree version. It holds premises, intents, standards, services, product
 artifacts, proof corpora, and other records that define what should exist.
 
-`ready/flags/` is a peer workflow directory. It may hold Decision flags,
-blockers, discrepancy notes, version-review notes, and claim-coordination
-records. Flags can point at product truth, but they do not own the product
-truth and they do not replace intent Completion Proof.
+`ready/flags/` is a peer workflow directory. It may hold temporary package-work
+records for unresolved Ready-package decisions, proposed changes,
+version-divergence notes, blockers, discrepancies, readiness gates, proof gaps,
+and claim coordination. Flags can point at product truth, but they do not own
+the product truth and they do not replace intent Completion Proof. A complete
+stable package has no flags.
 
 `ready/settings/` is not a primitive scope. It holds git-tracked workspace and
 app settings that help tools manage the Ready tree, such as product-agent
@@ -71,44 +79,38 @@ secrets, and not duplicate product truth that belongs in primitives,
 governance, artifacts, or flags. Runtime cache, user-private preferences, and
 provider secrets do not belong in `ready/settings/`.
 
-## Primitive classes
+## Record kinds and primitive classes
 
-A Ready primitive is a typed, addressable, reusable unit of product knowledge,
-decision state, workflow state, evidence, or governance context. "Primitive"
-does not mean every record has the same compiler authority. Tools should read a
-record's class, type, path, and role before deciding whether it is product truth,
-workflow state, evidence, generated context, or governance.
+Ready records use `kind` to identify the object family:
 
-Core classes:
+- `primitive`: durable package input required to build, prove, operate, or
+  govern the intended product package.
+- `flag`: temporary package-work record for unresolved Ready-package decisions,
+  proposed changes, blockers, discrepancies, readiness gates, and proof gaps.
+- `governance`: package management record for authority, process, policy, or
+  agent behavior.
+- `setting`: git-tracked workspace or app configuration used by Ready tools.
+- `manifest`: structural package metadata.
 
-- `product_logic`: source product truth. Common types are `premise`, `intent`,
-  `standard`, and `service`.
-- `decision_workflow`: Decision flags, blockers, drift, proof gaps, and other
-  records that direct attention or readiness.
-- `evidence_artifact`: resources, proof corpora, snippets, designs, manifests,
-  screenshots, and handoff notes. The primitive is the artifact descriptor; a
-  bulky, binary, private, or generated payload file is an attachment or safe ref,
-  not the semantic product reference.
-- `governance`: project authority, process, agent guidelines, skills, and
-  templates that constrain how the tree may be changed.
-
-The first product-logic primitive types are:
+Primitive records use `class` for their product family:
 
 - `premise`: why the product or feature should exist.
 - `intent`: what the product promises to do.
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
+- `artifact`: durable supporting content such as source documents, proof
+  corpora, snippets, designs, and manifests.
 
-Keep these four primitive types stable and use subtypes from
-`ready/standard/vocabulary.yaml` to make the discovery process intuitive.
-Constraints are standards: use `standard` records for constraints, rules,
-quality bars, compliance needs, measurement rules, and non-negotiable behavior.
+`type` is the narrower subtype under a class. Keep primitive classes stable and
+use subtypes from `ready/standard/vocabulary.yaml` to make the discovery process
+intuitive. Constraints are standards: use `class: standard` records for
+constraints, rules, quality bars, compliance needs, measurement rules, and
+non-negotiable behavior.
 
-Decision flags and flags are decision/workflow primitives and use X-family ids.
-Artifact descriptors are evidence/artifact primitives and use A-family ids.
-Governance docs are governance primitives. Product compilers should use
-explicit class and role metadata rather than assuming a directory name gives
-every primitive the same authority.
+Flags use X-family ids but are not primitives. Governance, settings, and
+manifest records also have their own kinds. Product compilers should use
+explicit `kind`, `class`, `type`, schema, and path metadata rather than assuming
+a directory name gives every record the same authority.
 
 ## Governance and artifacts
 
@@ -120,11 +122,11 @@ changed, approved, and handed to agents.
 Artifacts that support product truth usually live under `ready/product/artifacts/`.
 Flags may link to those artifacts or keep their own small workflow artifacts
 under `ready/flags/` when the artifact only supports the temporary flag.
-Artifact descriptors are evidence/artifact primitives that support product
-logic and proof with samples, snippets, design assets, manifests, screenshots,
-and handoff notes. Attached payload files can use their native formats when they
-are clearly referenced by a descriptor. Each descriptor has one purpose; files
-with different purposes need different descriptors.
+Artifact descriptors are primitives with `class: artifact`. They support
+product logic and proof with samples, snippets, design assets, manifests,
+screenshots, and handoff notes. Attached payload files can use their native
+formats when they are clearly referenced by a descriptor. Each descriptor has
+one purpose; files with different purposes need different descriptors.
 
 ## Generated views
 

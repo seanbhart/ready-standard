@@ -1,0 +1,24 @@
+schema: ready/artifact/v1
+kind: primitive
+id: AR-001
+class: artifact
+type: access_reference
+compiler_role: handoff_reference
+title: "{{ACCESS_REFERENCE_TITLE}}"
+status: ready
+privacy: safe_ref_or_private_ref
+retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
+fields:
+  confidence: "{{low|medium|high}}"
+  provenance: "{{WHO_SUPPLIED_OR_VERIFIED_THIS_ACCESS_REFERENCE}}"
+  purpose: "{{ONE_PURPOSE_THIS_ACCESS_REFERENCE_SERVES}}"
+  content: "{{SAFE_DESCRIPTION_OF_ACCESS_OR_CREDENTIAL_LOCATION}}"
+  intended_use: "{{HOW_AGENTS_SHOULD_USE_THIS_REFERENCE_WITHOUT_READING_SECRETS}}"
+  format: "{{yaml|markdown|external_ref}}"
+  access_scope: "{{ACCOUNT_ENVIRONMENT_SERVICE_OR_PERMISSION_SCOPE}}"
+files:
+  - path: "{{READY_RELATIVE_OR_EXTERNAL_SAFE_REF}}"
+    role: "{{primary|supporting}}"
+    purpose: "{{HOW_THIS_FILE_SERVES_THE_ACCESS_REFERENCE}}"
+usage_policy: []
+owner_notes: []

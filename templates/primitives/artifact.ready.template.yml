@@ -1,11 +1,11 @@
-schema: readyroom/artifact/v1
-kind: artifact
-id: A-001
-type: "{{customer_statement|source_document|reference_resource|access_reference|review_protocol|proof_corpus|code_snippet|design_artifact|manifest}}"
-primitive_class: evidence_artifact
-compiler_role: evidence
-title: "{{ARTIFACT_TITLE}}"
-status: active
+schema: ready/artifact/v1
+kind: primitive
+id: AR-001
+class: artifact
+type: reference_resource
+compiler_role: "{{evidence|build_input|handoff_reference|generated_view_input}}"
+title: "{{REFERENCE_RESOURCE_TITLE}}"
+status: ready
 privacy: "{{safe_ref_or_public_resource|sanitized_fixture|private_ref}}"
 retrieved_at: "{{YYYY-MM-DD_OR_GENERATED_AT}}"
 fields:

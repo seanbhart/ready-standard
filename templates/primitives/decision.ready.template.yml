@@ -1,17 +1,16 @@
-schema: readyroom/flag/v1
+schema: ready/flag/v1
 kind: flag
 id: XD-001
-type: decision
-primitive_class: decision_workflow
+class: decision
+type: product_choice
 compiler_role: decision_needed
 title: "{{DECISION_TITLE}}"
-status: open
 claimable: false
 blocked_by: []
 completion_proof:
   - "{{ACCEPTED_PROPOSAL_OR_EXPLICIT_DEFERRAL_IS_RECORDED}}"
   - "{{RATIONALE_CITES_EVIDENCE_AND_CONTRADICTIONS}}"
-  - "{{AFFECTED_PRIMITIVES_FLAGS_ACTIONS_OR_ARTIFACTS_ARE_UPDATED_OR_LISTED_AS_REQUIRED_OUTPUTS}}"
+  - "{{AFFECTED_PRODUCT_RECORDS_ARE_UPDATED_OR_THE_DECISION_IS_EXPLICITLY_DEFERRED}}"
   - "{{OWNER_APPROVAL_OR_AUTHORITY_IS_RECORDED}}"
 fields:
   question: "{{QUESTION_TO_ANSWER}}"
@@ -25,31 +24,24 @@ fields:
     contradictions: []
   proposals:
     - id: "{{PROPOSAL_ID}}"
-      status: "{{candidate|recommended|rejected|accepted|superseded}}"
+      recommendation_state: "{{candidate|recommended|rejected|superseded}}"
       decision: "{{PROPOSED_DECISION}}"
       summary: "{{WHAT_CHANGES_IF_ACCEPTED}}"
       rationale: []
       advantages: []
       risks: []
       requires: []
-      changes_if_accepted:
-        primitive_edits: []
-        standards: []
-        services: []
-        artifacts: []
-        actions: []
+      package_truth_if_accepted:
+        affected_records: []
+        intended_state: []
+        proof_expectations: []
+        deferred_questions: []
       forbidden_claims_preserved: []
       rejection_conditions: []
   recommended_proposal: "{{PROPOSAL_ID_OR_NONE}}"
   decision_rubric:
     prefer: []
     reject: []
-  decision_outputs:
-    primitive_edits: []
-    actions_to_create: []
-    artifacts_to_update: []
-    standards_to_update: []
-    services_to_update: []
   post_decision_policy:
     agent_allowed_to: []
     agent_not_allowed_to: []

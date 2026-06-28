@@ -7,60 +7,94 @@ description: "Minimum validation checks for a product-tree importer or docs comp
 
 A product-tree importer should fail loudly when source truth is ambiguous.
 
-## Required checks
+## Required Checks
 
-- Every product-logic primitive source record is a `.ready.yml` YAML document.
-- Every product-logic primitive source record has
-  `schema: readyroom/primitive/v1`.
-- Every product-logic primitive source record has `kind: primitive`.
-- Every Ready primitive record, including specialized flag, artifact, decision,
-  and governance schemas, has a stable `id`.
-- No two records share the same `id`.
-- Artifact descriptors use `A*` ids. Optional class suffixes may identify
-  well-understood artifact classes, but every artifact id must start with `A`.
+- Every Ready source record is a `.ready.yml` YAML document unless it is a
+  manifest or documented Markdown governance file.
+- Every Ready source record has a stable `id` when the schema represents an
+  addressable record.
+- No two addressable records share the same `id`.
+- Every record has a valid `kind`.
+- Records with top-level `status` use `ready`, `draft`, or `blocked`.
+- Primitive records have `kind: primitive`, a valid primitive `class`, and a
+  `type` valid for that class.
+- Primitive and flag records with `compiler_role` use a value declared in
+  `vocabulary.yaml`.
+- Primitive records do not use `primitive_class`.
+- Primitive records do not use `fields.premise_type` or `fields.intent_type`;
+  premise and intent subtype belongs in top-level `type`.
+- Premise, intent, standard, and service primitives usually use
+  `schema: ready/primitive/v1`.
+- Artifact descriptors use `kind: primitive`, `class: artifact`, an `A*` id,
+  and a valid artifact `type`.
+- Artifact descriptors may use `schema: ready/artifact/v1` when a narrower
+  artifact contract is useful.
+- Flag records use `kind: flag`, a valid flag `class`, and a `type` valid for
+  that flag class.
 - Flag records use `X*` ids. Optional class suffixes may identify
   well-understood flag classes, but every flag id must start with `X`.
-- Primitive `type` and primitive class are valid.
-- Product-logic primitive subtypes are valid according to
-  `ready/standard/vocabulary.yaml` when present.
-- Product-logic primitives live under the configured `product_directory`.
-- Flag records live under the configured `flags_directory` unless a project
-  intentionally embeds workflow records beside related product files.
-- Settings files live under `settings_directory` when present. They use explicit
-  settings schemas and are not primitive source records.
+- Governance records use `kind: governance` or documented Markdown governance
+  files under the configured governance directory; they are not primitives by
+  default.
+- Settings records use `kind: setting`, explicit settings schemas, and the
+  configured settings directory; they are not primitive source records.
+- Manifest records use `kind: manifest` or a documented manifest schema; they
+  are structural metadata, not primitives.
+- Product primitives live under the configured `product_directory`.
+- Flag records live under the configured `flags_directory`.
+- Settings files live under `settings_directory` when present.
 - Constraints, rules, quality bars, compliance needs, measurement rules, and
-  non-negotiable behavior are modeled as `standard` records, not premise
+  non-negotiable behavior are modeled as `class: standard` records, not premise
   subtypes.
 - Structural refs point to existing ids.
 - Premise refs do not target service or standard ids. If a service or standard
   appears to relate to a premise, the ref belongs on the intent that serves that
   premise.
 - Ref roles are one of `peer`, `parent`, or `child`; semantic verbs such as
-  `serves`, `requires`, `governed_by`, `refines`, and `questions` are derived
+  `serves`, `requires`, `governed by`, `refines`, and `interrupts` are derived
   reader labels and are not accepted as stored roles.
 - Semantic relationship display lookups in `vocabulary.yaml` define both
   source-to-target and target-to-source phrases for the same stored edge.
+- Relationship display wildcard class tokens must be declared in
+  `relationship_display_wildcards`.
 - Generated indexes do not carry independent primitive truth.
+- A complete package has no flags and no status-bearing records in `draft` or
+  `blocked`.
+- Orchestrators warn before implementation when any status-bearing package
+  record is
+  `draft`.
+- Orchestrators do not implement packages with blockers unless explicit override
+  instructions are present.
 - Committed intents carry concrete `completion_proof` that functions as intent
   Definition of Done, not a one-word status.
-- Flag records keep `type`, `claimable`, and `completion_proof` at the top level.
-- Decision flags use `type: decision`, stable `XD-*` ids, `fields.question`,
+- Flag records keep `class`, `type`, `claimable`, and `completion_proof` at the
+  top level.
+- Decision flags use `class: decision`, stable `XD-*` ids, `fields.question`,
   `fields.safe_default`, structured `fields.proposals`, and concrete top-level
   `completion_proof`.
-- Change flags use `type: change` and stable `XC-*` ids.
+- Decision proposal entries use `recommendation_state`; nested proposal
+  `status` is not used because top-level `status` is reserved for Ready record
+  state.
+- Readiness flags use `class: readiness` and types such as `seed`, `change`, or
+  `discovery`.
 - Decision-specific content lives under `fields`; top-level keys are reserved
   for shared flag metadata, claimability, blockers, refs, artifacts, owner
   notes, and Completion Proof.
 - Seed and change flags are non-claimable unless they pass the claim gate.
-- Claimable flags carry concrete Completion Proof that functions as the
-  Definition of Done, not a one-word status.
+- Claimable flags carry concrete Completion Proof that functions as temporary
+  flag closure criteria, not a one-word status or product Definition of Done.
 - Claimable coding handoffs resolve to the intended product state; a flag that
   only describes a delta or implementation edit instruction is not enough.
-- `ready` flags with non-empty `blocked_by` remain non-claimable.
-- Product-logic primitive files do not carry implementation lifecycle state.
-- Decision/workflow primitive files do not become coding claims unless their
-  gate fields pass.
-- Project-specific governance docs are stored under `ready/governance/`, not artifact directories.
+- Flag records omit `status` unless they are blocked; they do not use
+  `status: ready` or `status: draft`.
+- Flags with non-empty `blocked_by` use `status: blocked` and remain
+  non-claimable.
+- Overrides for blocked packages preserve the override instruction, unresolved
+  blockers, and the limits of resulting build evidence.
+- Primitive files do not carry implementation lifecycle state.
+- Flag files do not become coding claims unless their gate fields pass.
+- Project-specific governance docs are stored under `ready/governance/`, not
+  artifact directories.
 - Project-agnostic Ready resources and templates are referenced from the local
   `ready/standard/` package or the Ready standard source package, not artifact
   directories.
@@ -69,28 +103,28 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Artifact descriptor ids are unique within their artifact family and globally
   unique when a project uses global id lookup.
 - Artifact descriptors carry the required top-level fields: `schema`, `kind`,
-  `id`, `type`, `title`, and `status`.
+  `id`, `class`, `type`, `compiler_role`, `title`, and `status`.
 - Artifact descriptors carry `fields.purpose`, `fields.content`,
-  `fields.intended_use`, and `fields.format`; evidence and proof descriptors
-  also carry `fields.confidence` and `fields.provenance`.
+  `fields.intended_use`, `fields.format`, `fields.confidence`, and
+  `fields.provenance`.
 - File-backed artifact descriptors give every file a `path` and `role`.
 - Artifact descriptors have one purpose; files with different purposes are split
   into separate descriptors.
-- Referenced non-`.ready` payload files have an artifact descriptor unless the
-  reference is only a direct source/path link.
 - Proof corpus descriptors use `type: proof_corpus` and carry
-  `fields.proof_role`, `fields.authority_level`, `fields.dataset_contract`,
-  `fields.oracle_policy`, `fields.replay`, `fields.acceptance_contract`, and
-  `fields.limitations`.
+  `fields.proof_role`, `fields.authority_level`, `fields.lifecycle_state`,
+  `fields.coverage`, `fields.dataset_contract`, `fields.oracle_policy`,
+  `fields.replay`, `fields.acceptance_contract`, and `fields.limitations`.
+- Governance documents and vendored Ready standard package resources are not
+  artifact descriptors.
 - Sensitive content, source excerpts, diffs, raw logs, and secrets are absent.
 - Large artifacts use storage paths or external refs instead of inline payloads.
 - Settings files do not contain raw secrets, provider tokens, runtime cache, or
   product truth that belongs in primitives, governance, artifacts, or flags.
 
-## Warning checks
+## Warning Checks
 
 - Primitive record body is too large to review comfortably.
-- Premise confidence is low without a discovery flag or decision flag.
+- Premise confidence is low without a discovery or proof flag.
 - Intent lacks failure behavior.
 - Intent lacks claim level, process decision, or validation boundary.
 - Intent lacks input/output sample refs when sample artifacts exist.
@@ -107,14 +141,13 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   evaluated as an alternate Ready branch or worktree.
 - A local semantic relationship display extension defines a source-to-target
   phrase without the matching target-to-source phrase.
-- A generated or displayed target-state handoff is not traceable to product
-  primitives, intent Completion Proof, relevant flags, standards, services, and
-  artifacts.
+- A generated or displayed target-state handoff is not traceable to primitives,
+  intent Completion Proof, relevant flags, standards, services, and artifacts.
 
-## Importer behavior
+## Importer Behavior
 
 Validators should report exact file paths and ids. They should not silently fix
-semantic errors, average conflicting docs, treat evidence/artifact primitives as
-approved product behavior, promote open flags into coding workflow, or turn
-derived discrepancies into stored flags unless durable attention, blockers,
-Completion Proof, claim coordination, or review history are needed.
+semantic errors, average conflicting docs, treat artifact primitives as approved
+product behavior, promote current flags into coding workflow, or turn derived
+discrepancies into stored flags unless durable attention, blockers, Completion
+Proof, claim coordination, or review history are needed.
