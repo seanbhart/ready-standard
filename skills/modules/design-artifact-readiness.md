@@ -42,8 +42,10 @@ prototype, generated concept, stale, or superseded. If a design conflicts with
 primitive truth, create a decision flag or primitive edit proposal instead of
 silently blending them.
 
-Do not bury design decisions in chat. Link the artifact primitive to the
-affected product primitive, service, or flag.
+Do not bury design decisions in chat. Update the affected product primitive,
+service, or flag to reference the artifact through its `artifacts` list. Use
+artifact-to-artifact refs only when one artifact depends on, derives from,
+includes, or carries another artifact.
 
 ## Design Completeness Checklist
 

@@ -41,7 +41,9 @@ For each required service, capture:
 - service name and environment;
 - account owner;
 - top-level service `status`;
-- blockers when status is blocked, draft, or not currently usable;
+- blocker details only when `status: blocked`; use setup gaps, evidence needs,
+  or proof requirements for draft or not-currently-usable services that do not
+  have blocker lists;
 - credential type and safe storage location;
 - current evidence;
 - proof required;

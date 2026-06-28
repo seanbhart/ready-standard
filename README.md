@@ -8,7 +8,8 @@ Current source records use `.ready.yml`, the YAML serialization of the `.ready`
 record format. The standard treats `.ready` as the durable package and record
 identity; `.ready.yml` is the current human-readable file extension.
 
-- [docs/](docs/) - Mintlify-compatible documentation source.
+- Public docs are Mintlify-compatible source in this repository's `docs/`
+  directory. Vendored product-local packages omit `docs/`.
 - [skills/](skills/) - portable Ready Product Leader Skill Pack.
 - [templates/](templates/) - project starter templates.
 - [manifest.yaml](manifest.yaml) - package index for reusable resources.
@@ -28,9 +29,8 @@ is:
 - `skills/`
 - `templates/`
 
-Do not vendor `docs/` into product repos. Those files are Mintlify source for
-the public Ready Standard reference. The local runtime contract for agents is
-the vendored `manifest.yaml`, `vocabulary.yaml`, `skills/`, and `templates/`.
+Do not vendor `docs/` into product repos. The local runtime contract for agents
+is the vendored `manifest.yaml`, `vocabulary.yaml`, `skills/`, and `templates/`.
 Do not vendor `.git/` or repo-local metadata.
 
 Agents should read the local `ready/standard/manifest.yaml` for normal product

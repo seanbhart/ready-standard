@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.33
+version: 0.3.34
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -32,12 +32,12 @@ tree needs focused work:
 - [modules/standard-update.md](modules/standard-update.md) -
   sync a newer Ready Standard package into a product repo and migrate the tree.
 
-The portable package manifest is [`../manifest.yaml`](../manifest.yaml). The
-canonical vocabulary file is [vocabulary.yaml](../vocabulary.yaml). Product
-repos that need deterministic agent edits should keep the portable standard
-package at `ready/standard/`. Normal product agents read that local package.
-Pulling from the source standard repo happens only for explicit standard-update
-work.
+This skill package is the portable agent procedure. Product repos that need
+deterministic agent edits should keep the full portable standard package at
+`ready/standard/`; agents read `ready/standard/manifest.yaml` and
+`ready/standard/vocabulary.yaml` for authoritative package and vocabulary
+definitions. Pulling from the source standard repo happens only for explicit
+standard-update work.
 
 The Ready Skill does not prescribe internal code files, functions, components,
 migrations, or implementation strategy unless those choices are product
@@ -99,7 +99,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.33"
+  version: "0.3.34"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"

@@ -3,7 +3,8 @@
 These files are the portable Ready Product Leader Skill Pack. They are
 project-agnostic standard resources, not a project's authority policy.
 
-- [ready-skill.md](ready-skill.md) - entrypoint and router.
+- [SKILL.md](SKILL.md) - installable skill entrypoint.
+- [ready-skill.md](ready-skill.md) - authoritative Ready Skill router.
 - [modules/evidence-resource-review.md](modules/evidence-resource-review.md) - evidence,
   samples, public resources, generated fixtures, and user-only information.
 - [modules/access-readiness.md](modules/access-readiness.md) - accounts, credentials,
@@ -22,15 +23,15 @@ gap, and record loaded module ids and hashes in the agent context manifest.
 
 ## Portable Package
 
-[`../manifest.yaml`](../manifest.yaml) describes the portable Ready Standard package.
-To pass only the skill pack to another agent or project, copy this whole
-directory or the exact files listed in `portable_files` in
-[`manifest.yaml`](manifest.yaml). Paths are repo-relative so a receiving agent
-can copy the package without resolving working-directory assumptions. Do not
-include local cache, raw transcripts, private samples, secrets, or
-project-specific artifacts.
+[`manifest.yaml`](manifest.yaml) describes this portable skill package. To pass
+only the skill pack to another agent or project, copy this whole directory or the
+exact files listed in `portable_files`. Paths in this skill manifest are
+relative to the `skills/` package root. Do not include local cache, raw
+transcripts, private samples, secrets, or project-specific artifacts.
 
-The receiving project should keep the copied package at `ready/standard/` and
-point `ready/manifest.yaml` at that local package. Treat the copied package as
-source text that can be reviewed and versioned. Agents should update it only
-when asked to migrate the project to a newer Ready Standard version.
+A complete Ready Standard package also includes root files such as
+`manifest.yaml` and `vocabulary.yaml`. Product repos should keep that full
+package at `ready/standard/` and point `ready/manifest.yaml` at the local
+package. Treat the copied package as source text that can be reviewed and
+versioned. Agents should update it only when asked to migrate the project to a
+newer Ready Standard version.
