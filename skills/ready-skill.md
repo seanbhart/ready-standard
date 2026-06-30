@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.39
+version: 0.3.40
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -108,11 +108,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.39"
+  version: "0.3.40"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.39/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.40/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -394,7 +394,8 @@ Primitive records use these classes:
 - `intent`: what the product promises to do. User-facing views may call an
   intent an implementation bundle.
 - `standard`: how the product must be built, measured, judged, or maintained.
-- `service`: what the product depends on to build, prove, run, or monitor.
+- `service`: external or separately maintained things the product depends on to
+  build, prove, run, or monitor.
 - `artifact`: durable supporting content. The artifact descriptor is the
   primitive; bulky or sensitive payload files are attachments or safe refs.
 
@@ -405,6 +406,11 @@ Intents are the Ready bundle focus points. Premises, standards, services,
 artifacts, and flags enhance, constrain, prove, or coordinate intents, but the
 Ready Standard is about implementing solutions and intents are the primitives
 that define those solutions.
+
+Use intents for product behavior the team builds or owns, regardless of where it
+runs. Use services for external or separately maintained dependencies the
+product relies on, such as Vercel, Supabase, an LLM provider, a third-party API,
+or a managed runtime.
 
 ### Product Primitives
 
@@ -466,7 +472,12 @@ Standards:
 
 Services:
 
-- Capture dependencies required to build, prove, run, or monitor the product.
+- Capture external or separately maintained dependencies required to build,
+  prove, run, or monitor the product.
+- Do not model owned product behavior as a service merely because it runs on an
+  external platform. If the team builds the API route, background job, edge
+  function, schema, prompt flow, or UI behavior, model that owned behavior as an
+  intent and attach the required external platform or provider as a service ref.
 - Put `role` first in service fields and use top-level `status` for readiness
   state.
 - Capture blockers, access requirements, credential location, evidence,
@@ -698,9 +709,10 @@ Lifecycle rules:
   operating envelope, or materially different failure/proof boundary appears.
 - Create new non-intent primitives only for durable bundle inputs: premises for
   persistent why/scope pressure; standards for reusable rules or proof bars;
-  services for build/prove/run dependencies; artifacts for durable source,
-  proof, design, fixture, snippet, or handoff material. Otherwise attach the new
-  information to the nearest existing intent, service, standard, or artifact.
+  services for external or separately maintained build/prove/run dependencies;
+  artifacts for durable source, proof, design, fixture, snippet, or handoff
+  material. Otherwise attach the new information to the nearest existing
+  intent, service, standard, or artifact.
 - Use `status: draft` for incomplete or not-yet-approved product truth. Use
   decision or discovery flags for unresolved product truth. Use `status:
   blocked` for known blocker lists. Use readiness seed/change flags only when

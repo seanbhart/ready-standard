@@ -33,7 +33,8 @@ optimized for parsing, validation, diffing, and merge review.
 - `intent`: what the product promises to do; user-facing views may call an
   intent an implementation bundle.
 - `standard`: how the product must be built, measured, judged, or maintained.
-- `service`: what the product depends on to build, prove, run, or monitor.
+- `service`: external or separately maintained things the product depends on to
+  build, prove, run, or monitor.
 - `artifact`: durable supporting content such as customer statements, source
   documents, proof corpora, snippets, designs, and manifests.
 
@@ -43,8 +44,8 @@ durable product bundle inputs in the same way.
 
 Compiler role still matters. A premise states product reasoning, an intent
 states product promise, a proof-corpus artifact may be regression evidence, and
-a service may be a build or runtime dependency. Tools should read `kind`,
-`class`, `type`, refs, path, and schema before deciding how a record compiles.
+a service names an outside dependency. Tools should read `kind`, `class`,
+`type`, refs, path, and schema before deciding how a record compiles.
 
 Status controls bundle compilation:
 
@@ -158,8 +159,9 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Refs may cross Ready kinds when the relationship is valid. For example, a
   flag can use a `peer` ref to a governing standard without becoming a
   primitive.
-- Services are implementation dependencies. Attach services to intents or other
-  implementation-bearing records, not to premises.
+- Services are external or separately maintained implementation dependencies.
+  Attach services to intents or other implementation-bearing records, not to
+  premises.
 - Do not store an inverse ref for the same assertion. Choose one structural edge
   and let views invert parent/child labels when needed.
 - Subordinate intent-to-intent relationships should be authored by the parent
@@ -210,6 +212,12 @@ supporting artifacts that an orchestrator can build toward. Premises, standards,
 services, artifacts, and flags enhance, constrain, prove, or coordinate intents;
 they do not replace intents as the primitives that define the implemented
 solution.
+
+Use intents for what the product team builds or owns, regardless of where that
+behavior runs. A workflow, module, worker, API route, database schema, generated
+view, or model-mediated behavior is an intent when it is part of the product
+the team is responsible for implementing. Hosting it on Vercel, storing data in
+Supabase, or calling an LLM provider does not make the owned behavior a service.
 
 Use top-level `type` to name the commitment shape, such as `promise`,
 `behavior`, `workflow`, `module`, `component`, `capability`, `experience`,
@@ -262,10 +270,18 @@ needs attention.
 
 ## Services
 
-Services capture dependencies required to build, prove, run, or monitor the
-product. Use top-level `type` for the service subtype, such as `platform`,
-`api`, `data_store`, `model_provider`, `package`, `runtime`, `worker`,
-`deployment`, or `external_system`.
+Services capture external or separately maintained dependencies required to
+build, prove, run, or monitor the product. They are things someone else builds,
+operates, owns, or supplies that the product depends on, such as Vercel hosting,
+Supabase auth/storage/database, an LLM provider, a third-party API, a managed
+queue, a package, or a deployment target. Use top-level `type` for the service
+subtype, such as `platform`, `api`, `data_store`, `model_provider`, `package`,
+`runtime`, `worker`, `deployment`, or `external_system`.
+
+Do not model owned product behavior as a service merely because it runs inside
+an external platform. If the team builds the API route, background job, edge
+function, schema, prompt flow, or UI behavior, model that owned behavior as an
+intent and attach the required external platform or provider as a service ref.
 
 A service should put `role` first, use top-level `status` for service state,
 and capture blockers, access expectations, safe credential location, evidence,

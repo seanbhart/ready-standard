@@ -74,10 +74,18 @@ security/privacy/accessibility/compliance relevant, or needed to validate more
 than one implementation detail. Do not create a standard for a one-off
 preference that belongs in an intent's operating envelope or Completion Proof.
 
-Create a new service when a dependency has its own readiness, access, proof,
-setup, credentials, permissions, failure modes, or simulation policy. If it is
-only a library choice inside an implementation, keep it out of the Ready tree
-unless it is a product constraint or proof dependency.
+Create a new service when an external or separately maintained dependency has
+its own readiness, access, proof, setup, credentials, permissions, failure
+modes, or simulation policy. Services are things someone else builds,
+maintains, operates, or supplies, such as Vercel, Supabase, an LLM provider, a
+third-party API, a managed queue, a package, or a deployment target.
+
+Do not create a service for product behavior the team builds or owns. If the
+team builds the API route, background job, edge function, schema, prompt flow,
+or UI behavior, create or update an intent for that owned behavior and attach
+the external platform or provider as a service ref. If a dependency is only a
+library choice inside an implementation, keep it out of the Ready tree unless
+it is a product constraint or proof dependency.
 
 Create a new artifact descriptor when a piece of evidence, fixture, mockup,
 snippet, source reference, manifest, or proof corpus needs a stable id, reusable

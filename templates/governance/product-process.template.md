@@ -54,11 +54,14 @@ sensitive material as refs.
 
 ## Access And Services
 
-Every required service should use top-level `status` for state and name
-blockers, account owner, access requirements, credential location reference,
-evidence, proof required, setup or implementation instructions, input/output
-types and samples, off-limits work, simulation policy, and failure modes. Never
-commit raw secrets.
+Every required service should be an external or separately maintained dependency
+the product relies on, such as hosting, storage, auth, a third-party API, or an
+LLM provider. Product behavior the team builds or owns remains an intent even
+when it runs on that service. Service records should use top-level `status` for
+state and name blockers, account owner, access requirements, credential
+location reference, evidence, proof required, setup or implementation
+instructions, input/output types and samples, off-limits work, simulation
+policy, and failure modes. Never commit raw secrets.
 
 ## Design And Artifacts
 

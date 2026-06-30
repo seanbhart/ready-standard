@@ -6,14 +6,14 @@ description: Make accounts, credentials, environments, secret storage, and servi
 
 # Access Readiness
 
-Use this module when a Ready tree depends on accounts, API keys, OAuth apps,
-provider sessions, databases, queues, deployment targets, CLIs, local
-environment files, or other service access.
+Use this module when a Ready tree depends on external or separately maintained
+accounts, API keys, OAuth apps, provider sessions, databases, queues, deployment
+targets, CLIs, local environment files, or other service access.
 
 ## Responsibilities
 
-- Identify every service, account, credential, environment, permission, and CLI
-  login needed for the intended product.
+- Identify every external service, account, credential, environment,
+  permission, and CLI login needed for the intended product.
 - Record service readiness as product truth, not as a private assumption.
 - Create or request `.env.example` entries for variable names and non-secret
   setup hints.

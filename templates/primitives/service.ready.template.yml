@@ -7,7 +7,7 @@ compiler_role: dependency
 title: "{{SERVICE_TITLE}}"
 status: draft
 fields:
-  role: "{{WHAT_THIS_SERVICE_PROVIDES_OR_ENABLES}}"
+  role: "{{WHAT_EXTERNAL_OR_SEPARATELY_MAINTAINED_SERVICE_PROVIDES_OR_ENABLES}}"
   blockers: []
   access_required: "{{ACCOUNT_OR_CREDENTIAL_NEEDS}}"
   credential_location: "{{SAFE_SECRET_LOCATION_REFERENCE_OR_NONE}}"

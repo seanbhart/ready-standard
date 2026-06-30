@@ -166,11 +166,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.39"
+  version: "0.3.40"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.39/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.40/docs"
 ```
 
 `settings_directory` is optional but recommended when an app manages the Ready
@@ -241,10 +241,12 @@ without making the flag a primitive.
 
 Standards govern implementation, behavior, measurement, judgment, or
 maintenance. Attach standards to intents, services, flags, or other standards,
-not to premises. Services are implementation dependencies; attach services to
-intents or other implementation-bearing records, not to premises. If a service
-or standard appears to relate to a premise, attach it to the intent that serves
-the premise.
+not to premises. Services are external or separately maintained implementation
+dependencies; attach services to intents or other implementation-bearing
+records, not to premises. If the team builds or owns the behavior, model that
+behavior as an intent even when it runs on a service such as Vercel, Supabase,
+or an LLM provider. If a service or standard appears to relate to a premise,
+attach it to the intent that serves the premise.
 
 ## Flags
 
