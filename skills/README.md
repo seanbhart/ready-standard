@@ -5,6 +5,9 @@ project-agnostic standard resources, not a project's authority policy.
 
 - [SKILL.md](SKILL.md) - installable skill entrypoint.
 - [ready-skill.md](ready-skill.md) - authoritative Ready Skill router.
+- [modules/ready-tree-maintenance.md](modules/ready-tree-maintenance.md) - ongoing
+  bundle maintenance, draft primitive creation, clarification policy, and
+  anti-fabrication rules.
 - [modules/evidence-resource-review.md](modules/evidence-resource-review.md) - evidence,
   samples, public resources, generated fixtures, and user-only information.
 - [modules/access-readiness.md](modules/access-readiness.md) - accounts, credentials,
@@ -19,7 +22,8 @@ project-agnostic standard resources, not a project's authority policy.
   Ready Standard bundle into a product tree and migrate the tree.
 
 The Ready Skill is the entrypoint. Load only the modules that match the current
-gap, and record loaded module ids and hashes in the agent context manifest.
+gap, and record loaded module ids and hashes in untracked runtime context for
+that run. Do not store per-run logs in the Ready tree.
 
 ## Portable Bundle
 

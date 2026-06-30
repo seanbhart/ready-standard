@@ -7,11 +7,15 @@ review; governance, settings, manifests, and flags keep their own record roles.
 
 Template groups:
 
+- [flags/](flags/) - temporary bundle-work record templates, including
+  decision flags.
 - [governance/](governance/) - project-specific governance document templates.
 - [manifests/](manifests/) - root, product, governance, and artifact manifest
   templates.
-- [primitives/](primitives/) - starter primitive and flag templates, including
+- [primitives/](primitives/) - starter primitive templates, including
   subtype-specific artifact templates.
+- [settings/](settings/) - git-tracked workspace settings templates used by
+  agents and apps that manage a Ready tree.
 
 Templates are not authority until copied, filled in, reviewed, and committed in
 the target project.

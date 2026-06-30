@@ -9,7 +9,9 @@ handed to coding agents for this project.
 
 - Durable product truth lives in `ready/product/`.
 - Ready primitives are typed, addressable durable product-bundle inputs.
-  Flags, governance records, settings, and manifests use their own Ready kinds.
+  Flags use `kind: flag`; they are temporary Ready-bundle records, not
+  canonical product truth, tickets, or coding deltas. Governance records,
+  settings, and manifests use their own Ready kinds.
 - Generated views compile from primitives, flags, artifact primitives,
   governance records, settings, and manifests.
 - Chat and local cache are evidence until promoted into the tree.
@@ -19,6 +21,29 @@ handed to coding agents for this project.
 Start with the product-user problem, need, desire, constraint, or success
 condition. Capture premises before solutioning. Preserve unresolved ambiguity as
 decision flags or discovery flags.
+
+## Bundle Maintenance
+
+Product and coding agents should update the Ready tree when work reveals new
+product truth, missing truth, contradictions, implementation drift, proof gaps,
+service or access gaps, or new durable artifacts. Update an existing primitive
+when the new information clarifies the same stable promise, premise, rule,
+dependency, or artifact purpose. Create a new intent only when there is a
+distinct implementation bundle: a separable promise that can be built, proven,
+accepted, deferred, or governed independently.
+
+Use `status: draft` for incomplete or unapproved primitives. Use decision,
+readiness, discrepancy, blocker, or proof flags for temporary bundle-work state.
+Use `status: blocked` when a blocker prevents build, proof, operation, or claim.
+Flags omit `status` unless blocked; non-blocked flag state is implied by
+`kind: flag`.
+
+Ask the user for product-shaping decisions, private resources, credentials,
+authority, approval, risk tolerance, and blocker overrides. Use agent judgment
+only for reversible, evidence-backed structure that does not change product
+scope, authority, privacy, risk, acceptance, or proof strength. Never fabricate
+product truth, user statements, evidence, authority, credentials, source
+provenance, command output, or proof.
 
 ## Evidence And Resources
 
@@ -59,5 +84,9 @@ temporary flag.
 
 ## Review
 
-Product agents close flags only after proof passes. Coding agents attach
-evidence and request review; they do not decide product completion.
+Product agents close flags only after their recorded closure criteria are
+satisfied. Decision flags close when decided and reflected or deferred; blocker
+flags close when resolved or explicitly overridden; discrepancy flags close when
+reconciled; proof and readiness flags require proof where applicable. Coding
+agents attach evidence and request review; they do not decide product
+completion.

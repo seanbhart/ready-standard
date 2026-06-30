@@ -1,0 +1,36 @@
+schema: "ready/setting/v1"
+kind: "setting"
+class: "agent_context"
+id: "{{PRODUCT_ID}}-agent-context"
+product: "{{PRODUCT_ID}}"
+ready_standard:
+  version: "0.3.39"
+  package_path: "ready/standard"
+required_sources:
+  - path: "ready/manifest.yaml"
+    role: "root_manifest"
+  - path: "ready/standard/manifest.yaml"
+    role: "standard_manifest"
+  - path: "ready/standard/vocabulary.yaml"
+    role: "standard_vocabulary"
+  - path: "ready/governance/agent-guidelines.md"
+    role: "agent_guidelines"
+  - path: "ready/governance/product-process.md"
+    role: "product_process"
+required_modules:
+  - id: "ready"
+    path: "ready/standard/skills/ready-skill.md"
+  - id: "ready-tree-maintenance"
+    path: "ready/standard/skills/modules/ready-tree-maintenance.md"
+runtime_context_policy:
+  record_loaded_sources: true
+  record_hashes: true
+  storage: "{{UNTRACKED_AGENT_RUNTIME_CONTEXT_PATH_OUTSIDE_READY_TREE}}"
+  never_store_in_ready:
+    - "per-run logs"
+    - "raw private data"
+    - "runtime cache"
+    - "build outputs"
+    - "product-owned runtime artifacts"
+notes:
+  - "{{DURABLE_AGENT_CONTEXT_POLICY_NOTE}}"

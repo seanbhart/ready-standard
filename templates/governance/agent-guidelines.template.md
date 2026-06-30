@@ -20,11 +20,23 @@ These guidelines govern product-agent behavior for this project.
 - Preserve uncertainty as decision flags, flags, low confidence, or blocked
   service readiness. Decision flags use `kind: flag`, `class: decision`, and
   keep their unresolved prompt in `fields.question`.
+- Update existing primitives when new information clarifies the same product
+  truth. Create new primitives only for durable bundle inputs needed to build,
+  prove, operate, or govern the intended product.
+- Ask the user for product-shaping decisions, private/user-only evidence,
+  credentials, access, authority, approval, risk tolerance, and blocker
+  overrides. Use best judgment only for reversible, evidence-backed structure
+  that does not strengthen claims or change scope.
+- Never fabricate product truth, user statements, evidence, authority,
+  credentials, source provenance, command output, or proof.
 - Do not claim implementation is ready while required samples, designs,
   accounts, credentials, environments, or Completion Proof are missing.
 - Never store secrets, raw private data, or sensitive logs in the Ready tree.
-- Record loaded governance docs, standard resources, and hashes in agent context
-  manifests when product agents run.
+- Follow `ready/settings/` agent-context policy for required sources and modules.
+  Store per-run loaded file hashes in untracked runtime context outside the
+  Ready tree unless the project explicitly defines a git-tracked summary setting
+  that contains no run logs, secrets, raw private data, runtime cache, build
+  outputs, or product-owned runtime artifacts.
 
 ## Project Notes
 

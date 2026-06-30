@@ -1,12 +1,12 @@
 schema: "ready/standard-vocabulary/v1"
-version: "0.3.38"
+version: "0.3.39"
 record_kinds:
   - id: "primitive"
     default_schema: "ready/primitive/v1"
     allowed_schemas:
       - "ready/primitive/v1"
       - "ready/artifact/v1"
-    role: "durable_package_input"
+    role: "durable_bundle_input"
     description: "Durable Ready bundle inputs required to build, prove, operate, or govern the intended product."
   - id: "flag"
     default_schema: "ready/flag/v1"
@@ -18,7 +18,7 @@ record_kinds:
     default_schema: "ready/governance/v1"
     allowed_schemas:
       - "ready/governance/v1"
-    role: "package_management_record"
+    role: "bundle_management_record"
     description: "Authority, process, policy, and agent guidance for changing or managing the Ready bundle."
   - id: "setting"
     default_schema: "ready/setting/v1"
@@ -269,7 +269,7 @@ status_rules:
   - kind: "flag"
     allowed_statuses:
       - "blocked"
-    default_status: "temporary_package_work"
+    default_status: "temporary_bundle_work"
     description: "Flags omit top-level status unless blocked; temporary bundle-work state is implied by kind: flag."
 blocker_rules:
   - id: "non_empty_blocker_list_blocks_record"
@@ -281,7 +281,7 @@ blocker_rules:
       - "fields.blockers"
     required_status: "blocked"
     description: "Any record with a non-empty blocker list must use status: blocked and requires explicit override before implementation."
-  - id: "blocker_flag_blocks_package"
+  - id: "blocker_flag_blocks_bundle"
     applies_to_kinds:
       - "flag"
     applies_to_classes:

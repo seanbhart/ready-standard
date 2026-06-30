@@ -157,13 +157,20 @@ source_model: file_per_record_ready_yml
 source_root: ready
 product_directory: ready/product
 flags_directory: ready/flags
+flag_directories:
+  decisions: ready/flags/decisions
+  blockers: ready/flags/blockers
+  discrepancies: ready/flags/discrepancies
+  readiness: ready/flags/readiness
+  proof: ready/flags/proof
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.38"
+  version: "0.3.39"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.39/docs"
 ```
 
 `settings_directory` is optional but recommended when an app manages the Ready

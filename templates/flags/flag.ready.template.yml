@@ -1,11 +1,12 @@
 schema: ready/flag/v1
 kind: flag
 id: "{{X_ID_OR_CLASS_ID}}"
-class: "{{decision|blocker|discrepancy|readiness|proof}}"
+class: "{{blocker|discrepancy|readiness|proof}}"
 # Add `status: blocked` and keep `claimable: false` when class is blocker or
 # blocked_by is non-empty. Other flags omit status.
+# Use templates/flags/decision.ready.template.yml for decision flags because
+# they require structured question, safe_default, and proposals fields.
 # Valid types are class-scoped:
-# decision: product_choice|design_choice|authority_choice
 # blocker: service_access|dependency|authority
 # discrepancy: implementation_drift|evidence_drift|view_drift
 # readiness: seed|change|discovery
@@ -16,10 +17,10 @@ title: "{{FLAG_TITLE}}"
 claimable: false
 blocked_by: []
 completion_proof:
-  - "{{OBSERVABLE_DEFINITION_OF_DONE_EVIDENCE_NOT_A_ONE_WORD_STATUS}}"
+  - "{{RECORDED_FLAG_CLOSURE_CRITERION_NOT_PRODUCT_DOD}}"
 fields:
   objective: "{{WHAT_NEEDS_TO_BE_RESOLVED_OR_PROVEN}}"
-  scope: "{{PACKAGE_TRUTH_OR_CLAIM_SCOPE}}"
+  scope: "{{BUNDLE_TRUTH_OR_CLAIM_SCOPE}}"
   non_scope: "{{WHAT_THIS_FLAG_DOES_NOT_COVER}}"
   dependencies: []
   required_standards: []

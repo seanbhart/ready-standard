@@ -1,7 +1,7 @@
 schema: "ready/standard-resources/v1"
 kind: "manifest"
 class: "bundle"
-version: "0.3.38"
+version: "0.3.39"
 standard_root: "."
 repository: "https://github.com/seanbhart/ready-standard"
 portable_package:
@@ -38,7 +38,11 @@ resources:
   - id: "RS-005"
     path: "vocabulary.yaml"
     role: "canonical_vocabulary"
+  - id: "RS-006"
+    path: "templates/settings/product-agent-context.ready.template.yml"
+    role: "agent_context_settings_template"
 skill_modules:
+  - "skills/modules/ready-tree-maintenance.md"
   - "skills/modules/evidence-resource-review.md"
   - "skills/modules/access-readiness.md"
   - "skills/modules/design-artifact-readiness.md"
@@ -46,9 +50,11 @@ skill_modules:
   - "skills/modules/perspective-review.md"
   - "skills/modules/standard-update.md"
 template_directories:
+  flags: "templates/flags"
   governance: "templates/governance"
   manifests: "templates/manifests"
   primitives: "templates/primitives"
+  settings: "templates/settings"
 rules:
   - "Project-specific governance lives in ready/governance."
   - "Git-tracked workspace and app settings live in ready/settings when a product tree needs them."

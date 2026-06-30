@@ -69,7 +69,8 @@ directory for that file.
 
 ## Runtime use
 
-Agent context manifests should record the governance documents and standard
+Untracked runtime context should record the governance documents and standard
 bundle resources loaded for each run, including versions, source refs, and
-hashes. This keeps agent behavior auditable without treating private chats,
-local scratchpads, or generated coding handoffs as governance.
+hashes. This keeps agent behavior auditable without storing per-run logs,
+private chats, local scratchpads, generated coding handoffs, or runtime cache in
+the Ready tree.

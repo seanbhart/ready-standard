@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.38
+version: 0.3.39
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -15,6 +15,9 @@ cut away what is unnecessary for the intended product version.
 This is an orchestration skill. Load specialist Ready Skill modules when the
 tree needs focused work:
 
+- [modules/ready-tree-maintenance.md](modules/ready-tree-maintenance.md) -
+  ongoing bundle maintenance, draft primitive creation, clarification policy,
+  anti-fabrication rules, and code-discovered gaps.
 - [modules/evidence-resource-review.md](modules/evidence-resource-review.md) -
   evidence, proof corpora, online resources, generated fixtures, and user-only
   information.
@@ -78,7 +81,7 @@ ready/
       designs/
       manifests/
   flags/
-    decisions/
+    decisions/        # optional; declare project flag paths in manifests/policy
     blockers/
     discrepancies/
     readiness/
@@ -96,13 +99,20 @@ product: example
 source_root: ready
 product_directory: ready/product
 flags_directory: ready/flags
+flag_directories:
+  decisions: ready/flags/decisions
+  blockers: ready/flags/blockers
+  discrepancies: ready/flags/discrepancies
+  readiness: ready/flags/readiness
+  proof: ready/flags/proof
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.38"
+  version: "0.3.39"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.39/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -198,7 +208,8 @@ Process:
    environments needed to make the intended product buildable.
 7. Preserve conflicts instead of averaging them.
 8. Ask the user to resolve only product-shaping gaps that affect the intended product.
-9. Create draft or ready `.ready.yml` primitives with evidence confidence.
+9. Create draft or ready `.ready.yml` primitives with evidence artifact refs
+   that carry provenance and confidence.
 10. Create flags or decision flags where work is not ready.
 
 Documentation-only trees should be explicit about whether a fact is user-stated,
@@ -231,6 +242,44 @@ Process:
 Codebase-only trees should be conservative. They can describe observed behavior
 with medium or high evidence confidence, but user need and product priority
 usually remain lower confidence until confirmed.
+
+### Ongoing Product Work
+
+Use this mode when a product or coding agent is working in an existing project
+and learns something that may change the Ready tree.
+
+Process:
+
+1. Read the local `ready/standard/` bundle, root manifest, governance, and
+   affected product records.
+2. Decide whether the new information changes intended product truth, evidence,
+   proof, services, standards, artifacts, or temporary bundle-work state. If it
+   only describes coding progress, do not create a primitive.
+3. Update the existing record when the new information clarifies the same stable
+   promise, premise, rule, dependency, or artifact purpose.
+4. Create a new intent when the product now has a distinct implementation bundle:
+   a separable promise that can be built, proven, accepted, deferred, or governed
+   independently.
+5. Create other primitives only when they are durable inputs needed to build,
+   prove, operate, or govern the intended product bundle.
+6. Create flags for unresolved choices, blockers, discrepancies, readiness gates,
+   proposed changes, and proof gaps.
+7. Mark incomplete or unapproved primitives `status: draft`; mark records
+   `status: blocked` when blockers prevent build, proof, operation, or claim.
+8. Ask the user for product-shaping decisions, private resources, credentials,
+   authority, approval, risk tolerance, and blocker overrides.
+9. Use best judgment for reversible, evidence-grounded structure: ids, file
+   locations, subtypes, titles, relationships, public resources, and synthetic
+   fixtures clearly labeled as synthetic.
+10. Never fabricate product truth, user statements, evidence, authority,
+    credentials, source provenance, command output, or proof. If a field cannot
+    be filled safely, keep it draft, create a flag, or ask the user.
+
+Coding agents may maintain the Ready tree when implementation reveals gaps or
+contradictions, but they should preserve target-state truth rather than write
+implementation deltas. They must not promote product decisions, mark product
+completion, or turn current implementation into desired truth without user,
+governance, or evidence support.
 
 ### From Scratch Discussion
 
@@ -369,7 +418,7 @@ Premises:
 - Do not attach services or standards directly to premises. If a service or
   standard seems related to a premise, attach it to the intent that serves the
   premise.
-- Include evidence provenance and confidence.
+- Link evidence artifacts that carry provenance and confidence.
 - Include product implications: what the premise requires, rules out, or
   prioritizes.
 - If the premise is not clear enough to support intent work, create a discovery
@@ -442,7 +491,8 @@ Flags:
   divergence, blockers, drift, proof gaps, claim coordination, and closure
   criteria for bundle truth that is unsatisfied, unproven, or not yet accepted.
 - Keep coding readiness out of primitive bodies.
-- A flag is not a primitive, not a ticket, and not a coding delta.
+- Flags use `kind: flag`; they are temporary Ready-bundle records, not
+  canonical product truth, tickets, or coding deltas.
 - Seed and change flags become claimable only after blockers are absent,
   top-level `claimable: true`, top-level Completion Proof, and workspace policy
   allow it. Flags omit `status` unless they are blocked.
@@ -482,6 +532,10 @@ Governance records:
 
 Load modules based on gaps, not ceremony:
 
+- Load ready-tree maintenance whenever an existing Ready tree needs updates from
+  product work, coding work, new evidence, implementation drift, draft records,
+  clarification questions, or uncertainty about whether to create or update
+  records.
 - Load evidence-resource review for every nontrivial product tree and any tree with
   missing samples, expected outputs, user-only data, public-source references,
   or resource provenance questions.
@@ -638,8 +692,29 @@ Relationship rules:
 Lifecycle rules:
 
 - Do not store coding lifecycle state on primitives.
-- Use flags for discovery, seed, change, blocker, discrepancy, proof gap, and
-  question attention.
+- Update an existing intent when the actor, promise, outcome, proof boundary,
+  and failure boundary remain the same. Create a new intent when a new
+  independently provable product promise, actor/workflow, module, surface,
+  operating envelope, or materially different failure/proof boundary appears.
+- Create new non-intent primitives only for durable bundle inputs: premises for
+  persistent why/scope pressure; standards for reusable rules or proof bars;
+  services for build/prove/run dependencies; artifacts for durable source,
+  proof, design, fixture, snippet, or handoff material. Otherwise attach the new
+  information to the nearest existing intent, service, standard, or artifact.
+- Use `status: draft` for incomplete or not-yet-approved product truth. Use
+  decision or discovery flags for unresolved product truth. Use `status:
+  blocked` for known blocker lists. Use readiness seed/change flags only when
+  target state exists but coding or proof is not claimable yet.
+- Ask the user for product-shaping choices, private or user-only evidence,
+  credentials/access, approval, authority, one-way-door changes, blocker
+  overrides, or any change that would make a claim stronger than evidence
+  supports.
+- Use best judgment only for reversible, evidence-backed edits that do not
+  change product scope, authority, privacy, risk, acceptance, or proof strength.
+- Never fabricate product truth, user statements, evidence, authority,
+  credentials, source provenance, command output, or proof.
+- Use decision flags for unresolved questions and discovery/readiness flags for
+  clarification or research gates.
 - Seed and change flags are not claimable by default.
 - A coding agent should only claim work when the relevant flag is unblocked,
   claimable, and has top-level Completion Proof.
