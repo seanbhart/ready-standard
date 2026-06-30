@@ -8,7 +8,7 @@ description: "The source-of-truth rules for a Git-backed .ready product tree."
 A `.ready` product tree is a committed filetree that stores product truth in
 typed records. Primitive source records currently use `.ready.yml`: plain YAML
 with a distinct extension so importers know exactly how to parse it. The
-standard uses `.ready` as the durable package and record identity; `.ready.yml`
+standard uses `.ready` as the durable bundle and record identity; `.ready.yml`
 is the current YAML serialization. The tree should behave like a healthy
 codebase: fragmented enough to review, explicit enough to validate, and
 structured enough to compile into different views.
@@ -18,11 +18,11 @@ branch. It should say what should exist, not how to change the current
 implementation. Git history records how product truth evolved; Ready primitives
 describe the currently intended state.
 
-A complete Ready package has enough ready product truth, standards, services,
+A complete Ready bundle has enough ready product truth, standards, services,
 artifacts, proof, governance, settings, and manifests for an orchestrator to
-build from the package without relying on unstated tickets, chat memory, or the
-current code structure. Incomplete packages are still useful, but an
-implementation attempt from an incomplete package should be labeled as such.
+build from the bundle without relying on unstated tickets, chat memory, or the
+current code structure. Incomplete bundles are still useful, but an
+implementation attempt from an incomplete bundle should be labeled as such.
 
 ## Source of truth
 
@@ -47,7 +47,7 @@ state tree.
 ## Tree directories
 
 The root `ready/manifest.yaml` owns the product, flags, governance, settings,
-and standard package locations. The standard does not define additional
+and standard bundle locations. The standard does not define additional
 product-state overlays. A Ready tree version should state one coherent intended product; Git
 commits, branches, and worktrees carry history, alternatives, and hypothetical
 concepts.
@@ -66,12 +66,12 @@ settings_directory: ready/settings
 current tree version. It holds premises, intents, standards, services, product
 artifacts, proof corpora, and other records that define what should exist.
 
-`ready/flags/` is a peer workflow directory. It may hold temporary package-work
-records for unresolved Ready-package decisions, proposed changes,
+`ready/flags/` is a peer workflow directory. It may hold temporary bundle-work
+records for unresolved Ready-bundle decisions, proposed changes,
 version-divergence notes, blockers, discrepancies, readiness gates, proof gaps,
 and claim coordination. Flags can point at product truth, but they do not own
 the product truth and they do not replace intent Completion Proof. A complete
-stable package has no flags.
+stable bundle has no flags.
 
 `ready/settings/` is not a primitive scope. It holds git-tracked workspace and
 app settings that help tools manage the Ready tree, such as product-agent
@@ -86,19 +86,20 @@ preferences, and provider secrets do not belong in `ready/settings/`.
 
 Ready records use `kind` to identify the object family:
 
-- `primitive`: durable package input required to build, prove, operate, or
-  govern the intended product package.
-- `flag`: temporary package-work record for unresolved Ready-package decisions,
+- `primitive`: durable bundle input required to build, prove, operate, or
+  govern the intended product bundle.
+- `flag`: temporary bundle-work record for unresolved Ready-bundle decisions,
   proposed changes, blockers, discrepancies, readiness gates, and proof gaps.
-- `governance`: package management record for authority, process, policy, or
+- `governance`: bundle management record for authority, process, policy, or
   agent behavior.
 - `setting`: git-tracked workspace or app configuration used by Ready tools.
-- `manifest`: structural package metadata.
+- `manifest`: structural bundle metadata.
 
 Primitive records use `class` for their product family:
 
 - `premise`: why the product or feature should exist.
-- `intent`: what the product promises to do.
+- `intent`: what the product promises to do; user-facing views may call an
+  intent an implementation bundle.
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
 - `artifact`: durable supporting content such as source documents, proof
@@ -118,8 +119,8 @@ a directory name gives every record the same authority.
 ## Governance and artifacts
 
 Project-specific governance documents live under `ready/governance/`.
-Reusable Ready resources, task-skill packages, and templates live in the Ready
-standard package. Together they constrain how product truth is created,
+Reusable Ready resources, task-skill bundles, and templates live in the Ready
+standard bundle. Together they constrain how product truth is created,
 changed, approved, and handed to agents.
 
 Artifacts that support product truth usually live under `ready/product/artifacts/`.

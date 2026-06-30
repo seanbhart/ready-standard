@@ -5,9 +5,9 @@ description: "How to write typed, addressable Ready primitives."
 
 # Primitive Records
 
-Primitive records are durable Ready package inputs. They are the units a
+Primitive records are durable Ready bundle inputs. They are the units a
 product orchestrator needs to build, prove, operate, or govern the intended
-product package from the Ready tree.
+product bundle from the Ready tree.
 
 Primitive records use:
 
@@ -30,7 +30,8 @@ optimized for parsing, validation, diffing, and merge review.
 ## Primitive Classes
 
 - `premise`: why the product or feature should exist.
-- `intent`: what the product promises to do.
+- `intent`: what the product promises to do; user-facing views may call an
+  intent an implementation bundle.
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
 - `artifact`: durable supporting content such as customer statements, source
@@ -38,18 +39,18 @@ optimized for parsing, validation, diffing, and merge review.
 
 Flags are not primitives. Governance, settings, and manifest records are also
 not primitives. They can be important Ready records, but they do not state
-durable product package inputs in the same way.
+durable product bundle inputs in the same way.
 
 Compiler role still matters. A premise states product reasoning, an intent
 states product promise, a proof-corpus artifact may be regression evidence, and
 a service may be a build or runtime dependency. Tools should read `kind`,
 `class`, `type`, refs, path, and schema before deciding how a record compiles.
 
-Status controls package compilation:
+Status controls bundle compilation:
 
-- `ready` primitive records are included in normal package compilation as
+- `ready` primitive records are included in normal bundle compilation as
   current intended product truth.
-- `draft` records make the package incomplete. Orchestrators may attempt
+- `draft` records make the bundle incomplete. Orchestrators may attempt
   implementation only after warning that a complete product should not be
   expected.
 - `blocked` records stop implementation unless explicit override instructions
@@ -68,7 +69,7 @@ may add a one- or two-letter suffix after `A` for well-understood artifact
 types, such as `AR-*` for resources, `AP-*` for proof corpora, `ASN-*` for
 snippets, `AD-*` for designs, or `AM-*` for manifests.
 
-`X*` records are flags. They are temporary package-work records, not primitives.
+`X*` records are flags. They are temporary bundle-work records, not primitives.
 They should close once the required decision, proof, or coordination is
 complete, leaving durable results on primitives, artifacts, proof, or history.
 
@@ -133,7 +134,7 @@ into typed `fields`, `refs`, `artifacts`, or flags.
 - Use one primitive record per source file.
 - Use the `.ready.yml` extension for primitive source records.
 - Place durable primitives under the configured `ready/product/` directory.
-- Place temporary package-work flags under the configured `ready/flags/`
+- Place temporary bundle-work flags under the configured `ready/flags/`
   directory.
 - Keep ids stable; paths and titles can change.
 - Keep files fragmented and reviewable.
@@ -202,9 +203,17 @@ it to the intent that serves the premise.
 
 ## Intents
 
-Intents are product promises. Use top-level `type` to name the commitment shape,
-such as `promise`, `behavior`, `workflow`, `module`, `component`,
-`capability`, `experience`, `quality`, `safety`, or `failure`.
+Intents are product promises and the primary focus points of a Ready bundle.
+User-facing views may call an intent an implementation bundle: the coherent
+bundle of intended behavior, boundaries, proof, standards, services, and
+supporting artifacts that an orchestrator can build toward. Premises, standards,
+services, artifacts, and flags enhance, constrain, prove, or coordinate intents;
+they do not replace intents as the primitives that define the implemented
+solution.
+
+Use top-level `type` to name the commitment shape, such as `promise`,
+`behavior`, `workflow`, `module`, `component`, `capability`, `experience`,
+`quality`, `safety`, or `failure`.
 
 Keep `statement` as the concise title-card promise, then decompose the promise
 into fields that coding agents can build from: `claim_level`, `actor`,
@@ -231,7 +240,7 @@ materially after release.
 
 Completion Proof lives on committed intents because it defines how to know the
 intended product behavior exists. A flag can carry separate closure criteria
-when a temporary package-work record needs to be removed.
+when a temporary bundle-work record needs to be removed.
 
 ## Standards
 
@@ -310,7 +319,7 @@ similar reverse displays from the single authored edge.
 
 `type: manifest` under `class: artifact` means the artifact primitive describes
 a durable product artifact whose purpose is a manifest or index. It is not the
-same as `kind: manifest`, which is structural Ready package metadata.
+same as `kind: manifest`, which is structural Ready bundle metadata.
 
 ## Flags
 

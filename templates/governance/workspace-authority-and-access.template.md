@@ -22,7 +22,7 @@ One-way-door or authority-expanding actions requiring explicit approval:
 
 - destructive file or data changes;
 - credential creation or rotation;
-- package truth, tracked settings, service data, or runtime state changes that
+- bundle truth, tracked settings, service data, or runtime state changes that
   affect other users or agents;
 - repo branch protection, merge, release, or deployment changes;
 - `{{PROJECT_SPECIFIC_ONE_WAY_ACTION}}`

@@ -26,7 +26,7 @@ Load only what the task needs:
 - this charter;
 - relevant `product-process.md` sections;
 - relevant primitives, flags, artifact primitives, and governance records;
-- relevant Ready Standard package resources;
+- relevant Ready Standard bundle resources;
 - relevant project authority policy.
 
 Do not load every process document or artifact into every run.

@@ -1,66 +1,67 @@
 ---
-title: ".ready Package"
-description: "What a .ready package must contain for orchestrators to build from it."
+title: ".ready Bundle"
+description: "What a .ready bundle must contain for orchestrators to build from it."
 ---
 
-# `.ready` Package
+# `.ready` Bundle
 
-A `.ready` package is the committed source package an orchestrator reads to
-build, prove, operate, or govern the intended product. A package should be
+A `.ready` bundle is the committed source bundle an orchestrator reads to
+build, prove, operate, or govern the intended product. A bundle should be
 complete enough that a coding orchestrator can rebuild the product cleanly from
 the `.ready` tree, without depending on unstated tickets, chat memory, or
 current code structure.
 
-Git branches and worktrees carry alternate package versions. A branch should
+Git branches and worktrees carry alternate bundle versions. A branch should
 state one coherent intended product state.
 
-## Package Contents
+## Bundle Contents
 
-A Ready package includes:
+A Ready bundle includes:
 
 - product primitives under `ready/product/`;
 - artifact primitives and payload refs needed to understand, build, prove, or
   review the product;
 - project governance records under `ready/governance/`;
 - tracked settings under `ready/settings/` when tools need them;
-- manifests that describe package structure;
-- the vendored Ready Standard package under `ready/standard/`;
-- flags under `ready/flags/` only while unresolved package decisions, proposed
+- manifests that describe bundle structure;
+- the vendored Ready Standard bundle under `ready/standard/`;
+- flags under `ready/flags/` only while unresolved bundle decisions, proposed
   changes, blockers, discrepancies, readiness gates, or proof gaps keep the
-  package incomplete, disputed, divergent, or not safely claimable.
+  bundle incomplete, disputed, divergent, or not safely claimable.
 
-Governance travels with the package so humans and agents share the same
+Governance travels with the bundle so humans and agents share the same
 authority, access, and process versions. It constrains who may change the Ready
-files and how package work is approved; it is not product runtime
+files and how bundle work is approved; it is not product runtime
 implementation truth.
 
-Flags are not package truth. They are temporary package-work records that
-explain why the package is not yet complete, why a version diverges, or what
-potential package change is being discussed. A completed package has no flags.
+Flags are not bundle truth. They are temporary bundle-work records that
+explain why the bundle is not yet complete, why a version diverges, or what
+potential bundle change is being discussed. A completed bundle has no flags.
 
 ## Completeness
 
-A complete Ready package has:
+A complete Ready bundle has:
 
 - one coherent intended product state;
 - no flags;
 - no status-bearing records in `draft`;
 - no status-bearing records in `blocked`;
-- ready intents with concrete Completion Proof;
+- ready intents, also called implementation bundles in user-facing views, with
+  concrete Completion Proof;
 - standards, services, artifacts, proof corpora, design artifacts,
   service access, setup references, and verification commands represented;
 - sensitive, private, bulky, or external materials represented by safe refs
   owned by artifact or service records;
-- package manifests and governance records sufficient for an orchestrator to
+- bundle manifests and governance records sufficient for an orchestrator to
   know what to read and what authority rules apply.
 
-A package can be useful before it is complete. Incomplete packages can support
+A bundle can be useful before it is complete. Incomplete bundles can support
 discovery, review, planning, simulation, partial implementation, and proof work,
-but a complete product should not be expected from an incomplete package.
+but a complete product should not be expected from an incomplete bundle.
 
 ## Relationship To The Product
 
-The `.ready` tree is the product's source-of-intent package, not the product's
+The `.ready` tree is the product's source-of-intent bundle, not the product's
 runtime artifact store. The tree may exist before any implementation exists. A
 fully implemented product must also be able to build and run without reading the
 `.ready` tree at runtime.
@@ -81,15 +82,15 @@ Settings only configure tools that manage the Ready tree.
 
 ## Orchestrator Rules
 
-Before implementation, an orchestrator should inspect package completeness.
+Before implementation, an orchestrator should inspect bundle completeness.
 
 - If any status-bearing record is `draft`, warn that the build is from an
-  incomplete package and should not be expected to produce a complete product.
+  incomplete bundle and should not be expected to produce a complete product.
 - If any status-bearing record is `blocked`, do not
   implement unless the user or governing process gives explicit override
   instructions.
-- If flags exist, treat the package as incomplete or intentionally divergent.
-  Flags can hold proposed package-change discussion, version-divergence logic,
+- If flags exist, treat the bundle as incomplete or intentionally divergent.
+  Flags can hold proposed bundle-change discussion, version-divergence logic,
   blockers, decisions, discrepancies, readiness gates, or proof gaps, not edit
   instructions.
 - If an override is granted, preserve the override, the unresolved gaps, and the

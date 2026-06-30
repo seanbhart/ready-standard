@@ -1,7 +1,7 @@
 ---
 name: ready-standard-update
 version: 0.1.0
-description: Sync the latest Ready Standard package into a product Ready tree and migrate the tree to that version.
+description: Sync the latest Ready Standard bundle into a product Ready tree and migrate the tree to that version.
 ---
 
 # Ready Standard Update
@@ -14,11 +14,11 @@ tree to the latest Ready Standard or to a named Ready Standard version.
 Before changing a product repo, read that project's authority document and
 confirm the agent is allowed to edit the Ready tree. If the standard source repo
 does not have an authority document, say so and keep source-repo edits limited
-to the explicitly requested standard package or docs work.
+to the explicitly requested standard bundle or docs work.
 
 ## Inputs
 
-- Source standard repo or released standard package.
+- Source standard repo or released standard bundle.
 - Target product repo with `ready/manifest.yaml`.
 - Target project authority and governance files.
 
@@ -27,15 +27,15 @@ to the explicitly requested standard package or docs work.
 1. Read the source standard `manifest.yaml` and `skills/manifest.yaml`.
 2. Confirm the source standard version is newer than the target
    `ready_standard.version` or the target `ready/standard/manifest.yaml`
-   version. If the target is already current, still verify the local package
-   matches the source package.
-3. Sync the portable package into `ready/standard/`.
+   version. If the target is already current, still verify the local bundle
+   matches the source bundle.
+3. Sync the portable bundle into `ready/standard/`.
    - Include `README.md`, `manifest.yaml`, `vocabulary.yaml`, `skills/`, and
      `templates/`.
    - Exclude `docs/`, `.git/`, `.gitignore`, local cache, raw logs, transcripts,
-     private samples, and secrets. The vendored package is the local runtime
+     private samples, and secrets. The vendored bundle is the local runtime
      contract; `docs_source` points to public reference docs.
-4. Update `ready/manifest.yaml` so `ready_standard` points at the local package:
+4. Update `ready/manifest.yaml` so `ready_standard` points at the local bundle:
 
    ```yaml
    ready_standard:
@@ -47,7 +47,7 @@ to the explicitly requested standard package or docs work.
    ```
 
 5. Update product manifests that carry standard metadata to the same version and
-   local package path.
+   local bundle path.
 6. Read the new local `ready/standard/skills/ready-skill.md` and modules needed
    for the migration.
 7. Migrate product records to the new standard. For the current standard:
@@ -68,9 +68,9 @@ to the explicitly requested standard package or docs work.
      legacy answer and owner-decision fields.
    - Intent `completion_proof` is the durable Definition of Done. It must
      contain concrete observable proof, not a one-word status.
-   - Flag `completion_proof` is closure criteria for a temporary package-work
+   - Flag `completion_proof` is closure criteria for a temporary bundle-work
      record, not the canonical product DoD.
-   - Draft records make a package incomplete. Orchestrators warn
+   - Draft records make a bundle incomplete. Orchestrators warn
      before implementation and do not imply a complete product from the build.
    - Blocked records stop implementation unless explicit override instructions
      are present.
@@ -104,13 +104,13 @@ to the explicitly requested standard package or docs work.
    - every flag has top-level `class`, `type`, `compiler_role`, `claimable`,
      and non-empty concrete `completion_proof`;
    - every claimable seed or change flag has the required handoff fields;
-   - the vendored package differs from the source package only by intentionally
+   - the vendored bundle differs from the source bundle only by intentionally
      excluded source-repo files.
-10. Report the source version, target package path, migration changes, and
+10. Report the source version, target bundle path, migration changes, and
     verification commands.
 
 ## Agent Rule
 
 For ordinary product-tree edits, agents read the target repo's local
-`ready/standard/` package. They fetch from the source standard repo only when
+`ready/standard/` bundle. They fetch from the source standard repo only when
 the task explicitly asks for a latest-version or named-version standard update.

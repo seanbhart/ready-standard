@@ -68,12 +68,12 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Reciprocal artifact refs that only mirror the inverse display for the same
   assertion should be rejected or warned on as duplicate relationship state.
 - Generated indexes do not carry independent primitive truth.
-- A complete package has no flags and no status-bearing records in `draft` or
+- A complete bundle has no flags and no status-bearing records in `draft` or
   `blocked`.
-- Orchestrators warn before implementation when any status-bearing package
+- Orchestrators warn before implementation when any status-bearing bundle
   record is
   `draft`.
-- Orchestrators do not implement packages with blockers unless explicit override
+- Orchestrators do not implement bundles with blockers unless explicit override
   instructions are present.
 - Records with non-empty blocker lists, such as `blocked_by` or
   `fields.blockers`, use `status: blocked` and require explicit override before
@@ -107,16 +107,16 @@ A product-tree importer should fail loudly when source truth is ambiguous.
 - Flags with non-empty `blocked_by` use `status: blocked` and remain
   non-claimable.
 - Blocker flags use `status: blocked` and remain non-claimable.
-- Overrides for blocked packages preserve the override instruction, unresolved
+- Overrides for blocked bundles preserve the override instruction, unresolved
   blockers, and the limits of resulting build evidence.
 - Primitive files do not carry implementation lifecycle state.
 - Flag files do not become coding claims unless their gate fields pass.
 - Project-specific governance docs are stored under `ready/governance/`, not
   artifact directories.
 - Project-agnostic Ready resources and templates are referenced from the local
-  `ready/standard/` package or the Ready Standard source package, not artifact
+  `ready/standard/` bundle or the Ready Standard source bundle, not artifact
   directories.
-- Vendored standard packages exclude Mintlify `docs/`, Git metadata, local
+- Vendored standard bundles exclude Mintlify `docs/`, Git metadata, local
   cache, raw logs, transcripts, private samples, and secrets.
 - Artifact descriptor ids are unique within their artifact family and globally
   unique when a project uses global id lookup.
@@ -136,7 +136,7 @@ A product-tree importer should fail loudly when source truth is ambiguous.
   `fields.replay`, `fields.acceptance_contract`, and `fields.limitations`.
 - Ready proof corpus descriptors do not use `fields.lifecycle_state: draft`;
   draft proof corpora use top-level `status: draft`.
-- Governance documents and vendored Ready Standard package resources are not
+- Governance documents and vendored Ready Standard bundle resources are not
   artifact descriptors.
 - Sensitive content, source excerpts, diffs, raw logs, and secrets are absent.
 - Large artifacts use storage paths or external refs instead of inline payloads.

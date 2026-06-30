@@ -8,7 +8,7 @@ handed to coding agents for this project.
 ## Source Of Truth
 
 - Durable product truth lives in `ready/product/`.
-- Ready primitives are typed, addressable durable product-package inputs.
+- Ready primitives are typed, addressable durable product-bundle inputs.
   Flags, governance records, settings, and manifests use their own Ready kinds.
 - Generated views compile from primitives, flags, artifact primitives,
   governance records, settings, and manifests.

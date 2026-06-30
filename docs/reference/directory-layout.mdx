@@ -6,7 +6,7 @@ description: "Recommended filetree layout for a Ready Product Tree."
 # Directory Layout
 
 A product tree should keep records fragmented by authority and type. The root
-manifest declares product, flags, governance, settings, and standard package
+manifest declares product, flags, governance, settings, and standard bundle
 locations. The standard does not define additional product-state directories.
 
 ```text
@@ -95,7 +95,7 @@ ready/product/
         am-001-example.ready.yml
 ```
 
-`ready/flags/` holds temporary package-work records:
+`ready/flags/` holds temporary bundle-work records:
 
 ```text
 ready/flags/
@@ -111,10 +111,10 @@ ready/flags/
       xp-001-example.ready.yml
 ```
 
-Flags are for unresolved Ready-package decisions, proposed changes,
+Flags are for unresolved Ready-bundle decisions, proposed changes,
 version-divergence notes, blockers, discrepancies, readiness gates, and proof
-gaps that prevent the package from being complete, accepted, or safely claimed.
-Durable product results belong back in `ready/product/`. A completed package has
+gaps that prevent the bundle from being complete, accepted, or safely claimed.
+Durable product results belong back in `ready/product/`. A completed bundle has
 no flags. Substantial hypothetical concepts usually belong in alternate Ready
 branches or worktrees until accepted into the current branch's intended product
 state.
@@ -133,13 +133,13 @@ not infer product truth, workflow state, or settings from directory names when
 the manifest declares explicit paths.
 
 Project-specific governance records belong under `ready/governance/`.
-They travel with the Ready package so authority and process versions are shared,
-but they are package-management context rather than product runtime
+They travel with the Ready bundle so authority and process versions are shared,
+but they are bundle-management context rather than product runtime
 implementation truth.
-Reusable Ready resources, task-skill packages, and templates belong in the Ready
-Standard package. Projects that expect agents to edit the tree should vendor the
-portable package at `ready/standard/` and point `ready/manifest.yaml` at it.
-That vendored package contains `README.md`, `manifest.yaml`,
+Reusable Ready resources, task-skill bundles, and templates belong in the Ready
+Standard bundle. Projects that expect agents to edit the tree should vendor the
+portable bundle at `ready/standard/` and point `ready/manifest.yaml` at it.
+That vendored bundle contains `README.md`, `manifest.yaml`,
 `vocabulary.yaml`, `skills/`, and `templates/`; it excludes Mintlify `docs/`
 and Git metadata.
 

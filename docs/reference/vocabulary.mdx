@@ -6,7 +6,7 @@ description: "Where valid Ready kinds, classes, types, and relationship phrases 
 # Ready Vocabulary
 
 The canonical vocabulary source is [`vocabulary.yaml`](../../vocabulary.yaml).
-It is part of the portable `ready/standard/` package and is the source of truth
+It is part of the portable `ready/standard/` bundle and is the source of truth
 for tools, validators, app views, and agents.
 
 Project teams may add local display labels, but stored Ready source records
@@ -32,15 +32,15 @@ and `blocked`.
 - structural relationship roles;
 - semantic relationship display phrases in both directions.
 
-Primitive vocabulary defines durable package inputs: premises, intents,
-standards, services, and artifacts. Flag vocabulary names temporary package-work
+Primitive vocabulary defines durable bundle inputs: premises, intents,
+standards, services, and artifacts. Flag vocabulary names temporary bundle-work
 records: unresolved decisions, proposed changes, blockers, discrepancies,
 readiness gates, and proof gaps. It does not create stored implementation
 instructions; apps and agents derive reader phrases and coding handoffs from the
 resolved intended product state.
 
 Flags omit top-level `status` unless they are blocked. The temporary
-package-work state is implied by `kind: flag`; do not write `status: draft` or
+bundle-work state is implied by `kind: flag`; do not write `status: draft` or
 `status: ready` on flags.
 
 Any record with a non-empty blocker list, such as `blocked_by` or

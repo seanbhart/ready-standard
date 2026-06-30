@@ -2,7 +2,7 @@
 
 Use these templates to start a Ready-based project. Copy them into the target
 project, replace placeholders, and then treat the copied files as that project's
-own Ready package records. Product primitives can become product truth after
+own Ready bundle records. Product primitives can become product truth after
 review; governance, settings, manifests, and flags keep their own record roles.
 
 Template groups:

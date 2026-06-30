@@ -17,7 +17,7 @@
         "group": "Standard",
         "pages": [
           "standard/product-tree",
-          "standard/ready-package",
+          "standard/ready-bundle",
           "standard/primitive-records",
           "standard/flags-and-claims",
           "standard/governance-documents",

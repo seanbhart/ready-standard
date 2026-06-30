@@ -158,5 +158,5 @@ rules:
   - "A descriptor may list multiple files only when those files are interchangeable versions or representations of the same purpose."
   - "Every referenced payload file that is not itself a .ready.yml source record and supports product logic, flags, proof, generated views, or handoff should be represented by a descriptor."
   - "Large, binary, private, or generated payload files are attachments or safe refs, not primitive records themselves."
-  - "Governance documents and vendored Ready Standard package resources do not live under artifacts and do not require artifact descriptors."
+  - "Governance documents and vendored Ready Standard bundle resources do not live under artifacts and do not require artifact descriptors."
   - "Artifact type manifest describes a durable artifact manifest; kind: manifest describes structural Ready metadata."

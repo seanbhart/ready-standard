@@ -22,9 +22,9 @@ Use this module before any seed or change flag is made claimable.
 - Use `status: blocked` for well-specified flags when `blocked_by` prevents
   coding claims, and for records with non-empty blocker lists.
 - Require concrete top-level Completion Proof before review and closure.
-- Warn before implementation when any status-bearing package record is still
+- Warn before implementation when any status-bearing bundle record is still
   `draft`.
-- Do not hand off implementation for a package with blockers unless explicit
+- Do not hand off implementation for a bundle with blockers unless explicit
   override instructions are present.
 
 ## Target-State Handoff Checklist
@@ -39,7 +39,7 @@ A coding agent should receive:
 - user-facing and system-facing acceptance criteria;
 - required services with status, blockers, access, proof, and instructions;
 - setup and verification commands;
-- any draft-package warning or blocker override instruction, including the
+- any draft-bundle warning or blocker override instruction, including the
   unresolved blockers and limits of resulting build evidence;
 - required artifacts and sample ids;
 - design, snippet, or component references when applicable;
@@ -61,7 +61,7 @@ A coding agent should receive:
   the resolved intended state.
 - Do not make a flag claimable because the prose sounds clear while access,
   samples, designs, or proof are missing.
-- Do not implement a blocked package by default. Blockers require resolution or
+- Do not implement a blocked bundle by default. Blockers require resolution or
   explicit override instructions, and the handoff must preserve unresolved
   blockers and evidence limits.
 - Do not treat one-word statuses such as `ready`, `done`, or `complete` as

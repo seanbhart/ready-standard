@@ -31,7 +31,7 @@ fields:
       advantages: []
       risks: []
       requires: []
-      package_truth_if_accepted:
+      bundle_truth_if_accepted:
         affected_records: []
         intended_state: []
         proof_expectations: []

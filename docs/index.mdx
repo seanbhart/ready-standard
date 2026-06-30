@@ -1,13 +1,13 @@
 ---
 title: "Ready"
-description: "The Ready Standard for .ready packages and rebuildable product truth."
+description: "The Ready Standard for .ready bundles and rebuildable product truth."
 ---
 
 # Ready
 
-The Ready Standard defines `.ready` packages: committed product source trees an
+The Ready Standard defines `.ready` bundles: committed product source trees an
 orchestrator reads to build, prove, operate, or govern the intended product.
-The `.ready` format is the durable package and source-record identity; this
+The `.ready` format is the durable bundle and source-record identity; this
 version uses `.ready.yml` as the YAML serialization for source records.
 
 A `.ready` branch represents one coherent intended product state. Git history
@@ -18,21 +18,27 @@ coordination gates; they are not change instructions.
 
 `.ready` records use object families:
 
-- `primitive` records are durable package inputs: premises, intents, standards,
+- `primitive` records are durable bundle inputs: premises, intents, standards,
   services, and artifact descriptors.
-- `flag` records are temporary package-work records for unresolved
-  Ready-package decisions, proposed changes, discrepancies, readiness gates, and
+- `flag` records are temporary bundle-work records for unresolved
+  Ready-bundle decisions, proposed changes, discrepancies, readiness gates, and
   proof gaps.
 - `governance` records constrain authority, process, policy, and agent
   behavior.
 - `setting` records hold git-tracked workspace or app configuration.
-- `manifest` records describe package structure.
+- `manifest` records describe bundle structure.
+
+Intents are the focus points of a Ready bundle. User-facing apps may call an
+intent an implementation bundle: the intended behavior, boundaries, proof,
+standards, services, and supporting artifacts that define the solution to build.
+Other primitives enhance intents by explaining why they matter, constraining
+them, proving them, or supplying required dependencies and evidence.
 
 ## Why this exists
 
 Product direction often drifts because requirements, decisions, tickets,
 mockups, chat, implementation proof, and code live in separate systems. A Ready
-package keeps the durable part small, reviewable, and portable while still
+bundle keeps the durable part small, reviewable, and portable while still
 letting apps render richer PM, developer, designer, and customer views.
 
 ## Minimum Conforming Tree
@@ -63,7 +69,7 @@ ready/
 The directory names can vary by product, but the standard requires stable ids,
 typed records, directed refs where relationships matter, explicit compiler
 roles, and explicit proof gates before coding work can claim completeness.
-Intended product truth lives in `ready/product/`. Temporary package-work records
+Intended product truth lives in `ready/product/`. Temporary bundle-work records
 for proposed changes, discrepancies, blockers, decisions, readiness gates, and
 proof gaps live in `ready/flags/`.
 Git-tracked workspace/app settings may live under `ready/settings/`, but runtime
@@ -71,8 +77,8 @@ artifacts, build outputs, uploaded product data, and product-owned manifests do
 not. Ready-carried artifacts may seed the product, but implementation copies
 belong in product-owned paths or storage.
 
-Reusable Ready skills and templates live in the portable standard package. A
-project that expects agents to edit the tree should vendor that package at
+Reusable Ready skills and templates live in the portable standard bundle. A
+project that expects agents to edit the tree should vendor that bundle at
 `ready/standard/` so agent behavior is pinned and reviewable. The `docs/`
 directory in this source repo is Mintlify documentation source; product repos
 do not vendor it.

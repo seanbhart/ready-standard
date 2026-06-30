@@ -71,7 +71,7 @@ Each reviewer returns:
 - safe agent-gatherable resources;
 - affected product primitives, artifact primitives, or flags;
 - readiness recommendation: `ready`, `draft`, or `blocked`;
-- cut recommendation when the record should be removed from the current package.
+- cut recommendation when the record should be removed from the current bundle.
 
 ## Completion Check
 

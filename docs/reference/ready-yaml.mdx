@@ -11,7 +11,7 @@ typed source records from navigation Markdown, generated views, manifests, raw
 payloads, and generic project files.
 
 Use `.ready.yml` for source records in this version. Treat `.ready` as the
-durable package and record format identity, not as a separate source-file
+durable bundle and record format identity, not as a separate source-file
 extension in this version. Future serializations may use another extension, but
 the current source-record extension is `.ready.yml`.
 
@@ -49,8 +49,8 @@ well-understood flag class, such as `XD-*` for decisions, `XB-*` for blockers,
 
 ## Primitive Records
 
-Primitive records are durable Ready package inputs required to build, prove,
-operate, or govern the intended product package. They are the source of intended
+Primitive records are durable Ready bundle inputs required to build, prove,
+operate, or govern the intended product bundle. They are the source of intended
 product truth, implementation constraints, dependencies, proof inputs, or
 supporting product artifacts. Most primitives live under the configured
 `product_directory`, usually `ready/product/`.
@@ -139,7 +139,7 @@ top-level `status`.
 ## Root Tree Manifest
 
 The root `ready/manifest.yaml` controls product, flags, governance, settings,
-and local standard package locations. Use explicit manifest fields, not
+and local standard bundle locations. Use explicit manifest fields, not
 directory sort order, to describe tree meaning.
 
 Manifest paths are repo-root relative unless a manifest declares a different
@@ -160,7 +160,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.37"
+  version: "0.3.38"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -175,7 +175,7 @@ uploaded product data, generated product manifests, runtime cache, or other
 implementation artifacts that belong to the product.
 
 Product primitives live under the configured `product_directory`. Flags and
-other temporary package-work records live under the configured
+other temporary bundle-work records live under the configured
 `flags_directory`.
 Git commits, branches, and worktrees carry product evolution and alternate
 concepts; the standard does not define additional product-state overlays.
@@ -241,9 +241,9 @@ the premise.
 
 ## Flags
 
-Flags are not primitives. They are temporary package-work records for unresolved
-Ready-package decisions, proposed changes, version divergence, blockers,
-discrepancies, readiness gates, and proof gaps. A complete, stable Ready package
+Flags are not primitives. They are temporary bundle-work records for unresolved
+Ready-bundle decisions, proposed changes, version divergence, blockers,
+discrepancies, readiness gates, and proof gaps. A complete, stable Ready bundle
 has no flags.
 
 ```yaml
@@ -261,7 +261,7 @@ completion_proof:
   - The documented verification command passes and the evidence artifact is linked.
 fields:
   objective: What should be resolved or proven.
-  scope: What package truth this flag gates.
+  scope: What bundle truth this flag gates.
   non_scope: What is excluded from the claim.
   dependencies: []
   required_standards: []
@@ -376,7 +376,7 @@ owner_notes: []
 
 Every payload file that is not itself a `.ready.yml` source record and supports
 product logic, flags, proof, generated views, or handoff should have an artifact
-primitive. Governance documents and vendored Ready Standard package resources
+primitive. Governance documents and vendored Ready Standard bundle resources
 keep their own record kinds and do not need artifact descriptors. Reference the
 artifact id from primitives and flags when the reference is meant to carry
 semantic meaning. Direct file/path links are still useful for source access, but
@@ -413,13 +413,13 @@ Artifact-tree manifests may declare `artifact_type_directory_base:
 
 `type: manifest` under `class: artifact` means the artifact primitive describes
 a durable product artifact whose purpose is a manifest or index. This is
-different from `kind: manifest`, which is structural Ready package metadata.
+different from `kind: manifest`, which is structural Ready bundle metadata.
 
 ## Governance, Settings, And Manifests
 
 Governance records are not primitives. They control who may change the Ready
-package, how product truth is approved, and how agents should behave; they are
-package management records, not build inputs for the product runtime. Use
+bundle, how product truth is approved, and how agents should behave; they are
+bundle management records, not build inputs for the product runtime. Use
 `kind: governance` for structured governance source records.
 
 Settings records are not primitives. Use `kind: setting` for git-tracked
@@ -428,13 +428,13 @@ store raw secrets, runtime cache, product truth, runtime artifacts, generated
 product manifests, build outputs, or uploaded product data in settings.
 
 Manifest records are structural metadata. Use `kind: manifest` for product tree
-manifests, package manifests, artifact-tree manifests, governance manifests, and
+manifests, bundle manifests, artifact-tree manifests, governance manifests, and
 settings manifests.
 
 Manifest schema names indicate scope, but validators should only accept schemas
 listed in `vocabulary.yaml`. Currently defined families include the generic
 `ready/manifest/v1` fallback; tree-layout schemas such as
 `ready/product-tree-root/v1`, `ready/product-tree-product/v1`,
-`ready/artifact-tree/v1`, and `ready/governance-tree/v1`; package schemas such as
-`ready/skill-package/v1`; and source-resource indexes such as
+`ready/artifact-tree/v1`, and `ready/governance-tree/v1`; compatibility schema
+names such as `ready/skill-package/v1`; and source-resource indexes such as
 `ready/standard-resources/v1`.

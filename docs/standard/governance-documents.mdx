@@ -5,9 +5,9 @@ description: "Where project governance, reusable Ready resources, templates, and
 
 # Governance And Standard Resources
 
-Governance documents are governance records: package-management records that
+Governance documents are governance records: bundle-management records that
 constrain authority, process, and agent behavior. They are not primitives or
-artifact primitives by default. Ready Standard resources are reusable package
+artifact primitives by default. Ready Standard resources are reusable bundle
 resources; their own manifests, templates, and skills keep their native record
 kind rather than automatically becoming governance records.
 
@@ -19,14 +19,14 @@ work is allowed to happen for that project:
 - Product process docs.
 - Workspace authority and access policies.
 
-These files travel with the Ready package so every contributor and agent uses
-the same authority and process versions. They are package-management context,
-not product runtime implementation truth, but they can stop or constrain package
+These files travel with the Ready bundle so every contributor and agent uses
+the same authority and process versions. They are bundle-management context,
+not product runtime implementation truth, but they can stop or constrain bundle
 edits and implementation handoffs.
 
-Use the Ready Standard package for project-agnostic resources:
+Use the Ready Standard bundle for project-agnostic resources:
 
-- Ready Skill packages.
+- Ready Skill bundles.
 - Product task-skill modules.
 - Governance templates.
 - Manifest templates.
@@ -34,13 +34,13 @@ Use the Ready Standard package for project-agnostic resources:
 
 Product repos that expect agents to edit a Ready tree should keep a pinned copy
 of those resources at `ready/standard/`. That local copy is the runtime standard
-package for agents. The source repo's `docs/` directory is Mintlify
-documentation source and is not part of the product-local package.
+bundle for agents. The source repo's `docs/` directory is Mintlify
+documentation source and is not part of the product-local bundle.
 
 Use `ready/product/artifacts/` for durable product artifact primitives and
 attached payload material used by product logic, proof, generated views, or
 handoff. A flag may own workflow-only artifacts under `ready/flags/` when they
-only support temporary package-work:
+only support temporary bundle-work:
 
 - Proof corpora.
 - Code snippets.
@@ -56,7 +56,7 @@ must follow, or what project-specific standard wins during conflict, it belongs
 in governance.
 
 If a file defines reusable Ready procedure or a starter template for other
-projects, it belongs in the standard package, not in a project artifact tree.
+projects, it belongs in the standard bundle, not in a project artifact tree.
 
 If a file helps explain, test, prove, or illustrate product logic, it belongs in
 artifacts as an artifact primitive or as a payload referenced by one.
@@ -70,6 +70,6 @@ directory for that file.
 ## Runtime use
 
 Agent context manifests should record the governance documents and standard
-package resources loaded for each run, including versions, source refs, and
+bundle resources loaded for each run, including versions, source refs, and
 hashes. This keeps agent behavior auditable without treating private chats,
 local scratchpads, or generated coding handoffs as governance.

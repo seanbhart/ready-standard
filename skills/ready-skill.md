@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.37
+version: 0.3.38
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -30,12 +30,12 @@ tree needs focused work:
   subagent review from psychological, physical, logical, evidence, design, and
   access perspectives.
 - [modules/standard-update.md](modules/standard-update.md) -
-  sync a newer Ready Standard package into a product repo and migrate the tree.
+  sync a newer Ready Standard bundle into a product repo and migrate the tree.
 
-This skill package is the portable agent procedure. Product repos that need
-deterministic agent edits should keep the full portable standard package at
+This skill bundle is the portable agent procedure. Product repos that need
+deterministic agent edits should keep the full portable standard bundle at
 `ready/standard/`; agents read `ready/standard/manifest.yaml` and
-`ready/standard/vocabulary.yaml` for authoritative package and vocabulary
+`ready/standard/vocabulary.yaml` for authoritative bundle and vocabulary
 definitions. Pulling from the source standard repo happens only for explicit
 standard-update work.
 
@@ -86,7 +86,7 @@ ready/
 ```
 
 The root `manifest.yaml` must declare product, flags, governance, settings, and
-standard package locations:
+standard bundle locations:
 
 ```yaml
 schema: ready/product-tree-root/v1
@@ -99,7 +99,7 @@ flags_directory: ready/flags
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.37"
+  version: "0.3.38"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
@@ -115,16 +115,16 @@ product-owned assets in `ready/settings/`.
 Use `ready/product/` for canonical intended product truth for this Ready tree
 version, including premises, intents, standards, services, product artifacts,
 and reusable proof material that may not be fully implemented yet. Use
-`ready/flags/` for temporary package-work records: unresolved package decisions,
+`ready/flags/` for temporary bundle-work records: unresolved bundle decisions,
 proposed changes, blockers, discrepancies, readiness gates, and proof gaps. File
 location is interpreted through the manifest-declared `product_directory` and
 `flags_directory`; tools should not infer ownership from undeclared directory
 names.
 
-A complete Ready package has no flags and no status-bearing records in `draft`
-or `blocked`. An orchestrator may try to build an incomplete package, but it
+A complete Ready bundle has no flags and no status-bearing records in `draft`
+or `blocked`. An orchestrator may try to build an incomplete bundle, but it
 must warn first when records are still draft and a complete product should not
-be expected. It must not implement a package with blockers unless the user or
+be expected. It must not implement a bundle with blockers unless the user or
 governing process gives explicit override instructions.
 
 Primitive source records are `.ready.yml` files with:
@@ -327,22 +327,23 @@ Product version:
 ## Ready Object Model
 
 Create only the primitives needed to make the intended product legible. A Ready
-primitive is a typed, addressable, durable package input required to build,
-prove, operate, or govern the intended product package.
+primitive is a typed, addressable, durable bundle input required to build,
+prove, operate, or govern the intended product bundle.
 
 Use `kind` to distinguish Ready object families:
 
-- `primitive`: durable product package input.
-- `flag`: temporary package-work record for unresolved Ready-package decisions,
+- `primitive`: durable product bundle input.
+- `flag`: temporary bundle-work record for unresolved Ready-bundle decisions,
   proposed changes, blockers, discrepancies, readiness gates, and proof gaps.
 - `governance`: authority, process, policy, and agent guidance.
 - `setting`: git-tracked workspace or app configuration.
-- `manifest`: structural package metadata.
+- `manifest`: structural bundle metadata.
 
 Primitive records use these classes:
 
 - `premise`: why the product or feature should exist.
-- `intent`: what the product promises to do.
+- `intent`: what the product promises to do. User-facing views may call an
+  intent an implementation bundle.
 - `standard`: how the product must be built, measured, judged, or maintained.
 - `service`: what the product depends on to build, prove, run, or monitor.
 - `artifact`: durable supporting content. The artifact descriptor is the
@@ -350,6 +351,11 @@ Primitive records use these classes:
 
 Use top-level `type` for the subtype valid under that class. Do not write
 `primitive_class`, `fields.premise_type`, or `fields.intent_type`.
+
+Intents are the Ready bundle focus points. Premises, standards, services,
+artifacts, and flags enhance, constrain, prove, or coordinate intents, but the
+Ready Standard is about implementing solutions and intents are the primitives
+that define those solutions.
 
 ### Product Primitives
 
@@ -432,9 +438,9 @@ Decision flags:
 
 Flags:
 
-- Capture unresolved Ready-package decisions, proposed changes, version
+- Capture unresolved Ready-bundle decisions, proposed changes, version
   divergence, blockers, drift, proof gaps, claim coordination, and closure
-  criteria for package truth that is unsatisfied, unproven, or not yet accepted.
+  criteria for bundle truth that is unsatisfied, unproven, or not yet accepted.
 - Keep coding readiness out of primitive bodies.
 - A flag is not a primitive, not a ticket, and not a coding delta.
 - Seed and change flags become claimable only after blockers are absent,
@@ -442,7 +448,7 @@ Flags:
   allow it. Flags omit `status` unless they are blocked.
 - Intent Completion Proof is the durable Definition of Done for rebuilding the
   product. A flag's `completion_proof` is only the closure criterion for that
-  temporary package-work record.
+  temporary bundle-work record.
 - Apps may derive unstored discrepancies by comparing Ready truth to code,
   evidence, generated views, assessments, or prior Ready commits. Store a flag
   when the discrepancy needs durable attention, blocker tracking, claim
@@ -521,7 +527,7 @@ Tree directory rules:
 - Use `settings_directory` for `ready/settings/`.
 - Use `governance_directory` for `ready/governance/`.
 - Keep canonical intended product truth in `ready/product/`.
-- Keep temporary package-work records for proposed changes, discrepancies,
+- Keep temporary bundle-work records for proposed changes, discrepancies,
   blockers, decisions, readiness gates, and proof gaps in `ready/flags/`.
 - Use Git commits, branches, and worktrees for product history, alternatives,
   and substantial hypothetical concepts.
@@ -646,7 +652,7 @@ Lifecycle rules:
 - Before handoff, validate stable ids, duplicate ids, ref targets, stored ref
   roles, status values, required fields, and manifest-declared directories.
 - Warn before implementation when records are still `draft`.
-- Do not implement a package with `blocked` records
+- Do not implement a bundle with `blocked` records
   unless explicit override instructions are present.
 
 Artifact rules:
@@ -706,8 +712,8 @@ Good cuts are explicit. Say what was removed and why.
 A Ready tree is usable when:
 
 - The intended product version is coherent and bounded.
-- Package completeness is known: complete packages have no flags and no
-  status-bearing records in `draft` or `blocked`; incomplete packages are labeled
+- Bundle completeness is known: complete bundles have no flags and no
+  status-bearing records in `draft` or `blocked`; incomplete bundles are labeled
   before implementation.
 - Ready intents trace to premises.
 - Required standards and services are represented.
