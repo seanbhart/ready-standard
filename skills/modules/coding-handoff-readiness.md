@@ -48,7 +48,9 @@ A coding agent should receive:
 - relevant standards;
 - privacy, security, and authority limits;
 - Completion Proof;
-- how to report blockers and attach evidence.
+- how to report blockers and attach evidence;
+- where low-noise Ready id traceability should be preserved in code, tests,
+  fixtures, or proof harnesses when there are obvious durable seams.
 
 ## What Not To Do
 
@@ -67,6 +69,8 @@ A coding agent should receive:
 - Do not treat one-word statuses such as `ready`, `done`, or `complete` as
   Completion Proof.
 - Do not close flags based on coding-agent self-report.
+- Do not tag every function or add noisy inline comments. Ready id references in
+  code support auditability; they do not prove completion.
 
 ## Completion Check
 

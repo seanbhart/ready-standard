@@ -85,6 +85,22 @@ not a delta or edit instructions. Intent Completion Proof is the durable
 Definition of Done; flag Completion Proof is only closure criteria for the
 temporary flag.
 
+## Code Traceability
+
+Coding agents should preserve Ready id references at durable implementation
+seams when the mapping is evident and low-noise: module or file headers, route
+or command entrypoints, schema or migration sections, test files, fixture
+consumers, proof harnesses, and implementation evidence. Code comments,
+filenames, commits, and evidence support auditability; they do not become
+product truth and do not prove completion.
+
+Avoid tagging every function or adding noisy inline comments. When code is
+moved, split, deleted, or replaced, update or remove stale Ready id references
+in the same change. If the mapping is uncertain, leave code untagged and create
+or update a discrepancy, proof, or readiness flag when useful. Product or
+maintenance agents may add trace-only references as a reversible maintenance
+action when they do not change runtime behavior.
+
 ## Review
 
 Product agents close flags only after their recorded closure criteria are

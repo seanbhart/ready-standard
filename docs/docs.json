@@ -20,6 +20,7 @@
           "standard/ready-bundle",
           "standard/primitive-records",
           "standard/flags-and-claims",
+          "standard/code-traceability",
           "standard/governance-documents",
           "standard/git-and-local-cache"
         ]

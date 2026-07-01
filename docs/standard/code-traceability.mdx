@@ -1,0 +1,58 @@
+---
+title: "Code Traceability"
+description: "Lightweight expectations for preserving useful links from implementation code back to Ready records."
+---
+
+# Code Traceability
+
+Ready product records remain the source of intended product truth. Code
+comments, test comments, filenames, commits, and implementation evidence are
+supporting evidence. They can make implementation easier to audit, but they do
+not replace Ready records and do not prove completion.
+
+## Lightweight References
+
+When coding agents implement or materially change code that fulfills a Ready
+intent or implementation bundle, they should preserve traceability back to the
+relevant Ready ids where the reference is natural and low-noise.
+
+Durable seams are the best place for references:
+
+- module or file headers;
+- route, command, job, or worker entrypoints;
+- schema, model, migration, or generated-view sections;
+- test files and named test groups;
+- fixture consumers and proof harnesses;
+- evidence artifacts or proof reports returned after implementation.
+
+Use the smallest number of references that make the code discoverable and
+auditable. Prefer a file-level or entrypoint-level reference over tagging every
+function. Avoid noisy inline comments, broad boilerplate, or references that
+will drift faster than the code they describe.
+
+## Maintenance
+
+When code is moved, split, deleted, or replaced, agents should update or remove
+stale Ready id references as part of the same change. A stale trace is worse
+than no trace because it gives future agents false confidence.
+
+If an agent cannot confidently map code to a Ready record, it should not invent
+a mapping. Leave the code untagged. When useful, create or update a
+discrepancy, proof, or readiness flag that explains the missing or uncertain
+mapping.
+
+Ready id references in code do not prove completion. Completion still depends
+on the Ready record's Completion Proof and the project's verification process.
+
+## Maintenance Agents
+
+Product or maintenance agents may add trace-only Ready id references to code as
+a reversible maintenance action when the mapping is evident from existing code,
+tests, artifacts, comments, or Ready records. They should not change runtime
+behavior under the guise of traceability.
+
+Projects may add stricter controls, scanners, approved mapping manifests,
+detail-health views, or fallback tagging authority in local governance or
+consuming apps. The base Ready Standard only establishes the portable
+expectation: preserve useful traceability where it is durable, evident, and
+low-noise.

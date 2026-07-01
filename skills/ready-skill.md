@@ -1,6 +1,6 @@
 ---
 name: ready
-version: 0.3.40
+version: 0.3.41
 description: Lead creation of a Ready product tree from docs, code, or discovery, then make it complete enough for coding agents to build without avoidable blockers.
 ---
 
@@ -108,11 +108,11 @@ flag_directories:
 governance_directory: ready/governance
 settings_directory: ready/settings
 ready_standard:
-  version: "0.3.40"
+  version: "0.3.41"
   repository: "https://github.com/seanbhart/ready-standard"
   package_path: "ready/standard"
   package_manifest: "ready/standard/manifest.yaml"
-  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.40/docs"
+  docs_source: "https://github.com/seanbhart/ready-standard/tree/0.3.41/docs"
 ```
 
 Use `ready/settings/` for git-tracked workspace and app settings that help tools
@@ -761,6 +761,32 @@ Artifact rules:
   transcripts, provider secrets, raw customer data, or diffs.
 - Link artifacts to primitives, services, flags, or proof by
   descriptor id. Use raw paths only for direct source/file access.
+
+Code traceability rules:
+
+- Ready product records remain the source of intended product truth. Code
+  comments, test comments, filenames, commits, and implementation evidence are
+  supporting evidence, not product truth.
+- When implementing or materially changing code that fulfills a Ready intent,
+  preserve Ready id references where they are natural and low-noise.
+- Prefer durable seams: module or file headers; route, command, job, or worker
+  entrypoints; schema, model, migration, or generated-view sections; test files
+  and named test groups; fixture consumers; proof harnesses; and evidence
+  artifacts returned after implementation.
+- Avoid tagging every function or adding noisy inline comments. Use the
+  smallest number of references that makes the implementation discoverable and
+  auditable.
+- When code is moved, split, deleted, or replaced, update or remove stale Ready
+  id references in the same change.
+- Do not invent a Ready mapping. If the mapping is uncertain, leave code
+  untagged and, when useful, create or update a discrepancy, proof, or readiness
+  flag.
+- Ready id references in code do not prove completion. Completion still depends
+  on the Ready record's Completion Proof and the project's verification process.
+- Product or maintenance agents may add trace-only Ready id references to code
+  as a reversible maintenance action when the mapping is evident from existing
+  code, tests, artifacts, comments, or Ready records. Do not change runtime
+  behavior under the guise of traceability.
 
 Credential rules:
 

@@ -155,8 +155,12 @@ truth gaps, contradictions, proof gaps, required services, or missing artifacts.
 They should:
 
 - preserve the intended target state, not just describe code changes;
+- preserve low-noise Ready id references at durable implementation seams when
+  the mapping is evident, such as file headers, entrypoints, schema sections,
+  test groups, fixture consumers, and proof harnesses;
 - attach implementation evidence as artifact descriptors or safe refs when it
   matters to future rebuilds;
+- avoid inventing Ready id mappings when code-to-Ready traceability is unclear;
 - create discrepancy or proof flags when code and Ready truth diverge;
 - ask for clarification before changing product promise, scope, acceptance,
   authority, or private-resource assumptions;
@@ -166,6 +170,7 @@ They should:
 
 Coding agents should not close product decisions, mark product completion, or
 promote draft product truth to ready based only on their own implementation.
+Ready id references in code are traceability evidence, not Completion Proof.
 
 ## Maintenance Loop
 

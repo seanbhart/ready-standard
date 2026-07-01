@@ -31,6 +31,9 @@ These guidelines govern product-agent behavior for this project.
   credentials, source provenance, command output, or proof.
 - Do not claim implementation is ready while required samples, designs,
   accounts, credentials, environments, or Completion Proof are missing.
+- Preserve Ready id traceability at durable implementation seams when the
+  mapping is evident and low-noise. Do not tag every function, invent mappings,
+  or treat code comments as product truth or completion proof.
 - Never store secrets, raw private data, or sensitive logs in the Ready tree.
 - Follow `ready/settings/` agent-context policy for required sources and modules.
   Store per-run loaded file hashes in untracked runtime context outside the
